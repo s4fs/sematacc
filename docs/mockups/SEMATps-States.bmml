@@ -1,0 +1,80 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1086" measuredH="639" mockupW="802" mockupH="585">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="284" y="54" w="752" h="585" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>CHECKLIST%20PAGE</text>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Image" x="686" y="360" w="133" h="131" measuredW="450" measuredH="450" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/Free_University_of_Bolzano-Bozen_team_Agile_Positioning_Practices_08-10-12_4.png</src>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Tooltip" x="311" y="419" w="154" h="90" measuredW="160" measuredH="0" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>SEMAT%20checklist%20for%20each%20states%20is%20displayed%20on%20mouse%20hover</text>
+        <tooltipDirection>SE</tooltipDirection>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="445" y="318" w="160" h="27" measuredW="80" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Customer</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="445" y="345" w="160" h="27" measuredW="68" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Solution</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="445" y="558" w="160" h="27" measuredW="79" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Endeavor</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Title" x="525" y="147" w="-1" h="-1" measuredW="247" measuredH="50" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Project%20Name</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="614" y="319" w="-1" h="-1" measuredW="39" measuredH="21" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>30%20%25</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Label" x="614" y="348" w="-1" h="-1" measuredW="39" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>30%20%25</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Label" x="612" y="559" w="-1" h="-1" measuredW="37" measuredH="21" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>10%20%25</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::PointyButton" x="445" y="372" w="160" h="-1" measuredW="101" measuredH="27" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Requirements</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::PointyButton" x="445" y="529" w="160" h="-1" measuredW="120" measuredH="27" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Software%20System</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::SubTitle" x="500" y="203" w="-1" h="-1" measuredW="319" measuredH="33" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Essence%20Overall%20Score%3A%2024%25</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::StickyNote" x="961" y="345" w="125" h="135" measuredW="109" measuredH="123" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Graph%20is%20updated%20to%20only%20show%20States-related%20items%20and%20when%20an%20item%20is%20clicked</text>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::CheckBoxGroup" x="473" y="401" w="-1" h="-1" measuredW="98" measuredH="126" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%5Bx%5D%20Conceived%0A%5Bx%5D%20Bounded%0A%5B%5D%20Coherent%0A%5B%5D%20Acceptable%0A%5B%5DAddressed%20%0A%5B%5D%20Fulfilled</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

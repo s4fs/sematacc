@@ -1,0 +1,101 @@
+<head>
+  <title>sematps</title>
+  <style type="text/css">
+	.topnav {
+		width: 213px;
+		padding: 40px 28px 25px 0;
+		font-family: "CenturyGothicRegular", "Century Gothic", Arial, Helvetica, sans-serif;
+	}
+
+	ul.topnav {
+		padding: 0;
+		margin: 0;
+		font-size: 1em;
+		line-height: 0.5em;
+		list-style: none;
+	}
+
+	ul.topnav li {}
+
+	ul.topnav li a {
+		line-height: 10px;
+		font-size: 11px;
+		padding: 10px 5px;
+		color: #000;
+		display: block;
+		text-decoration: none;
+		font-weight: bolder;
+	}
+
+	ul.topnav li a:hover {
+		background-color:#675C7C;
+		color:white;
+	}
+
+	ul.topnav ul {
+		margin: 0;
+		padding: 0;
+		display: none;
+	}
+
+	ul.topnav ul li {
+		margin: 0;
+		padding: 0;
+		clear: both;
+	}
+
+	ul.topnav ul li a {
+		padding-left: 20px;
+		font-size: 10px;
+		font-weight: normal;
+		outline:0;
+	}
+
+	ul.topnav ul li a:hover {
+		background-color:#D3C99C;
+		color:#675C7C;
+	}
+
+	ul.topnav ul ul li a {
+		color:silver;
+		padding-left: 40px;
+	}
+
+	ul.topnav ul ul li a:hover {
+		background-color:#D3CEB8;
+		color:#675C7C;
+	}
+
+	ul.topnav span{
+		float:right;
+	}
+</style>
+</head>
+
+<body>
+  {{> console}}
+</body>
+
+<template name="console">
+  <h1>Hello World!</h1>
+  <ul class="topnav"> 
+	{{#each concerns}}
+	<li><a href="#">{{this}}</a>
+		<ul>
+		{{#each alphas this}}
+			<li><a href="#">{{this.name}}</a>
+				<ul>
+					{{#each this.states}}
+						<li><a href="#">{{this}}</a></li>
+					{{/each}}
+				</ul>
+			</li>
+		{{/each}}
+		</ul>
+	</li>
+	{{/each}}
+  </ul>
+
+  <input type="button" value="Status" class="status"/>
+  <input type="button" value="Setup" class="setup"/>
+</template>
