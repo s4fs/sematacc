@@ -14,6 +14,14 @@ if (Meteor.isServer) {
   });
 }
 
+/*
+  // Publish complete set of lists to all clients.
+  Meteor.publish('alphas', function () {
+    return Alphas.find();
+  });
+}
+*/
+
 function get_concern(name) {
   return Alphas.findOne({
     name: name
@@ -29,6 +37,7 @@ function get_alphas(concern_name) {
 
 function setup() {
   Alphas.remove({});
+  Meteor.flush();
   var alphas = [
     {
       concern: "Customer",
@@ -77,4 +86,5 @@ function setup() {
   for (i = 0; i < alphas.length; i++) {
     Alphas.insert(alphas[i]);
   }
+  Meteor.flush();
 }

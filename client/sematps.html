@@ -73,10 +73,10 @@
 </head>
 
 <body>
-  {{> console}}
+  {{> kernel}}
 </body>
 
-<template name="console">
+<template name="kernel">
   <h1>Hello World!</h1>
   <ul class="topnav"> 
 	{{#each concerns}}
@@ -94,8 +94,11 @@
 		</ul>
 	</li>
 	{{/each}}
+	{{gard}}
   </ul>
 
   <input type="button" value="Status" class="status"/>
   <input type="button" value="Setup" class="setup"/>
+  <input type="button" value="Drop" class="drop"/>
+
 </template>

@@ -2,11 +2,23 @@ var Alphas = new Meteor.Collection("Alphas");
 
 if (Meteor.isClient) {
 
-  Template.console.greeting = function() {
+// Subscribe to 'lists' collection on startup.
+// Select a list once data has arrived.
+/*
+Meteor.subscribe('lists', function () {
+  if (!Session.get('list_id')) {
+    var list = Lists.findOne({}, {sort: {name: 1}});
+    if (list)
+      Router.setList(list._id);
+  }
+});
+*/
+
+  Template.kernel.greeting = function() {
     return "Welcome to sematps.";
   };
 
-  Template.console.concerns = function() {
+  Template.kernel.concerns = function() {
     return [
       "Customer",
       "Solution",
@@ -14,27 +26,36 @@ if (Meteor.isClient) {
     ];
   };
 
-  Template.console.alphas = function(concern_name){
+  Template.kernel.alphas = function(concern_name){
     return Alphas.find({
     concern: concern_name
   });
   };
 
-  Template.console.rendered = function() {
-    $(".topnav").accordion({
-      accordion: false,
-      speed: 500,
-      closedSign: '[+]',
-      openedSign: '[-]'
-    });
+  var rendered = 0;
+  Template.kernel.rendered = function() {
+    //TODO: a strange bug of the accordion
+    if (rendered > 6){
+      $(".topnav").accordion({
+        accordion: true,
+        speed: 500,
+        closedSign: '[+]',
+        openedSign: '[-]'
+      });
+    }
+    rendered++;
   };
 
-  Template.console.events({
+  Template.kernel.events({
     'click input.setup': function() {
       Meteor.call('setup');
     },
     'click input.status': function() {
       alert(Alphas.findOne().name);
+      alert(rendered);
+    },
+    'click input.drop': function() {
+      Alphas.remove({});
     },
     'click .checkit': function() {
       //States.update(this._id, {$set: {checked: !this.checked}});
