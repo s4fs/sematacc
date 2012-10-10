@@ -78,23 +78,22 @@
 
 <template name="kernel">
   <h1>Hello World!</h1>
-  <ul class="topnav"> 
+  <ul>
 	{{#each concerns}}
-	<li><a href="#">{{this}}</a>
-		<ul>
-		{{#each alphas this}}
-			<li><a href="#">{{this.name}}</a>
-				<ul>
-					{{#each this.states}}
-						<li><a href="#">{{this}}</a></li>
-					{{/each}}
-				</ul>
-			</li>
-		{{/each}}
-		</ul>
-	</li>
+		<li><a href="#">{{this.name}}</a>
+			<ul>
+			{{#each alphas this._id}}
+				<li><a href="#">{{this.name}}</a>
+					<ul>
+						{{#each states this._id}}
+							<li><a href="#" class="checkit">{{this.name}}</a></li>
+						{{/each}}
+					</ul>
+				</li>
+			{{/each}}
+			</ul>
+		</li>
 	{{/each}}
-	{{gard}}
   </ul>
 
   <input type="button" value="Status" class="status"/>
