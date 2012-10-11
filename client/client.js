@@ -9,7 +9,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("Kernel");
     Meteor.subscribe("Concerns");
     Meteor.subscribe("Alphas");
-    Meteor.subscribe("States");
+    Meteor.subscribe("States", graph_alphas);
   });
 
   Template.dashboard.greeting = function() {
@@ -32,46 +32,13 @@ if (Meteor.isClient) {
       return ": " + state.name;
     else
       return "";
-  }
+  };
 
   Template.kernel.states = function(alpha_id) {
     return States.find({
       alpha_id: alpha_id
     });
   };
-
-  Template.graph.rendered = function() {
-    var elem_id = 'cvs';
-    var data = [4, 6, 2, 8, 9, 5, 4];
-    var labels = ['Stakeholders', 'Opportunity', 'Software System', 'Requirements', 'Way of Working', 'Team', 'Work'];
-    graph(elem_id, data, labels);
-  };
-
-  function graph_alphas(elem_id){
-    var alphas = Alphas.find({}).fetch();
-    var data = [];
-    var labels = [];
-    alphas.forEach(function(alpha){
-      data.push(alpha.completion);
-      labels.push(alpha.name);
-    });
-    graph(elem_id, data, labels);
-  }
-
-  function graph(elem_id, data, labels) {
-    var rose2 = new RGraph.Rose(elem_id, data);
-    rose2.Set('chart.colors.alpha', 0.5);
-    rose2.Set('chart.labels', labels);
-    rose2.Set('chart.tooltips', labels);
-    rose2.Set('chart.labels.axes', '');
-    rose2.Set('chart.background.grid.spokes', 8);
-    rose2.Set('chart.background.axes', false);
-    rose2.Set('chart.colors.sequential', true);
-    rose2.Set('chart.margin', 2);
-    rose2.Draw();
-    return rose2;
-  }
-
 
   Template.kernel.events({
     'click input.setup': function() {
@@ -102,13 +69,16 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.graph.rendered = function() {
+    graph_alphas();
+  };
+
   // Keep track of how many administrators are online.
   var count = 0;
   var query = Alphas.find({});
-  
   var handle = query.observe({
     changed: function(alpha) {
-      graph_alphas('cvs');
+      graph_alphas();
     }
   });
   

@@ -1,0 +1,67 @@
+<head>
+    <title>
+        sematps
+    </title>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="left">
+            <div class="bubble hint" id="hints">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nibh metus,
+                semper facilisis eleifend tincidunt, bibendum et leo. Phasellus egestas,
+                neque vitae commodo mattis, turpis sem cursus mauris, ac congue eros metus
+                et turpis. Cum sociis natoque penatibus et magnis dis parturient montes,
+                nascetur ridiculus mus. Proin id mi ipsum, quis venenatis turpis. Praesent
+                nec tristique magna. Fusce molestie, metus eu sollicitudin dictum, ligula
+                quam accumsan quam, sed accumsan sem turpis ac purus. Pellentesque et porttitor
+                odio. Curabitur tincidunt urna id elit faucibus bibendum porta sem tempor.
+                Cras fermentum erat ut diam cursus condimentum. Morbi nec dapibus velit.
+            </div>
+        </div>
+        <div class="center">
+            <h1>
+                SEMAT Accelerator
+            </h1>
+            {{> kernel}}
+        </div>
+        <div class="right">
+            {{> graph}}
+        </div>
+    </div>
+</body>
+<template name="kernel">
+    {{#each concerns}}
+    <div class="accordion">
+        {{this.name}} {{#each alphas this._id}}
+        <div class="section">
+            <div id="{{this._id}}">
+                <h2>
+                    <a href="#{{this._id}}">{{this.name}} {{current_state this.current_state_id}}</a>
+                </h2>
+                <div>
+                    <ul>
+                        {{#each states this._id}}
+                        <li>
+                            <a href="#" class="checkit">{{this.name}}</a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{/each}}
+</template>
+<template name="graph">
+    <canvas id="graph" width="400" height="300">
+        [No canvas support]
+    </canvas>
+</template>
+<template name="dashboard">
+    <input type="button" value="Status" class="status" />
+    <input type="button" value="Setup" class="setup" />
+    <input type="button" value="Drop" class="drop" />
+</template>
