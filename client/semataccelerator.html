@@ -32,31 +32,30 @@
         </div>
     </div>
 </body>
+
 <template name="kernel">
-    <div class="kernel">
     {{#each concerns}}
-    <div class="accordion">
-        {{this.name}} {{#each alphas this._id}}
-        <div class="section">
-            <div id="{{this._id}}">
-                <h2>
-                    <a href="#{{this._id}}">{{this.name}} {{current_state this.current_state_id}}</a>
-                </h2>
+    <section style="float:left">
+    <h2 style="font-size:1.0em;">{{this.name}}</h2>
+    </section>
+    <section class="ac-container" style="margin-bottom:0;margin-top:0">
+        {{#each alphas this._id}}
                 <div>
-                    <ul>
+                    <input id="{{this._id}}" name="accordion-1" type="radio" checked />
+                    <label for="{{this._id}}">{{this.name}} {{current_state this.current_state_id}}</label>
+                    <article class="ac-small">
+                        <ul>
                         {{#each states this._id}}
                         <li>
                             <a href="#" class="checkit">{{this.name}}</a>
                         </li>
                         {{/each}}
-                    </ul>
+                        </ul>
+                    </article>
                 </div>
-            </div>
-        </div>
-        {{/each}}
-    </div>
+         {{/each}}
+    </section>
     {{/each}}
-    </div>
 </template>
 
 <template name="graph">
