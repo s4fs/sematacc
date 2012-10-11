@@ -25,6 +25,7 @@
                 SEMAT Accelerator
             </h1>
             {{> kernel}}
+            {{> dashboard}}
         </div>
         <div class="right">
             {{> graph}}
@@ -32,6 +33,7 @@
     </div>
 </body>
 <template name="kernel">
+    <div class="kernel">
     {{#each concerns}}
     <div class="accordion">
         {{this.name}} {{#each alphas this._id}}
@@ -54,12 +56,15 @@
         {{/each}}
     </div>
     {{/each}}
+    </div>
 </template>
+
 <template name="graph">
     <canvas id="graph" width="400" height="300">
         [No canvas support]
     </canvas>
 </template>
+
 <template name="dashboard">
     <input type="button" value="Status" class="status" />
     <input type="button" value="Setup" class="setup" />

@@ -74,12 +74,21 @@ div.section {
     display: block;
 }
 
+div.kernel {
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    background-color: #eee;
+    margin:0;
+    padding:15px;
+}
+
 div.accordion {
     background-color: #eee;
     border: 0;
  /*1px solid #ccc;*/
     width: 100%;
-    padding: 10px;
+    padding: 0;
     margin: 0 auto;
 }
 

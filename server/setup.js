@@ -4,16 +4,16 @@ var Alphas = new Meteor.Collection("Alphas");
 var States = new Meteor.Collection("States");
 
 Meteor.publish("Kernel", function() {
-    return Kernel.find({});
+    return Kernel.find({},{});
   });
   Meteor.publish("Concerns", function() {
-    return Concerns.find({});
+    return Concerns.find({},{sort: {order: 1}});
   });
   Meteor.publish("Alphas", function() {
-    return Alphas.find({});
+    return Alphas.find({},{sort: {order: 1}});
   });
   Meteor.publish("States", function() {
-    return States.find({});
+    return States.find({},{sort: {order: 1}});
   });
 
 if (Meteor.isServer) {

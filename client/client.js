@@ -9,7 +9,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("Kernel");
     Meteor.subscribe("Concerns");
     Meteor.subscribe("Alphas");
-    Meteor.subscribe("States", graph_alphas);
+    Meteor.subscribe("States", draw_graph);
   });
 
   Template.dashboard.greeting = function() {
@@ -41,19 +41,6 @@ if (Meteor.isClient) {
   };
 
   Template.kernel.events({
-    'click input.setup': function() {
-      Meteor.call('setup');
-    },
-    'click input.status': function() {
-      alert(Kernel.findOne());
-      alert(rendered);
-    },
-    'click input.drop': function() {
-      Kernel.remove({});
-      Concerns.remove({});
-      Alphas.remove({});
-      States.remove({});
-    },
     'click .checkit': function(event) {
       event.preventDefault();
 
@@ -63,24 +50,22 @@ if (Meteor.isClient) {
       var ratio = current_state_position / alpha_states_count * 100;
       Alphas.update({_id: this.alpha_id}, {$set: {completion: ratio, current_state_id: this._id}});
     },
-    'mouseenter .checkit': function(event) {
+
+    // Fixes a bug
+    'click .section': function(event) {
+      draw_graph();
+    }
+    //'mouseenter .checkit': function(event) {
       //$("#hints").toggle('slow');
       //TODO
-    }
+    //}
   });
 
-  Template.graph.rendered = function() {
-    graph_alphas();
-  };
-
-  // Keep track of how many administrators are online.
-  var count = 0;
   var query = Alphas.find({});
   var handle = query.observe({
     changed: function(alpha) {
-      graph_alphas();
+      draw_graph();
     }
   });
-  
 
 }

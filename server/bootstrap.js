@@ -53,13 +53,16 @@ if (Meteor.isServer) {
     var concern_id = 0;
     var alpha_id = 0;
     var state_id = 0;
+
+    var alpha_counter = 0;
+
     for (var c = 0; c < k.concerns.length; c++) {
       var concern = k.concerns[c];
       concern_id = Concerns.insert({
         name: concern.name,
         description: concern.description,
-        order: c + 1,
         // index from 1 instead of 0
+        order: c + 1,
         completion: 0
       });
       for (var a = 0; a < concern.alphas.length; a++) {
@@ -67,11 +70,12 @@ if (Meteor.isServer) {
         alpha_id = Alphas.insert({
           name: alpha.name,
           description: "",
+          order: alpha_counter + 1,
           concern_id: concern_id,
-          order: a + 1,
           current_state_id: null,
           completion: 0
         });
+        alpha_counter++;
         for (var s = 0; s < alpha.states.length; s++) {
           var state = alpha.states[s];
           state_id = States.insert({

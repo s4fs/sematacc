@@ -3,31 +3,41 @@
  */
 if (Meteor.isClient) {
 
-  function graph_alphas(elem_id) {
+  function draw_graph(elem_id) {
     if (elem_id == null)
       elem_id = 'graph';
+
+    var graph = build_graph_alphas(elem_id);
+    RGraph.Clear(graph.canvas);
+    graph.Draw();
+  }
+
+  function build_graph_alphas(elem_id) {
+    if (elem_id == null)
+      elem_id = 'graph';
+
     var alphas = Alphas.find({}).fetch();
-    Meteor._debug(alphas);
     var data = [];
     var labels = [];
+
     alphas.forEach(function(alpha) {
       data.push(alpha.completion);
       labels.push(alpha.name);
     });
-    graph(elem_id, data, labels);
+
+    return build_graph(elem_id, data, labels);
   }
 
-  function graph(elem_id, data, labels) {
-    var rose2 = new RGraph.Rose(elem_id, data);
-    rose2.Set('chart.colors.alpha', 0.5);
-    rose2.Set('chart.labels', labels);
-    rose2.Set('chart.tooltips', labels);
-    rose2.Set('chart.labels.axes', '');
-    rose2.Set('chart.background.grid.spokes', 8);
-    rose2.Set('chart.background.axes', false);
-    rose2.Set('chart.colors.sequential', true);
-    rose2.Set('chart.margin', 2);
-    rose2.Set('chart.resizable', true);
-    rose2.Draw();
+  function build_graph(elem_id, data, labels) {
+    var rose_graph = new RGraph.Rose(elem_id, data);
+    rose_graph.Set('chart.colors.alpha', 0.6);
+    rose_graph.Set('chart.labels', labels);
+    rose_graph.Set('chart.tooltips', '');
+    rose_graph.Set('chart.labels.axes', '');
+    rose_graph.Set('chart.background.grid.spokes', labels.length * 4);
+    rose_graph.Set('chart.background.axes', false);
+    rose_graph.Set('chart.colors.sequential', true);
+    rose_graph.Set('chart.margin', 0);
+    return rose_graph;
   }
 }
