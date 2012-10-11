@@ -1,103 +1,60 @@
 <head>
   <title>sematps</title>
-  <style type="text/css">
-	.topnav {
-		width: 213px;
-		padding: 40px 28px 25px 0;
-		font-family: "CenturyGothicRegular", "Century Gothic", Arial, Helvetica, sans-serif;
-	}
-
-	ul.topnav {
-		padding: 0;
-		margin: 0;
-		font-size: 1em;
-		line-height: 0.5em;
-		list-style: none;
-	}
-
-	ul.topnav li {}
-
-	ul.topnav li a {
-		line-height: 10px;
-		font-size: 11px;
-		padding: 10px 5px;
-		color: #000;
-		display: block;
-		text-decoration: none;
-		font-weight: bolder;
-	}
-
-	ul.topnav li a:hover {
-		background-color:#675C7C;
-		color:white;
-	}
-
-	ul.topnav ul {
-		margin: 0;
-		padding: 0;
-		display: none;
-	}
-
-	ul.topnav ul li {
-		margin: 0;
-		padding: 0;
-		clear: both;
-	}
-
-	ul.topnav ul li a {
-		padding-left: 20px;
-		font-size: 10px;
-		font-weight: normal;
-		outline:0;
-	}
-
-	ul.topnav ul li a:hover {
-		background-color:#D3C99C;
-		color:#675C7C;
-	}
-
-	ul.topnav ul ul li a {
-		color:silver;
-		padding-left: 40px;
-	}
-
-	ul.topnav ul ul li a:hover {
-		background-color:#D3CEB8;
-		color:#675C7C;
-	}
-
-	ul.topnav span{
-		float:right;
-	}
-</style>
+  <style>
+  	
+  </style>
 </head>
 
 <body>
-  {{> kernel}}
+  <div class="wrapper">
+	     <div class="left"> 
+	     	<div class="bubble hint" id="hints">
+	     		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nibh metus, semper facilisis eleifend tincidunt, bibendum et leo. Phasellus egestas, neque vitae commodo mattis, turpis sem cursus mauris, ac congue eros metus et turpis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin id mi ipsum, quis venenatis turpis. Praesent nec tristique magna. Fusce molestie, metus eu sollicitudin dictum, ligula quam accumsan quam, sed accumsan sem turpis ac purus. Pellentesque et porttitor odio. Curabitur tincidunt urna id elit faucibus bibendum porta sem tempor. Cras fermentum erat ut diam cursus condimentum. Morbi nec dapibus velit.
+	     	</div>
+	     </div>
+	     <div class="center">
+	     	<h1>SEMAT Accelerator</h1>
+	     	{{> kernel}}
+	     </div>
+	     <div class="right">
+	     	{{> graph}}
+	     </div>
+	 </div> 
 </body>
 
 <template name="kernel">
-  <h1>Hello World!</h1>
-  <ul>
-	{{#each concerns}}
-		<li><a href="#">{{this.name}}</a>
-			<ul>
-			{{#each alphas this._id}}
-				<li><a href="#">{{this.name}}</a>
-					<ul>
-						{{#each states this._id}}
-							<li><a href="#" class="checkit">{{this.name}}</a></li>
-						{{/each}}
-					</ul>
-				</li>
-			{{/each}}
-			</ul>
-		</li>
-	{{/each}}
-  </ul>
+{{#each concerns}}
+  <div class="accordion">
+  	  	{{this.name}}
+  		{{#each alphas this._id}}
+		<div class="section">
+			<div id="{{this._id}}">
+				<h2><a href="#{{this._id}}">{{this.name}} {{current_state this.current_state_id}}</a></h2>
+				<div>
+							<ul>
+								{{#each states this._id}}
+									<li><a href="#" class="checkit">{{this.name}}</a></li>
+								{{/each}}
+							</ul>
+				</div>
+			</div>
+		</div>
+		{{/each}}
+  </div>
+{{/each}}
+</template>
 
+<template name="graph">
+	<canvas id="cvs" width="300" height="300">[No canvas support]</canvas>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+</template>
+
+
+<template name="dashboard">
   <input type="button" value="Status" class="status"/>
   <input type="button" value="Setup" class="setup"/>
   <input type="button" value="Drop" class="drop"/>
-
 </template>

@@ -5,19 +5,14 @@ var States = new Meteor.Collection("States");
 
 if (Meteor.isClient) {
 
-// Subscribe to 'lists' collection on startup.
-// Select a list once data has arrived.
-/*
-Meteor.subscribe('lists', function () {
-  if (!Session.get('list_id')) {
-    var list = Lists.findOne({}, {sort: {name: 1}});
-    if (list)
-      Router.setList(list._id);
-  }
-});
-*/
+  Meteor.startup(function() {
+    Meteor.subscribe("Kernel");
+    Meteor.subscribe("Concerns");
+    Meteor.subscribe("Alphas");
+    Meteor.subscribe("States");
+  });
 
-  Template.kernel.greeting = function() {
+  Template.dashboard.greeting = function() {
     return "Welcome to sematps.";
   };
 
@@ -26,28 +21,57 @@ Meteor.subscribe('lists', function () {
   };
 
   Template.kernel.alphas = function(concern_id) {
-    return Alphas.find({concern_id: concern_id});
+    return Alphas.find({
+      concern_id: concern_id
+    });
   };
+
+  Template.kernel.current_state = function(state_id){
+    var state = States.findOne({_id: state_id});
+    if (state)
+      return ": " + state.name;
+    else
+      return "";
+  }
 
   Template.kernel.states = function(alpha_id) {
-    return States.find({alpha_id: alpha_id});
+    return States.find({
+      alpha_id: alpha_id
+    });
   };
 
-
-
-  var rendered = 0;
-  Template.kernel.rendered = function() {
-    //TODO: a strange bug of the accordion
-    //if (rendered > 6) {
-      $(".topnav").accordion({
-        accordion: true,
-        speed: 500,
-        closedSign: '[+]',
-        openedSign: '[-]'
-      });
-    //}
-    rendered++;
+  Template.graph.rendered = function() {
+    var elem_id = 'cvs';
+    var data = [4, 6, 2, 8, 9, 5, 4];
+    var labels = ['Stakeholders', 'Opportunity', 'Software System', 'Requirements', 'Way of Working', 'Team', 'Work'];
+    graph(elem_id, data, labels);
   };
+
+  function graph_alphas(elem_id){
+    var alphas = Alphas.find({}).fetch();
+    var data = [];
+    var labels = [];
+    alphas.forEach(function(alpha){
+      data.push(alpha.completion);
+      labels.push(alpha.name);
+    });
+    graph(elem_id, data, labels);
+  }
+
+  function graph(elem_id, data, labels) {
+    var rose2 = new RGraph.Rose(elem_id, data);
+    rose2.Set('chart.colors.alpha', 0.5);
+    rose2.Set('chart.labels', labels);
+    rose2.Set('chart.tooltips', labels);
+    rose2.Set('chart.labels.axes', '');
+    rose2.Set('chart.background.grid.spokes', 8);
+    rose2.Set('chart.background.axes', false);
+    rose2.Set('chart.colors.sequential', true);
+    rose2.Set('chart.margin', 2);
+    rose2.Draw();
+    return rose2;
+  }
+
 
   Template.kernel.events({
     'click input.setup': function() {
@@ -55,16 +79,38 @@ Meteor.subscribe('lists', function () {
     },
     'click input.status': function() {
       alert(Kernel.findOne());
-      Meteor._debug("asd");
       alert(rendered);
     },
     'click input.drop': function() {
       Kernel.remove({});
+      Concerns.remove({});
+      Alphas.remove({});
+      States.remove({});
     },
     'click .checkit': function(event) {
       event.preventDefault();
-      Alphas.update(this.alpha_id, {$set: {current_state: this._id}});
+
+      var alpha_states_count = States.find({alpha_id: this.alpha_id}).count();
+      var current_state_position = States.findOne({_id: this._id}).order;
+
+      var ratio = current_state_position / alpha_states_count * 100;
+      Alphas.update({_id: this.alpha_id}, {$set: {completion: ratio, current_state_id: this._id}});
+    },
+    'mouseenter .checkit': function(event) {
+      //$("#hints").toggle('slow');
+      //TODO
     }
   });
+
+  // Keep track of how many administrators are online.
+  var count = 0;
+  var query = Alphas.find({});
+  
+  var handle = query.observe({
+    changed: function(alpha) {
+      graph_alphas('cvs');
+    }
+  });
+  
 
 }

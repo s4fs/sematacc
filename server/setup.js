@@ -3,9 +3,22 @@ var Concerns = new Meteor.Collection("Concerns");
 var Alphas = new Meteor.Collection("Alphas");
 var States = new Meteor.Collection("States");
 
+Meteor.publish("Kernel", function () {
+  return Kernel.find({});
+});
+Meteor.publish("Concerns", function () {
+  return Concerns.find({});
+});
+Meteor.publish("Alphas", function () {
+  return Alphas.find({});
+});
+Meteor.publish("States", function () {
+  return States.find({});
+});
+
 if (Meteor.isServer) {
   Meteor.startup(function() {
-    if (Kernel.find().count() === 0) {
+    if (Concerns.find().count() === 0) {
       setup();
     }
   });
@@ -104,31 +117,28 @@ function setup() {
     concern_id = Concerns.insert({
       name: concern.name,
       description: concern.description,
+      order: c + 1, // index from 1 instead of 0
       completion: 0
     });
     for (var a = 0; a < concern.alphas.length; a++) {
       var alpha = concern.alphas[a];
       alpha_id = Alphas.insert({
         name: alpha.name,
+        description: "",
         concern_id: concern_id,
-        current_state: 0,
+        order: a + 1,
+        current_state_id: null,
         completion: 0
       });
       for (var s = 0; s < alpha.states.length; s++) {
         var state = alpha.states[s];
         state_id = States.insert({
           name: state,
-          alpha_id: alpha_id
+          description: "",
+          alpha_id: alpha_id,
+          order: s + 1
         });
       }
     }
   }
-  //Kernel.insert(k);
-  /*
-  var i = 0;
-  for (i = 0; i < alphas.length; i++) {
-    console.log(alphas[i]);
-    //Alphas.insert(alphas[i]);
-  }
-  */
 }
