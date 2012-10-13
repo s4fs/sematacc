@@ -62,9 +62,20 @@ if (Meteor.isClient) {
     'click .accordionitem': function(event) {
       $("input.accordionitem").attr("checked",false);
       $(event.target).attr("checked",true);
+
+      if (time_out) {
+        window.clearTimeout(time_out);
+      }
+      $("div.bubble").fadeOut("slow");
+
     },
     'click li.selectable': function(event) {
       event.preventDefault();
+
+      if (time_out) {
+        window.clearTimeout(time_out);
+      }
+      $("div.bubble").fadeOut("slow");
 
       Session.set("selectedItem", this.alpha_id);
 
