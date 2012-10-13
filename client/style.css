@@ -177,14 +177,46 @@ div.concern label {
     transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
 }
 
-.ac-container article p {
-    font-style: italic;
+.ac-container article ul {
     color: #777;
     line-height: 23px;
-    font-size: 14px;
-    padding: 20px;
+    padding: 0;
     text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+    list-style-type: none;
 }
+
+.ac-container article ul li {
+    font-size:1.2em;
+    padding:5px 5px 5px 30px;
+    cursor:pointer;
+    cursor:hand;
+}
+
+.ac-container article ul li div {
+    width:32px;
+    height:32px;
+    margin:0;
+    padding:0;
+    float:left;
+}
+
+.ac-container article ul li div img {
+    width:16px;
+    height:16px;
+    margin:0;
+    padding:0;
+}
+
+
+li.selectable:hover{
+    background-color:green;
+    text-shadow:none;
+}
+
+li.selected {
+    text-shadow: none;
+}
+
 
 .ac-container input:checked ~ article {
     -webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
@@ -196,7 +228,7 @@ div.concern label {
 }
 
 .ac-container input:checked ~ article.ac-small {
-    height: 140px;
+    height: 250px; /*140px;*/
 }
 
 .ac-container input:checked ~ article.ac-medium {
@@ -206,6 +238,8 @@ div.concern label {
 .ac-container input:checked ~ article.ac-large {
     height: 230px;
 }
+
+/* bubbletip */
 
 .tooltip {
     width: 200px;

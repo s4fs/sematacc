@@ -41,9 +41,13 @@ if (Meteor.isClient) {
       return States.find();
   };
 
+  Template.kernel.same_id = function(first_id, second_id) {
+    return first_id == second_id;
+  };
+
   var time_out;
   Template.kernel.events({
-    'click .checkit': function(event) {
+    'click li.selectable': function(event) {
       event.preventDefault();
 
       var alpha_states_count = States.find({alpha_id: this.alpha_id}).count();

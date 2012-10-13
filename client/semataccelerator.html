@@ -7,9 +7,17 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="left"> 
+        <div class="left">
             <div class="bubble hint" id="hints">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nibh metus, semper facilisis eleifend tincidunt, bibendum et leo. Phasellus egestas, neque vitae commodo mattis, turpis sem cursus mauris, ac congue eros metus et turpis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin id mi ipsum, quis venenatis turpis. Praesent nec tristique magna. Fusce molestie, metus eu sollicitudin dictum, ligula quam accumsan quam, sed accumsan sem turpis ac purus. Pellentesque et porttitor odio. Curabitur tincidunt urna id elit faucibus bibendum porta sem tempor. Cras fermentum erat ut diam cursus condimentum. Morbi nec dapibus velit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nibh metus,
+                semper facilisis eleifend tincidunt, bibendum et leo. Phasellus egestas,
+                neque vitae commodo mattis, turpis sem cursus mauris, ac congue eros metus
+                et turpis. Cum sociis natoque penatibus et magnis dis parturient montes,
+                nascetur ridiculus mus. Proin id mi ipsum, quis venenatis turpis. Praesent
+                nec tristique magna. Fusce molestie, metus eu sollicitudin dictum, ligula
+                quam accumsan quam, sed accumsan sem turpis ac purus. Pellentesque et porttitor
+                odio. Curabitur tincidunt urna id elit faucibus bibendum porta sem tempor.
+                Cras fermentum erat ut diam cursus condimentum. Morbi nec dapibus velit.
             </div>
             &nbsp;
         </div>
@@ -17,52 +25,54 @@
             <h1>
                 SEMAT Accelerator
             </h1>
-            {{> kernel}}
-            {{> dashboard}}
+            {{> kernel}} {{> dashboard}}
         </div>
         <div class="right">
             {{> graph}}
         </div>
     </div>
 </body>
-
 <template name="kernel">
     {{#each concerns}}
     <section style="float:left">
-    <h2 style="font-size:1.0em;">{{this.name}}</h2>
+        <h2 style="font-size:1.0em;">
+            {{this.name}}
+        </h2>
     </section>
     <section class="ac-container" style="margin-bottom:0;margin-top:0">
         {{#each alphas this._id}}
-                <div>
-                    <input id="{{this._id}}" name="accordion-1" type="radio" checked />
-                    <label for="{{this._id}}">{{this.name}} {{current_state this.current_state_id}}</label>
-                    <article class="ac-small">
-                        <ul>
-                        {{#each states this._id}}
-                        <li id="{{this._id}}">
-                            <a href="#" class="checkit">
-                                {{this.name}}
-                            </a>
+        <div>
+            <input id="{{this._id}}" name="accordion-1" type="radio" checked />
+            <label for="{{this._id}}">
+                {{this.name}} {{current_state this.current_state_id}}
+            </label>
+            <article class="ac-small">
+                <ul>
+                    {{#each states this._id}}
+                        {{#if same_id ../this.current_state_id this._id}}
+                            <li id="{{this._id}}" class="selected"><div><img src="tick.png" /></div>
+                        {{else}}
+                            <li id="{{this._id}}" class="selectable"><div>&nbsp;</div>
+                        {{/if}}        
+                        {{this.name}}        
                         </li>
-                        {{/each}}
-                        </ul>
-                    </article>
-                </div>
-         {{/each}}
+                    {{/each}}
+                </ul>
+            </article>
+        </div>
+        {{/each}}
     </section>
     {{/each}}
 </template>
-
 <template name="graph">
     <canvas id="graph" width="400" height="300">
         [No canvas support]
     </canvas>
 </template>
-
 <template name="dashboard">
-<p>
+    <p>
         <input type="button" value="Status" class="status" />
         <input type="button" value="Setup" class="setup" />
         <input type="button" value="Drop" class="drop" />
-</p>
+    </p>
 </template>
