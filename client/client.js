@@ -35,11 +35,13 @@ if (Meteor.isClient) {
   };
 
   Template.kernel.states = function(alpha_id) {
-    return States.find({
-      alpha_id: alpha_id
-    });
+    if (alpha_id)
+      return States.find({alpha_id: alpha_id});
+    else
+      return States.find();
   };
 
+  var time_out;
   Template.kernel.events({
     'click .checkit': function(event) {
       event.preventDefault();
@@ -50,15 +52,23 @@ if (Meteor.isClient) {
       var ratio = current_state_position / alpha_states_count * 100;
       Alphas.update({_id: this.alpha_id}, {$set: {completion: ratio, current_state_id: this._id}});
     },
-
-    // Fixes a bug
-    'click .section': function(event) {
-      draw_graph();
+    'mouseenter .checkit': function(event) {
+      time_out = window.setTimeout(function() {
+        //var state = States.findOne({_id: this._id});
+        var offset = $(event.target).offset();
+        var bubble_height = $("div.bubble").height();
+        offset = offset.top - 120;
+        $("div.bubble").css("margin-top", offset + "px");
+        $("div.bubble").fadeIn("slow");
+      }, 3000);
+      
+    },
+    'mouseleave .checkit': function(event) {
+      if (time_out){
+        window.clearTimeout(time_out);
+      }
+      $("div.bubble").fadeOut("slow");
     }
-    //'mouseenter .checkit': function(event) {
-      //$("#hints").toggle('slow');
-      //TODO
-    //}
   });
 
   var query = Alphas.find({});

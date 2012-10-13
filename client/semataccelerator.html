@@ -7,18 +7,11 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="left">
+        <div class="left"> 
             <div class="bubble hint" id="hints">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nibh metus,
-                semper facilisis eleifend tincidunt, bibendum et leo. Phasellus egestas,
-                neque vitae commodo mattis, turpis sem cursus mauris, ac congue eros metus
-                et turpis. Cum sociis natoque penatibus et magnis dis parturient montes,
-                nascetur ridiculus mus. Proin id mi ipsum, quis venenatis turpis. Praesent
-                nec tristique magna. Fusce molestie, metus eu sollicitudin dictum, ligula
-                quam accumsan quam, sed accumsan sem turpis ac purus. Pellentesque et porttitor
-                odio. Curabitur tincidunt urna id elit faucibus bibendum porta sem tempor.
-                Cras fermentum erat ut diam cursus condimentum. Morbi nec dapibus velit.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nibh metus, semper facilisis eleifend tincidunt, bibendum et leo. Phasellus egestas, neque vitae commodo mattis, turpis sem cursus mauris, ac congue eros metus et turpis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin id mi ipsum, quis venenatis turpis. Praesent nec tristique magna. Fusce molestie, metus eu sollicitudin dictum, ligula quam accumsan quam, sed accumsan sem turpis ac purus. Pellentesque et porttitor odio. Curabitur tincidunt urna id elit faucibus bibendum porta sem tempor. Cras fermentum erat ut diam cursus condimentum. Morbi nec dapibus velit.
             </div>
+            &nbsp;
         </div>
         <div class="center">
             <h1>
@@ -46,8 +39,10 @@
                     <article class="ac-small">
                         <ul>
                         {{#each states this._id}}
-                        <li>
-                            <a href="#" class="checkit">{{this.name}}</a>
+                        <li id="{{this._id}}">
+                            <a href="#" class="checkit">
+                                {{this.name}}
+                            </a>
                         </li>
                         {{/each}}
                         </ul>
@@ -65,7 +60,9 @@
 </template>
 
 <template name="dashboard">
-    <input type="button" value="Status" class="status" />
-    <input type="button" value="Setup" class="setup" />
-    <input type="button" value="Drop" class="drop" />
+<p>
+        <input type="button" value="Status" class="status" />
+        <input type="button" value="Setup" class="setup" />
+        <input type="button" value="Drop" class="drop" />
+</p>
 </template>
