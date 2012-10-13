@@ -45,30 +45,47 @@ if (Meteor.isClient) {
     return first_id == second_id;
   };
 
+
+  Template.kernel.rendered = function() {
+    //$("#caccaCustomer").attr('checked', true);
+  };
+
+  Template.kernel.checkable = function(alpha_id){
+    if (alpha_id == Session.get("selectedItem"))
+      return true;
+    else
+      return false;
+  };
+
   var time_out;
   Template.kernel.events({
+    'click .accordionitem': function(event) {
+      $("input.accordionitem").attr("checked",false);
+      $(event.target).attr("checked",true);
+    },
     'click li.selectable': function(event) {
       event.preventDefault();
+
+      Session.set("selectedItem", this.alpha_id);
 
       var alpha_states_count = States.find({alpha_id: this.alpha_id}).count();
       var current_state_position = States.findOne({_id: this._id}).order;
 
       var ratio = current_state_position / alpha_states_count * 100;
-      Alphas.update({_id: this.alpha_id}, {$set: {completion: ratio, current_state_id: this._id}});
+      Alphas.update({_id: this.alpha_id}, {$set: {completion: ratio, current_state_id: this._id}});      
     },
-    'mouseenter .checkit': function(event) {
+    'mouseenter li.item': function(event) {
       time_out = window.setTimeout(function() {
         //var state = States.findOne({_id: this._id});
         var offset = $(event.target).offset();
         var bubble_height = $("div.bubble").height();
-        offset = offset.top - 120;
+        offset = offset.top - 110;
         $("div.bubble").css("margin-top", offset + "px");
         $("div.bubble").fadeIn("slow");
-      }, 3000);
-      
+      }, 1000); 
     },
-    'mouseleave .checkit': function(event) {
-      if (time_out){
+    'mouseleave li.item': function(event) {
+      if (time_out) {
         window.clearTimeout(time_out);
       }
       $("div.bubble").fadeOut("slow");

@@ -42,7 +42,7 @@
     <section class="ac-container" style="margin-bottom:0;margin-top:0">
         {{#each alphas this._id}}
         <div>
-            <input id="{{this._id}}" name="accordion-1" type="radio" checked />
+            <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio" {{#if checkable this._id}}checked="checked"{{/if}}/>
             <label for="{{this._id}}">
                 {{this.name}} {{current_state this.current_state_id}}
             </label>
@@ -50,9 +50,9 @@
                 <ul>
                     {{#each states this._id}}
                         {{#if same_id ../this.current_state_id this._id}}
-                            <li id="{{this._id}}" class="selected"><div><img src="tick.png" /></div>
+                            <li id="{{this._id}}" class="item selected"><div><img src="v.png" /></div>
                         {{else}}
-                            <li id="{{this._id}}" class="selectable"><div>&nbsp;</div>
+                            <li id="{{this._id}}" class="item selectable"><div>&nbsp;</div>
                         {{/if}}        
                         {{this.name}}        
                         </li>

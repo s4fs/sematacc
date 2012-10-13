@@ -25,7 +25,7 @@ body {
     padding: 10px 18px;
     position: relative;
     vertical-align: top;
-    display:none;
+    display: none;
 }
 
 .bubble::before {
@@ -90,8 +90,8 @@ canvas#graph {
 
 
 
-/* NEW */
-
+/* ACCORDION */
+/* credits http://tympanus.net/codrops/2012/02/21/accordion-with-css3/ */
 .ac-container {
     width: 400px;
     margin: 10px auto 30px auto;
@@ -152,11 +152,11 @@ div.concern label {
     height: 24px;
     right: 13px;
     top: 7px;
-    background: transparent url(../images/arrow_down.png) no-repeat center center;
+    background: transparent url(../arrow_down.png) no-repeat center center;
 }
 
 .ac-container input:checked + label:hover:after {
-    background-image: url(../images/arrow_up.png);
+    background-image: url(../arrow_up.png);
 }
 
 .ac-container input {
@@ -186,37 +186,35 @@ div.concern label {
 }
 
 .ac-container article ul li {
-    font-size:1.2em;
-    padding:5px 5px 5px 30px;
-    cursor:pointer;
-    cursor:hand;
+    font-size: 1.2em;
+    padding: 5px 5px 5px 30px;
+    cursor: pointer;
+    cursor: hand;
 }
 
 .ac-container article ul li div {
-    width:32px;
-    height:32px;
-    margin:0;
-    padding:0;
-    float:left;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    float: left;
 }
 
 .ac-container article ul li div img {
-    width:16px;
-    height:16px;
-    margin:0;
-    padding:0;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
 }
 
-
-li.selectable:hover{
-    background-color:green;
-    text-shadow:none;
+li.selectable:hover {
+    background-color: green;
+    text-shadow: none;
 }
 
 li.selected {
     text-shadow: none;
 }
-
 
 .ac-container input:checked ~ article {
     -webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
@@ -228,7 +226,8 @@ li.selected {
 }
 
 .ac-container input:checked ~ article.ac-small {
-    height: 250px; /*140px;*/
+    height: 250px;
+ /*140px;*/
 }
 
 .ac-container input:checked ~ article.ac-medium {
