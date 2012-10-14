@@ -43,7 +43,13 @@ if (Meteor.isClient) {
     rose_graph.Set('chart.background.axes', false);
     rose_graph.Set('chart.colors.sequential', true);
     rose_graph.Set('chart.margin', 5);
-    rose_graph.ids = meteor_ids;
+    rose_graph.meteor_ids = meteor_ids;
+    rose_graph.onclick = function (e, shape)
+        {
+            id = rose_graph.meteor_ids[shape[6]];
+            $("input.accordionitem").attr("checked", false);
+            $("#"+id).attr("checked", true);
+        }
     return rose_graph;
   }
 }
