@@ -9,7 +9,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("Kernel");
     Meteor.subscribe("Concerns");
     Meteor.subscribe("Alphas");
-    Meteor.subscribe("States", draw_graph);
+    Meteor.subscribe("States", draw_graphs);
   });
 
   // React to Session["selected_alpha_id"] changes
@@ -126,7 +126,7 @@ if (Meteor.isClient) {
   var query = Alphas.find({});
   var handle = query.observe({
     changed: function(alpha) {
-      draw_graph();
+      draw_graphs();
     }
   });
 }
