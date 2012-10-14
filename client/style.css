@@ -120,7 +120,9 @@ a {
     width: 70%;
     text-align: left;
     margin:auto;
+   
 }
+
 
 .ac-container label {
     padding: 5px 20px;
@@ -141,6 +143,7 @@ a {
     background: -ms-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
     background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
+    
     box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 
         1px 0px 0px 0px rgba(255,255,255,0.9) inset, 
         0px 2px 2px rgba(0,0,0,0.1);
@@ -236,6 +239,7 @@ li.selectable:hover {
 }
 
 li.selected {
+    color: #7DB4B5;
     text-shadow: none;
 }
 
