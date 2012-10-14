@@ -3,12 +3,11 @@
  */
 if (Meteor.isClient) {
 
- 
-  function draw_graph(elem_id) {
-    if (elem_id == null)
-      elem_id = 'graph';
 
-    RGraph.ObjectRegistry.Clear() 
+  function draw_graph(elem_id) {
+    if (elem_id == null) elem_id = 'graph';
+
+    RGraph.ObjectRegistry.Clear();
     var graph = build_graph_alphas(elem_id);
     RGraph.Clear(graph.canvas);
 
@@ -16,8 +15,7 @@ if (Meteor.isClient) {
   }
 
   function build_graph_alphas(elem_id) {
-    if (elem_id == null)
-      elem_id = 'graph';
+    if (elem_id == null) elem_id = 'graph';
 
     var alphas = Alphas.find({}).fetch();
     var data = [];
@@ -37,19 +35,19 @@ if (Meteor.isClient) {
     var rose_graph = new RGraph.Rose(elem_id, data);
     rose_graph.Set('chart.colors.alpha', 0.6);
     rose_graph.Set('chart.labels', labels);
-    rose_graph.Set('chart.tooltips', '');
     rose_graph.Set('chart.labels.axes', '');
     rose_graph.Set('chart.background.grid.spokes', labels.length * 2);
     rose_graph.Set('chart.background.axes', false);
     rose_graph.Set('chart.colors.sequential', true);
     rose_graph.Set('chart.margin', 5);
     rose_graph.meteor_ids = meteor_ids;
-    rose_graph.onclick = function (e, shape)
-        {
-            id = rose_graph.meteor_ids[shape[6]];
-            $("input.accordionitem").attr("checked", false);
-            $("#"+id).attr("checked", true);
-        }
+    rose_graph.onclick = function(e, shape) {
+      id = rose_graph.meteor_ids[shape[6]];
+      Session.set("selected_alpha_id", id);
+    };
+    rose_graph.onmousemove = function(e, shape) {
+      e.target.style.cursor = 'pointer';
+    };
     return rose_graph;
   }
 }

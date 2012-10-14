@@ -3,7 +3,7 @@ var Concerns = new Meteor.Collection("Concerns");
 var Alphas = new Meteor.Collection("Alphas");
 var States = new Meteor.Collection("States");
 
-if(Meteor.isClient) {
+if (Meteor.isClient) {
 
   Meteor.startup(function() {
     Meteor.subscribe("Kernel");
@@ -12,9 +12,21 @@ if(Meteor.isClient) {
     Meteor.subscribe("States", draw_graph);
   });
 
-  Template.dashboard.greeting = function() {
-    return "Welcome to sematps.";
-  };
+  // React to Session["selected_alpha_id"] changes
+  var onAlphaSelected = function() {
+      var update = function() {
+          var ctx = new Meteor.deps.Context(); // invalidation context
+          ctx.onInvalidate(update); // rerun update() on invalidation
+          ctx.run(function() {
+            var alpha_id = Session.get("selected_alpha_id");
+            if (!alpha_id) return;
+            $("input.accordionitem").attr("checked", false);
+            $("#" + alpha_id).attr("checked", true);
+          });
+        };
+      update();
+    };
+  onAlphaSelected();
 
   Template.kernel.concerns = function() {
     return Concerns.find();
@@ -46,10 +58,8 @@ if(Meteor.isClient) {
   };
 
   Template.kernel.checkable = function(alpha_id) {
-    if (alpha_id == Session.get("selectedItem"))
-      return true;
-    else
-      return false;
+    if(alpha_id == Session.get("selected_alpha_id")) return true;
+    else return false;
   };
 
   var time_out;
@@ -61,10 +71,10 @@ if(Meteor.isClient) {
       $('#message').text("");
     },
     'click .accordionitem': function(event) {
+      //TODO setting selected_alpha_id here makes the effect vanish
       $("input.accordionitem").attr("checked", false);
-      $(event.target).attr("checked", true);
-
-      if (time_out) {
+      $("#" + this._id).attr("checked", true);
+      if(time_out) {
         window.clearTimeout(time_out);
       }
       $("div.bubble").fadeOut("slow");
@@ -72,12 +82,12 @@ if(Meteor.isClient) {
     'click li.selectable': function(event) {
       event.preventDefault();
 
-      if (time_out) {
+      if(time_out) {
         window.clearTimeout(time_out);
       }
       $("div.bubble").fadeOut("slow");
 
-      Session.set("selectedItem", this.alpha_id);
+      Session.set("selected_alpha_id", this.alpha_id);
 
       var alpha_states_count = States.find({
         alpha_id: this.alpha_id
@@ -106,7 +116,7 @@ if(Meteor.isClient) {
       }, 1000);
     },
     'mouseleave li.item': function(event) {
-      if(time_out) {
+      if (time_out) {
         window.clearTimeout(time_out);
       }
       $("div.bubble").fadeOut("slow");
@@ -119,5 +129,4 @@ if(Meteor.isClient) {
       draw_graph();
     }
   });
-
 }
