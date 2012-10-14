@@ -12,7 +12,6 @@ body {
 h1, h2, h3, h4, h5 {
     font-family: 'Krona One';
     color: #680148;
-    font-size:1.5em;
     width:100%;
     text-align:center;
 }
@@ -35,7 +34,8 @@ h1#message {
 .left {
     width: 30%;
     float: left;
-    text-align:center;
+    margin: 0;
+    padding: 0;
 }
 
 .bubble {
@@ -59,6 +59,7 @@ h1#message {
     box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 
         1px 0px 0px 0px rgba(255,255,255,0.9) inset, 
         0px 2px 2px rgba(0,0,0,0.1);
+    font-size:0.8em;
 }
 
 .bubble::before {
@@ -67,7 +68,7 @@ h1#message {
     display: block;
     height: 16px;
     position: absolute;
-    top: 120px;
+    top: 80px;
     -moz-transform: rotate( 29deg ) skew( -35deg );
     -ms-transform: rotate( 29deg ) skew( -35deg );
     -o-transform: rotate( 29deg ) skew( -35deg );
@@ -78,7 +79,7 @@ h1#message {
 
 .hint {
     float: right;
-    margin: 5px 20px 5px 45px;
+    margin: 0;
 }
 
 .hint::before {
@@ -87,17 +88,17 @@ h1#message {
 }
 
 .center {
-    width: 38%;
+    width: 40%;
     float: left;
-    margin-right: 1%;
-    margin-left: 1%;
-    text-align:center;
+    margin: 0;
+    padding: 0;
 }
 
 .right {
     width: 30%;
     float: left;
-    text-align:center;
+    margin: 0;
+    padding: 0;
 }
 
 a {
@@ -107,15 +108,6 @@ a {
 
 .section {
     display: block;
-}
-
-.kernel {
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-    background-color: #eee;
-    margin: 0;
-    padding: 15px;
 }
 
 #graph {

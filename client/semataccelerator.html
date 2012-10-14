@@ -13,16 +13,16 @@
             <div class="bubble hint" id="hints">
                 Checklist hints for the Alpha appear here.
                 <br/>
-                <img src="v.png" />
+                <span class="tick">&#10004;</span>
                 Sed nibh metus, semper facilisis eleifend tincidunt, bibendum et leo.
                 Phasellus egestas, neque vitae commodo mattis, turpis sem cursus mauris,
                 ac congue eros metus et turpis.
                 <br/>
-                <img src="v.png" />
+                <span class="tick">&#10004;</span>
                 Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
                 ridiculus mus.
                 <br/>
-                <img src="v.png" />
+                <span class="tick">&#10004;</span>
                 Proin id mi ipsum, quis venenatis turpis. Praesent nec tristique magna.
             </div>
             &nbsp;
@@ -58,7 +58,7 @@
                     {{#each states this._id}} {{#if same_id ../this.current_state_id this._id}}
                     <li id="{{this._id}}" class="item selected">
                         <div>
-                            <img src="v.png" />
+                            &#10004;
                         </div>
                         {{else}}
                         <li id="{{this._id}}" class="item selectable">

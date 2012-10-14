@@ -46,8 +46,10 @@ if(Meteor.isClient) {
   };
 
   Template.kernel.checkable = function(alpha_id) {
-    if(alpha_id == Session.get("selectedItem")) return true;
-    else return false;
+    if (alpha_id == Session.get("selectedItem"))
+      return true;
+    else
+      return false;
   };
 
   var time_out;
@@ -62,16 +64,15 @@ if(Meteor.isClient) {
       $("input.accordionitem").attr("checked", false);
       $(event.target).attr("checked", true);
 
-      if(time_out) {
+      if (time_out) {
         window.clearTimeout(time_out);
       }
       $("div.bubble").fadeOut("slow");
-
     },
     'click li.selectable': function(event) {
       event.preventDefault();
 
-      if(time_out) {
+      if (time_out) {
         window.clearTimeout(time_out);
       }
       $("div.bubble").fadeOut("slow");
@@ -99,7 +100,7 @@ if(Meteor.isClient) {
       time_out = window.setTimeout(function() {
         var offset = $(event.target).offset();
         var bubble_height = $("div.bubble").height();
-        offset = offset.top - 110;
+        offset = offset.top - 110 - 100;
         $("div.bubble").css("margin-top", offset + "px");
         $("div.bubble").fadeIn("slow");
       }, 1000);
