@@ -3,13 +3,16 @@
  */
 if (Meteor.isClient) {
 
+ 
   function draw_graph(elem_id) {
     if (elem_id == null)
       elem_id = 'graph';
 
+    RGraph.ObjectRegistry.Clear() 
     var graph = build_graph_alphas(elem_id);
     RGraph.Clear(graph.canvas);
-    graph.Draw();
+
+    RGraph.Effects.Rose.Grow(graph, null, null);
   }
 
   function build_graph_alphas(elem_id) {
@@ -34,10 +37,10 @@ if (Meteor.isClient) {
     rose_graph.Set('chart.labels', labels);
     rose_graph.Set('chart.tooltips', '');
     rose_graph.Set('chart.labels.axes', '');
-    rose_graph.Set('chart.background.grid.spokes', labels.length * 4);
+    rose_graph.Set('chart.background.grid.spokes', labels.length * 2);
     rose_graph.Set('chart.background.axes', false);
     rose_graph.Set('chart.colors.sequential', true);
-    rose_graph.Set('chart.margin', 0);
+    rose_graph.Set('chart.margin', 5);
     return rose_graph;
   }
 }

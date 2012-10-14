@@ -1,7 +1,28 @@
+/**
+ * Palette - http://www.colourlovers.com/palette/132637/Odd_but_trendy
+ */
 body {
     border-width: 0;
     padding: 0;
     margin: 0;
+    background-color: #FFFFFF;
+    font-family: 'ABeeZee', sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Krona One';
+    color: #680148;
+    font-size:1.5em;
+    width:100%;
+    text-align:center;
+}
+
+h1 {
+    height: 100px;
+}
+
+h1#message {
+    color: #7DB4B5;
 }
 
 .wrapper {
@@ -14,18 +35,30 @@ body {
 .left {
     width: 30%;
     float: left;
+    text-align:center;
 }
 
 .bubble {
     width: 80%;
     background-color: #F2F2F2;
-    border-radius: 5px;
-    box-shadow: 0 0 6px #B2B2B2;
-    display: inline-block;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
     padding: 10px 18px;
     position: relative;
     vertical-align: top;
     display: none;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 1%, #eaeaea 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ffffff), color-stop(100%,#eaeaea));
+    background: -webkit-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+    background: -o-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+    background: -ms-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+    background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
+    box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 
+        1px 0px 0px 0px rgba(255,255,255,0.9) inset, 
+        0px 2px 2px rgba(0,0,0,0.1);
 }
 
 .bubble::before {
@@ -35,11 +68,11 @@ body {
     height: 16px;
     position: absolute;
     top: 120px;
-    transform: rotate( 29deg ) skew( -35deg );
     -moz-transform: rotate( 29deg ) skew( -35deg );
     -ms-transform: rotate( 29deg ) skew( -35deg );
     -o-transform: rotate( 29deg ) skew( -35deg );
     -webkit-transform: rotate( 29deg ) skew( -35deg );
+    transform: rotate( 29deg ) skew( -35deg );
     width: 20px;
 }
 
@@ -58,11 +91,13 @@ body {
     float: left;
     margin-right: 1%;
     margin-left: 1%;
+    text-align:center;
 }
 
 .right {
     width: 30%;
     float: left;
+    text-align:center;
 }
 
 a {
@@ -70,11 +105,11 @@ a {
     color: #333;
 }
 
-div.section {
+.section {
     display: block;
 }
 
-div.kernel {
+.kernel {
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
@@ -83,23 +118,19 @@ div.kernel {
     padding: 15px;
 }
 
-canvas#graph {
-    position: relative;
-    top: 100px;
+#graph {
+    margin:auto;
 }
-
-
 
 /* ACCORDION */
 /* credits http://tympanus.net/codrops/2012/02/21/accordion-with-css3/ */
 .ac-container {
-    width: 400px;
-    margin: 10px auto 30px auto;
+    width: 70%;
     text-align: left;
+    margin:auto;
 }
 
 .ac-container label {
-    font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
     padding: 5px 20px;
     position: relative;
     z-index: 20;
@@ -109,7 +140,7 @@ canvas#graph {
     color: #777;
     text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
     line-height: 33px;
-    font-size: 19px;
+    font-size: 17px;
     background: #ffffff;
     background: -moz-linear-gradient(top, #ffffff 1%, #eaeaea 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ffffff), color-stop(100%,#eaeaea));
@@ -137,8 +168,8 @@ div.concern label {
 
 .ac-container input:checked + label,
 .ac-container input:checked + label:hover {
-    background: #c6e1ec;
-    color: #3d7489;
+    background: #E0EFF1;
+    color: #7DB4B5;
     text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
     box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 
         0px 2px 2px rgba(0,0,0,0.1);
@@ -208,7 +239,7 @@ div.concern label {
 }
 
 li.selectable:hover {
-    background-color: green;
+    background-color: #7DB4B5;
     text-shadow: none;
 }
 
