@@ -12,43 +12,34 @@
                 SEMAT
                 <br/>
                 Accelerator
-            </h1>            
-            <div class="bubble hint" id="hints">
-                Checklist hints for the Alpha appear here.
-                <br/>
-                <span class="tick">
-                    &#10004;
-                </span>
-                Sed nibh metus, semper facilisis eleifend tincidunt, bibendum et leo.
-                Phasellus egestas, neque vitae commodo mattis, turpis sem cursus mauris,
-                ac congue eros metus et turpis.
-                <br/>
-                <span class="tick">
-                    &#10004;
-                </span>
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
-                ridiculus mus.
-                <br/>
-                <span class="tick">
-                    &#10004;
-                </span>
-                Proin id mi ipsum, quis venenatis turpis. Praesent nec tristique magna.
+            </h1>
+            <div class="hints">
+                <h1>
+                    Hints Box
+                </h1>
+                <div class="hint">
+                    
+                </div>
             </div>
-            &nbsp;
-        </div>
-        <div class="center">
-            <h1 id="message">
-            </h1>
-            {{> kernel}}
-        </div>
-        <div class="right">
-            <h1>
-                Graphs
-            </h1>
-            {{> graph}}
         </div>
     </div>
+    <div class="center">
+        <h1 id="message">
+        </h1>
+        {{> kernel}}
+    </div>
+    <div class="right">
+        <h1>
+            Graphs
+        </h1>
+        {{> graph}}
+    </div>
+    </div>
 </body>
+
+
+
+
 <template name="kernel">
     <section class="ac-container">
         {{#each concerns}} {{#each alphas this._id}}
@@ -63,17 +54,19 @@
             </label>
             <article class="ac-small">
                 <ul>
-                    {{#each states this._id}} 
-                        {{#if same_id ../this.current_state_id this._id}}
-                            <li id="{{this._id}}" class="item selected">
-                                <div>&#10004;</div>
+                    {{#each states this._id}} {{#if same_id ../this.current_state_id this._id}}
+                    <li id="{{this._id}}" class="item selected">
+                        <div>
+                            &#10004;
+                        </div>
                         {{else}}
-                            <li id="{{this._id}}" class="item selectable">
-                                <div>&nbsp;</div>
-                        {{/if}}
-                        {{this.name}}
+                        <li id="{{this._id}}" class="item selectable">
+                            <div>
+                                &nbsp;
+                            </div>
+                            {{/if}} {{this.name}}
                         </li>
-                    {{/each}}
+                        {{/each}}
                 </ul>
             </article>
         </div>

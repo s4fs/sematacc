@@ -48,7 +48,9 @@ if(Meteor.isClient) {
     var rose_alpha_graph = build_rose_graph(elem_id, data, labels, meteor_ids);
     rose_alpha_graph.onclick = function(e, shape) {
       id = rose_alpha_graph.meteor_ids[shape[6]];
-      Session.set("selected_alpha_id", id);
+      //Session.set("selected_alpha_id", id);
+      $("input.accordionitem").attr("checked", false);
+      $("#" + id).attr("checked", true);
     };
     rose_alpha_graph.onmousemove = function(e, shape) {
       e.target.style.cursor = 'pointer';

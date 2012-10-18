@@ -54,6 +54,11 @@ function setup() {
 
   var alpha_counter = 0;
 
+  var html = 'Checklist hints for the Alpha appear here.' +
+    '<br/>' +
+    '<span class="tick">&#10004;</span>' +
+    'Sed nibh metus, semper facilisis eleifend tincidunt, bibendum et leo.';
+
   for(var c = 0; c < k.concerns.length; c++) {
     var concern = k.concerns[c];
     concern_id = Concerns.insert({
@@ -67,7 +72,7 @@ function setup() {
       var alpha = concern.alphas[a];
       alpha_id = Alphas.insert({
         name: alpha.name,
-        description: "",
+        description: "Description for " + alpha.name,
         order: alpha_counter + 1,
         concern_id: concern_id,
         current_state_id: null,
@@ -78,7 +83,7 @@ function setup() {
         var state = alpha.states[s];
         state_id = States.insert({
           name: state,
-          description: "",
+          description: state + "<br/>" + html,
           alpha_id: alpha_id,
           order: s + 1
         });
