@@ -17,7 +17,7 @@ h1, h2, h3, h4, h5 {
     font-family: 'Krona One';
     color: #680148;
     text-align: center;
-    font-size:1.6em;
+    font-size: 1.6em;
 }
 
 h1 {
@@ -68,7 +68,6 @@ a {
     padding: 10px;
     margin-right: 5%;
     margin-left: 10%;
-    margin-top: 50px;
     position: relative;
     background: #ffffff;
     background: rgba(255, 255, 188, 0.3);
@@ -253,4 +252,9 @@ li.selected {
 
 .graph {
     margin-bottom: 20px;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+    -moz-opacity: 0.8;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
 }

@@ -10,13 +10,12 @@ if(Meteor.isClient) {
     var gradientCenterX = halfWidth;
     var gradientCenterY = halfHeight;
     var grad = rose_graph.context.createRadialGradient(gradientCenterX, gradientCenterY, 0, halfWidth, halfHeight, halfWidth);
-    grad.addColorStop(0.1, '#ff0000');
-    grad.addColorStop(0.25, '#ffe300');
-    grad.addColorStop(0.55, '#1ecb15');
-    rose_graph.Set('chart.colors.alpha', 0.8);
+    grad.addColorStop(0.1, '#BB2828');
+    grad.addColorStop(0.25, '#BBB628');
+    grad.addColorStop(0.55, '#5EBC41');
     rose_graph.Set('chart.labels', labels);
     rose_graph.Set('chart.labels.axes', '');
-    rose_graph.Set('chart.background.grid.spokes', data.length * 4);
+    rose_graph.Set('chart.background.grid.spokes', data.length * 2);
     rose_graph.Set('chart.background.axes', false);
     //rose_graph.Set('chart.colors', ['#7DB4B5']);
     rose_graph.Set('chart.colors', [grad]);
@@ -31,12 +30,11 @@ if(Meteor.isClient) {
 
     // Configure the chart to appear as wished.
     var grad = hbar.context.createLinearGradient(0, 0, hbar.canvas.width,0);
-    grad.addColorStop(0, '#ff0000');
-    grad.addColorStop(0.2, '#ff0000');
-    grad.addColorStop(0.5, '#ffe300');
-    grad.addColorStop(0.9, '#1ecb15');
-    grad.addColorStop(1, '#1ecb15');
-    hbar.Set('chart.colors.alpha', 0.8);
+    grad.addColorStop(0, '#BB2828');
+    grad.addColorStop(0.2, '#BB2828');
+    grad.addColorStop(0.5, '#BBB628');
+    grad.addColorStop(0.9, '#5EBC41');
+    grad.addColorStop(1, '#5EBC41');
     hbar.Set('chart.labels', labels);
     hbar.Set('chart.gutter.left', 90);
     hbar.Set('chart.background.barcolor1', 'white');
