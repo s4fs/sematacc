@@ -15,7 +15,7 @@
             </h1>
             <div class="hints">
                 <h1>
-                    Hints Box
+                    Hint Box
                 </h1>
                 <div class="hint">
                     
@@ -45,7 +45,7 @@
 <template name="kernel">
     <section class="ac-container">
         {{#each concerns}} {{#each alphas this._id}}
-        <div>
+        <div class="concern-container">
             <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"
             {{#if checkable this._id}}checked="checked" {{/if}}/>
             <label for="{{this._id}}" class="accordionlabel">
@@ -76,10 +76,10 @@
     </section>
 </template>
 <template name="graph">
-    <canvas id="graph_hbar_overall" width="400" height="150" class="graph">
+    <canvas id="graph_rose_alphas" width="450" height="300" class="graph">
         [No canvas support]
     </canvas>
-    <canvas id="graph_rose_alphas" width="450" height="300" class="graph">
+    <canvas id="graph_hbar_overall" width="400" height="150" class="graph">
         [No canvas support]
     </canvas>
 </template>
