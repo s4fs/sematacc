@@ -5,29 +5,48 @@ if(Meteor.isClient) {
 
   function build_rose_graph(elem_id, data, labels, meteor_ids) {
     var rose_graph = new RGraph.Rose(elem_id, data);
-    rose_graph.Set('chart.colors.alpha', 0.6);
+    var halfWidth = rose_graph.canvas.width / 2;
+    var halfHeight = rose_graph.canvas.height / 2;
+    var gradientCenterX = halfWidth;
+    var gradientCenterY = halfHeight;
+    var grad = rose_graph.context.createRadialGradient(gradientCenterX, gradientCenterY, 0, halfWidth, halfHeight, halfWidth);
+    grad.addColorStop(0.1, '#ff0000');
+    grad.addColorStop(0.25, '#ffe300');
+    grad.addColorStop(0.55, '#1ecb15');
+    rose_graph.Set('chart.colors.alpha', 0.8);
     rose_graph.Set('chart.labels', labels);
     rose_graph.Set('chart.labels.axes', '');
-    rose_graph.Set('chart.background.grid.spokes', labels.length * 2);
+    rose_graph.Set('chart.background.grid.spokes', data.length * 4);
     rose_graph.Set('chart.background.axes', false);
-    //rose_graph.Set('chart.colors.sequential', true);
-    rose_graph.Set('chart.colors', ['#7DB4B5']);
+    //rose_graph.Set('chart.colors', ['#7DB4B5']);
+    rose_graph.Set('chart.colors', [grad]);
     rose_graph.Set('chart.margin', 5);
+    rose_graph.Set('chart.ymax', 100);
     rose_graph.meteor_ids = meteor_ids;
     return rose_graph;
   }
 
   function build_hbar_graph(elem_id, data, labels, meteor_ids) {
     var hbar = new RGraph.HBar(elem_id, data);
+
     // Configure the chart to appear as wished.
+    var grad = hbar.context.createLinearGradient(0, 0, hbar.canvas.width,0);
+    grad.addColorStop(0, '#ff0000');
+    grad.addColorStop(0.2, '#ff0000');
+    grad.addColorStop(0.5, '#ffe300');
+    grad.addColorStop(0.9, '#1ecb15');
+    grad.addColorStop(1, '#1ecb15');
+    hbar.Set('chart.colors.alpha', 0.8);
     hbar.Set('chart.labels', labels);
     hbar.Set('chart.gutter.left', 90);
     hbar.Set('chart.background.barcolor1', 'white');
     hbar.Set('chart.background.barcolor2', 'white');
     hbar.Set('chart.background.grid', false);
-    hbar.Set('chart.colors', ['#7DB4B5']);
+    //hbar.Set('chart.colors', ['#7DB4B5']);
+    hbar.Set('chart.colors', [grad]);
     hbar.Set('chart.xmax', 100);
     return hbar;
+
   }
 
   function build_rose_alphas_graph(elem_id) {

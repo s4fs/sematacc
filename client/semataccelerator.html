@@ -8,39 +8,29 @@
 <body>
     <div class="wrapper">
         <div class="left">
-            <h1>
-                SEMAT
-                <br/>
-                Accelerator
-            </h1>
+            <h1>SEMAT Accelerator</h1>
             <div class="hints">
-                <h1>
-                    Hint Box
-                </h1>
-                <div class="hint">
-                    
-                </div>
+                <h1>Hint Box</h1>
+                <div class="hint"></div>
+            </div>
+        </div>
+        <div class="center">
+            <div class="kernel">
+                <h1 id="kernel">Kernel</h1>
+                <h1 id="message"></h1>
+            </div>
+            {{> kernel}}
+        </div>
+        <div class="right">
+            <h1>
+                Graphs
+            </h1>
+            <div class="graphs">
+                {{> graph}}
             </div>
         </div>
     </div>
-    <div class="center">
-        <h1 id="message">
-        </h1>
-        {{> kernel}}
-    </div>
-    <div class="right">
-        <h1>
-            Graphs
-        </h1>
-        <div class="graphs">
-            {{> graph}}
-        </div>
-    </div>
-    </div>
 </body>
-
-
-
 
 <template name="kernel">
     <section class="ac-container">
@@ -75,6 +65,8 @@
         {{/each}} {{/each}}
     </section>
 </template>
+
+
 <template name="graph">
     <canvas id="graph_rose_alphas" width="450" height="300" class="graph">
         [No canvas support]
@@ -82,11 +74,4 @@
     <canvas id="graph_hbar_overall" width="400" height="150" class="graph">
         [No canvas support]
     </canvas>
-</template>
-<template name="dashboard">
-    <p>
-        <input type="button" value="Status" class="status" />
-        <input type="button" value="Setup" class="setup" />
-        <input type="button" value="Drop" class="drop" />
-    </p>
 </template>

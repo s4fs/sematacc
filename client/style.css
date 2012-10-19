@@ -17,14 +17,20 @@ h1, h2, h3, h4, h5 {
     font-family: 'Krona One';
     color: #680148;
     text-align: center;
+    font-size:1.6em;
 }
 
 h1 {
     height: 100px;
 }
 
+h1#kernel {
+    height: 50px;
+}
+
 h1#message {
     color: #7DB4B5;
+    height: 50px;
 }
 
 a {
@@ -34,8 +40,8 @@ a {
 
 .wrapper {
     width: 100%;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 .left {
