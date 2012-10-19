@@ -1,10 +1,12 @@
 /**
  * Palette - http://www.colourlovers.com/palette/132637/Odd_but_trendy
  */
-body {
-    border-width: 0;
-    padding: 0;
+* {
     margin: 0;
+    padding: 0;
+    border: 0;
+}
+body {
     background-color: #ffffff;
     font-family: 'ABeeZee', sans-serif;
 }
@@ -12,7 +14,6 @@ body {
 h1, h2, h3, h4, h5 {
     font-family: 'Krona One';
     color: #680148;
-    width: 100%;
     text-align: center;
 }
 
@@ -30,42 +31,42 @@ a {
 }
 
 .wrapper {
-    position: relative;
     width: 100%;
-    margin: 0;
-    padding: 0;
 }
 
 .left {
-    width: 28%;
+    width: 30%;
     float: left;
-    margin: 0;
-    padding: 0 1% 0 1%;
 }
 
 .center {
-    width: 40%;
+    width: 38%;
     float: left;
-    margin: 0;
-    padding: 0;
+    margin:auto;
 }
 
 .right {
     width: 30%;
     float: left;
-    margin: 0;
+    margin:0;
     padding: 0;
 }
 
 .hints {
+    /*
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
     border:dashed 3px #b7b7b7;
-    margin:0 1% 0 1%;
-    width:98%;
+    */
+    width:90%;
     height:400px;
     padding:10px;
+    margin-right: 5%;
+    margin-left:5%;
+    -webkit-box-shadow: 7px 7px 10px #b7b7b7;
+    -moz-box-shadow:    7px 7px 10px #b7b7b7;
+    box-shadow:         7px 7px 10px #b7b7b7;
 }
 
 .hints h1 {
@@ -84,9 +85,10 @@ a {
 /* ACCORDION */
 /* credits http://tympanus.net/codrops/2012/02/21/accordion-with-css3/ */
 .ac-container {
-    width: 70%;
+    width: 90%;
     text-align: left;
     margin: auto;
+    padding:0;
 }
 
 .ac-container label {
@@ -233,7 +235,12 @@ li.selected {
     display: block;
 }
 
+.graphs {
+    -webkit-box-shadow: 7px 7px 10px #b7b7b7;
+    -moz-box-shadow:    7px 7px 10px #b7b7b7;
+    box-shadow:         7px 7px 10px #b7b7b7;
+}
 
 .graph {
-    margin: auto;
+    margin-bottom: 20px;
 }

@@ -37,7 +37,7 @@
    "mouseenter .accordionlabel": function(event) {
     var concern = Concerns.findOne(this.concern_id);
      $('#message').html(concern.name);
-     $(".hints .hint").html(concern.description);
+     $(".hints .hint").html(this.description);
    },
    "mouseleave .ac-container": function(event) {
      $('#message').text("");
