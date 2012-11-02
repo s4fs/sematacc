@@ -10,6 +10,9 @@ if(Meteor.isClient) {
     Meteor.subscribe("Concerns");
     Meteor.subscribe("Alphas");
     Meteor.subscribe("States", draw_graphs);
+
+    resize_graph_divs();
+
   });
 
   // React to Session["selected_alpha_id"] changes

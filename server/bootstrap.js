@@ -6,44 +6,44 @@ function setup() {
 
   var k = {
     concerns: [{
-      name: "Customer",
-      description: "Description of Customer",
+      name: 'Customer',
+      description: 'Description of Customer',
       alphas: [{
-        name: "Opportunity",
+        name: 'Opportunity',
         current_state: null,
-        states: ["Identified", "Solution Needed", "Value Established", "Viable", "Addressed", "Benefit Accrued"]
+        states: ['Identified', 'Solution Needed', 'Value Established', 'Viable', 'Addressed', 'Benefit Accrued']
       }, {
-        name: "Stakeholders",
+        name: 'Stakeholders',
         current_state: null,
-        states: ["Recognized", "Represented", "Involved", "In Agreement", "Satisfied for Deployment", "Satisfied in Use"]
+        states: ['Recognized', 'Represented', 'Involved', 'In Agreement', 'Satisfied for Deployment', 'Satisfied in Use']
       }]
     }, {
-      name: "Solution",
-      description: "Description of Solution",
+      name: 'Solution',
+      description: 'Description of Solution',
       alphas: [{
-        name: "Requirements",
+        name: 'Requirements',
         current_state: null,
-        states: ["Conceived", "Buonded", "Coehrent", "Acceptable", "Addressed", "Fulfilled"]
+        states: ['Conceived', 'Bounded', 'Coherent', 'Acceptable', 'Addressed', 'Fulfilled']
       }, {
-        name: "Software System",
+        name: 'Software System',
         current_state: null,
-        states: ["Architecture Selected", "Demonstrable", "Usable", "Ready", "Operational", "Retired"]
+        states: ['Architecture Selected', 'Demonstrable', 'Usable', 'Ready', 'Operational', 'Retired']
       }]
     }, {
-      name: "Endeavor",
-      description: "Description of Endeavor",
+      name: 'Endeavor',
+      description: 'Description of Endeavor',
       alphas: [{
-        name: "Work",
+        name: 'Work',
         current_state: null,
-        states: ["Initiated", "Prepared", "Started", "Under Control", "Concluded", "Closed"]
+        states: ['Initiated', 'Prepared', 'Started', 'Under Control', 'Concluded', 'Closed']
       }, {
-        name: "Team",
+        name: 'Team',
         current_state: null,
-        states: ["Seeded", "Formed", "Collaborating", "Performing", "Adjourned"]
+        states: ['Seeded', 'Formed', 'Collaborating', 'Performing', 'Adjourned']
       }, {
-        name: "Way of Working",
+        name: 'Way-of-Working',
         current_state: null,
-        states: ["Principles Established", "Foundation Established", "In Use", "In Place", "Working Well", "Retired"]
+        states: ['Principles Established', 'Foundation Established', 'In Use', 'In Place', 'Working Well', 'Retired']
       }]
     }]
   };
@@ -72,7 +72,7 @@ function setup() {
       var alpha = concern.alphas[a];
       alpha_id = Alphas.insert({
         name: alpha.name,
-        description: "Description for " + alpha.name,
+        description: alpha_descriptions[alpha.name.toLowerCase()],
         order: alpha_counter + 1,
         concern_id: concern_id,
         current_state_id: null,

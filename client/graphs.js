@@ -3,32 +3,36 @@
  */
 var resize_graph_divs = function() {
     graphs_w = $('.graphs').width();
-    rose_w = graphs_w;
-    hbar_w = graphs_w;
-    $('#graph_rose_alphas').width(rose_w);
-    $('#graph_rose_alphas').height(rose_w / 1.618);
-    $('#graph_hbar_overall').width(hbar_w);
-    $('#graph_rose_alphas').height(hbar_w / 1.618);
+    graphs_h = $('.graphs').width();
+    
+    $('canvas#graph_rose_alphas').attr('width', graphs_w - 20);
+    $('canvas#graph_rose_alphas').attr('height', graphs_h / 1.618);
+
+    $('canvas#graph_hbar_overall').attr('width', graphs_w - 20);
+    $('canvas#graph_hbar_overall').attr('height', (graphs_h - (graphs_h / 1.618)));
   };
 
 Template.graph.rendered = function() {
-  resize_graph_divs();
+  draw_graphs();
 };
 
 $(window).resize(function() {
-  resize_graph_divs();
+  draw_graphs();
 });
 
 function build_rose_graph(elem_id, data, labels, meteor_ids) {
   var rose_graph = new RGraph.Rose(elem_id, data);
-  var halfWidth = rose_graph.canvas.width / 2;
-  var halfHeight = rose_graph.canvas.height / 2;
+
+  var halfWidth = $('canvas#' + elem_id).attr('width') / 2;
+  var halfHeight = $('canvas#' + elem_id).attr('height') / 2;
+
   var gradientCenterX = halfWidth;
   var gradientCenterY = halfHeight;
   var grad = rose_graph.context.createRadialGradient(gradientCenterX, gradientCenterY, 0, halfWidth, halfHeight, halfWidth);
-  grad.addColorStop(0.1, '#BB2828');
-  grad.addColorStop(0.25, '#BBB628');
-  grad.addColorStop(0.55, '#5EBC41');
+  grad.addColorStop(0, '#CE5F54');
+  grad.addColorStop(0.25, '#FFFFE5');
+  grad.addColorStop(0.35, '#FFFFE5');
+  grad.addColorStop(0.55, '#63994C');
   rose_graph.Set('chart.labels', labels);
   rose_graph.Set('chart.labels.axes', '');
   rose_graph.Set('chart.background.grid.spokes', data.length * 2);
@@ -46,11 +50,9 @@ function build_hbar_graph(elem_id, data, labels, meteor_ids) {
 
   // Configure the chart to appear as wished.
   var grad = hbar.context.createLinearGradient(0, 0, hbar.canvas.width, 0);
-  grad.addColorStop(0, '#BB2828');
-  grad.addColorStop(0.2, '#BB2828');
-  grad.addColorStop(0.5, '#BBB628');
-  grad.addColorStop(0.9, '#5EBC41');
-  grad.addColorStop(1, '#5EBC41');
+  grad.addColorStop(0, '#CE5F54');
+  grad.addColorStop(0.60, '#FFFFE5');
+  grad.addColorStop(1, '#63994C');
   hbar.Set('chart.labels', labels);
   hbar.Set('chart.gutter.left', 90);
   hbar.Set('chart.background.barcolor1', 'white');
