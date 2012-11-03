@@ -1,1 +1,3 @@
 meteor remove autopublish
+meteor add jquery
+meteor add accounts-twitter accounts-facebook accounts-github accounts-google accounts-password accounts-ui

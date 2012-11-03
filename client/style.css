@@ -116,6 +116,17 @@ a {
     line-height: 1.3em;
 }
 
+.hints .hint p {
+    line-height: 1.3em;
+}
+
+.hints .hint p br {
+   display:block;
+   margin-top:1em;
+   line-height:1em;
+   content: "";
+}
+
 
 /* ACCORDION */
 /* credits http://tympanus.net/codrops/2012/02/21/accordion-with-css3/ */

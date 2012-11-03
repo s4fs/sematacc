@@ -84,6 +84,8 @@
      var description = this.description;
      //time_out = window.setTimeout(function() {
      $(".hints .hint").html(description);
+     $(".hints .hint p br").after('&#10004;');
+     $(".hints .hint p").prepend('&#10004;');
      //}, 1000);
    },
    'mouseleave li.item': function(event) {
