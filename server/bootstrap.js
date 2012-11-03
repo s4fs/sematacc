@@ -59,7 +59,7 @@ function setup() {
     '<span class="tick">&#10004;</span>' +
     'Sed nibh metus, semper facilisis eleifend tincidunt, bibendum et leo.';
 
-  for(var c = 0; c < k.concerns.length; c++) {
+  for (var c = 0; c < k.concerns.length; c++) {
     var concern = k.concerns[c];
     concern_id = Concerns.insert({
       name: concern.name,
@@ -68,7 +68,7 @@ function setup() {
       order: c + 1,
       completion: 0
     });
-    for(var a = 0; a < concern.alphas.length; a++) {
+    for (var a = 0; a < concern.alphas.length; a++) {
       var alpha = concern.alphas[a];
       alpha_id = Alphas.insert({
         name: alpha.name,
@@ -79,11 +79,11 @@ function setup() {
         completion: 0
       });
       alpha_counter++;
-      for(var s = 0; s < alpha.states.length; s++) {
+      for (var s = 0; s < alpha.states.length; s++) {
         var state = alpha.states[s];
         state_id = States.insert({
           name: state,
-          description: state + "<br/>" + html,
+          description: state_descriptions[alpha.name.toLowerCase()][state.toLowerCase()],
           alpha_id: alpha_id,
           order: s + 1
         });
