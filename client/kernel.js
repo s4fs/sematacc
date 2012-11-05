@@ -18,8 +18,8 @@ Template.kernel.userProjects = function () {
    var state = States.findOne({
      _id: stateId
    });
-   if(state) return ": " + state.name;
-   else return "";
+   if (state) return ': ' + state.name;
+   else return '';
  };
 
  Template.kernel.states = function(alphaId) {
@@ -34,29 +34,35 @@ Template.kernel.userProjects = function () {
  };
 
  Template.kernel.checkable = function(alphaId) {
-   if(alphaId == Session.get("selectedAlphaId")) return true;
+   if (alphaId == Session.get('selectedAlphaId')) return true;
    else return false;
  };
 
  var timeOut;
  Template.kernel.events({
-   "mouseenter .accordionlabel": function(event) {
+  'click a#clearSelectedProjectId': function(event) {
+      event.preventDefault();
+      Session.set('selectedProjectId', null);
+   },
+   'mouseenter .accordionlabel': function(event) {
     var concern = Concerns.findOne(this.concernId);
      $('#message').html(concern.name);
-     $(".hints .hint").html(this.description);
+     $('.hints .hint').html(this.description).prepend('<span class="icon-check"></span>');
    },
-   "mouseleave .ac-container": function(event) {
-     $('#message').text("");
-     $(".hints .hint").text("");
+   'mouseleave .accordionlabel': function(event) {
+   },
+   'mouseleave .ac-container': function(event) {
+     $('#message').text('');
+     $('.hints .hint').text('');
    },
    'click .accordionitem': function(event) {
      //TODO setting selectedAlphaId here makes the effect vanish
-     $("input.accordionitem").attr("checked", false);
-     $("#" + this._id).attr("checked", true);
+     $('input.accordionitem').attr('checked', false);
+     $('#' + this._id).attr('checked', true);
    },
    'click li.selectable': function(event) {
      event.preventDefault();
-     Session.set("selectedAlphaId", this.alphaId);
+     Session.set('selectedAlphaId', this.alphaId);
      Alphas.update({
        _id: this.alphaId
      }, {
@@ -78,24 +84,32 @@ Template.kernel.userProjects = function () {
      updateConcernCompletions();
    },
    'mouseenter li.item.selected': function(event) {
-     $(event.target).find('div').html("&#10008;");
+    $(event.target).find('div').removeClass('icon-ok');
+    $(event.target).find('div').addClass('icon-cancel');
    },
    'mouseleave li.item.selected': function(event) {
-     $(event.target).find('div').html("&#10004;");
+    $(event.target).find('div').removeClass('icon-cancel');
+    $(event.target).find('div').addClass('icon-ok');
+   },
+   'mouseenter li.item.selectable': function(event){
+    $(event.target).find('div').addClass('icon-ok');
+   },
+   'mouseleave li.item.selectable': function(event){
+    $(event.target).find('div').removeClass('icon-ok');
    },
    'mouseenter li.item': function(event) {
      var description = this.description;
-     $(".hints .hint").html(description);
-     $(".hints .hint p br").after('&#10004;');
-     $(".hints .hint p").prepend('&#10004;');
+     $('.hints .hint').html(description);
+     $('.hints .hint p br').after('<span class="icon-check"></span>');
+     $('.hints .hint p').prepend('<span class="icon-check"></span>');
    },
    'mouseleave li.item': function(event) {
-     $(".hints .hint").text();
+     $('.hints .hint').text();
    },
 
    'click a#openNewproject': function(event){
       event.preventDefault();
-      $(".newproject").toggle("slow");
+      $('.newproject').toggle('slow');
    },
 
    'click button#btnNewproject': function(event){
@@ -103,10 +117,10 @@ Template.kernel.userProjects = function () {
    },
 
    'mouseenter li.project': function(event){
-      $(".description").toggle("slow");
+      $('.description').toggle('slow');
    },
 
    'mouseleave li.project': function(event){
-      $(".description").toggle("slow");
+      $('.description').toggle('slow');
    }
  });

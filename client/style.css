@@ -14,7 +14,7 @@ html {
 body {
     background-color: #ffffff;
     font-family: 'ABeeZee', sans-serif;
-    background-image: url(../background.png);
+    background-image: url(/img/background.png);
     height: 100%;
 }
 
@@ -262,11 +262,11 @@ div.concern label {
     height: 24px;
     right: 13px;
     top: 7px;
-    background: transparent url(../arrowDown.png) no-repeat center center;
+    background: transparent url(/img/arrow_down.png) no-repeat center center;
 }
 
 .ac-container input:checked + label:hover:after {
-    background-image: url(../arrowUp.png);
+    background-image: url(/img/arrow_up.png)
 }
 
 .ac-container input {

@@ -1,4 +1,3 @@
-var Kernel = new Meteor.Collection('Kernel');
 var Projects = new Meteor.Collection('Projects');
 var Concerns = new Meteor.Collection('Concerns');
 var Alphas = new Meteor.Collection('Alphas');
@@ -6,10 +5,9 @@ var States = new Meteor.Collection('States');
 
   Meteor.startup(function() {
     Meteor.subscribe('Projects');
-    Meteor.subscribe('Kernel');
     Meteor.subscribe('Concerns');
     Meteor.subscribe('Alphas');
-    Meteor.subscribe('States', drawGraphs);
+    Meteor.subscribe('States');
     resizeGraphDivs();
   });
 
@@ -76,8 +74,8 @@ var States = new Meteor.Collection('States');
 
   var query = Concerns.find({});
   var handle = query.observe({
-    changed: function(alpha) {
-      drawGraphs();
+    changed: function(concern) {
+      drawGraphs(Session.get('selectedProjectId'));
     }
   });
 

@@ -27,13 +27,17 @@ Template.dashboard.events({
 
    'click a.viewProject': function(event) {
       event.preventDefault();
-      Session.set('selectedProjectId', this._id);
+      var project_id = $(event.currentTarget).parent().attr('id');
+      Session.set('selectedProjectId', project_id);
    },
 
    'click a.deleteProject': function(event) {
       event.preventDefault();
       var project_id = $(event.currentTarget).parent().attr('id');
+      if (Session.equals('selectedProjectId', project_id))
+         Session.set('selectedProjectId', null);
       Projects.remove({_id: project_id});
+
    },
 
    'mouseenter li.project': function(event) {

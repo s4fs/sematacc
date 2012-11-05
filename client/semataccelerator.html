@@ -1,5 +1,7 @@
 <head>
     <link href="http://fonts.googleapis.com/css?family=ABeeZee|Krona+One" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/css/iconic.css"><!--[if IE 7]>
+    <link rel="stylesheet" href="/css/iconic-ie7.css"><![endif]-->
     <title>
         Semat Accelerator
     </title>
@@ -12,7 +14,7 @@
         <div class="left">
             <h1>SEMAT Accelerator</h1>
             <div class="hints">
-                <h1>Hint Box</h1>
+                <h1 class="icon-comment">Hint Box</h1>
                 <div class="hint"></div>
             </div>
         </div>
@@ -20,7 +22,7 @@
             <div class="kernel">
                 <h1 id="kernel">Kernel</h1>
                 <h1 id="message"></h1>
-                {{#if currentUser}}
+                {{#if isLoggedIn}}
                     {{#if selectedProjectId}}
                         {{> kernel}}
                     {{else}}
@@ -36,7 +38,14 @@
                 Status
             </h1>
             <div class="graphs">
-                {{> graph}}
+                {{#if isLoggedIn}}
+                    {{#if selectedProjectId}}
+                        {{> graph}}
+                    {{else}}
+                        Please select a project.
+                    {{/if}}
+                {{else}}
+                {{/if}}
             </div>
         </div>
     </div>
@@ -48,20 +57,20 @@
 
 <template name="dashboard">
     <div class="dashboard">
-        Projects (<a href="#" id="showNewProject">Add New</a>)
+        Projects <a href="#" id="showNewProject" class="icon-doc" title="Add New Project"></a>
         <div class="newProject">
             <ul>
                 <li><input type="text" name="projectName" id="nameNewProject" /></li>
                 <li><textarea name="projectDescription" id="descriptionNewProject"></textarea></li>
-                <li><button id="makeNewProject">Add New</button></li>
+                <li><button id="makeNewProject" class="icon-plus-circle">Save</button></li>
             </ul>
         </div>
         <ul class="projects">
             {{#each userProjects}}
             <li class="project" id="{{this._id}}">
                 <a href="#" class="viewProject">{{name}}</a>
-                <a href="#" class="editProject">Edit</a>
-                <a href="#" class="deleteProject">Delete</a>
+                <a href="#" class="editProject icon-edit" title="Edit Project"></a>
+                <a href="#" class="deleteProject icon-trash" title="Delete Project"></a>
                 <div class="description" id="descriptionProject{{this._id}}">{{description}}</div>
             </li>
             {{/each}}
@@ -70,6 +79,7 @@
 </template>
 
 <template name="kernel">
+    Project <a href="#" id="clearSelectedProjectId" class="icon-back" title="Back to Projects"></a>
     <section class="ac-container">
         {{#each concerns}} {{#each alphas this._id}}
         <div class="concern-container">
@@ -83,15 +93,13 @@
             </label>
             <article class="ac-small">
                 <ul>
-                    {{#each states this._id}} {{#if SameId ../this.currentStateId this._id}}
+                    {{#each states this._id}} {{#if sameId ../this.currentStateId this._id}}
                     <li id="{{this._id}}" class="item selected">
-                        <div>
-                            &#10004;
+                        <div class="icon-ok">
                         </div>
                         {{else}}
                     <li id="{{this._id}}" class="item selectable">
                         <div>
-                            &nbsp;
                         </div>
                         {{/if}} {{this.name}}
                     </li>

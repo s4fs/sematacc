@@ -65,10 +65,10 @@ function buildHbarGraph(elemId, data, labels, meteorIds) {
 
 }
 
-function buildRoseAlphasGraph(elemId) {
+function buildRoseAlphasGraph(elemId, selectedProjectId) {
   if (elemId == null) elemId = 'graphRoseAlphas';
 
-  var alphas = Alphas.find({}).fetch();
+  var alphas = Alphas.find({projectId: selectedProjectId}).fetch();
   var data = [];
   var labels = [];
   var meteorIds = [];
@@ -94,9 +94,9 @@ function buildRoseAlphasGraph(elemId) {
   return roseAlphaGraph;
 }
 
-function buildHbarOverallGraph(elemId) {
+var buildHbarOverallGraph = function(elemId, selectedProjectId) {
   if (elemId == null) elemId = 'graphHbarOverall';
-  var concerns = Concerns.find({}).fetch();
+  var concerns = Concerns.find({projectId: selectedProjectId}).fetch();
   var completions = [];
   var names = [];
   concerns.forEach(function(concern) {
@@ -110,13 +110,18 @@ function buildHbarOverallGraph(elemId) {
 
 
 
-function drawGraphs() {
+var drawGraphs = function(selectedProjectId) {
+  if (!selectedProjectId)
+    selectedProjectId = Session.get('selectedProjectId');
+  if (!selectedProjectId)
+    return;
+
   resizeGraphDivs();
   graphIds = ['graphRoseAlphas', 'graphHbarOverall'];
 
   RGraph.ObjectRegistry.Clear();
-  var roseGraph = buildRoseAlphasGraph(graphIds[0]);
-  var hbarGraph = buildHbarOverallGraph(graphIds[1]);
+  var roseGraph = buildRoseAlphasGraph(graphIds[0], selectedProjectId);
+  var hbarGraph = buildHbarOverallGraph(graphIds[1], selectedProjectId);
 
   RGraph.Clear(roseGraph.canvas);
   RGraph.Clear(hbarGraph.canvas);

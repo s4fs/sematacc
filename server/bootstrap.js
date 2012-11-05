@@ -19,8 +19,9 @@ var newProject = function(name, description, userId) {
       description: concern.description,
       // index from 1 instead of 0
       order: c + 1,
-      projectId: projectId,
-      completion: 0
+      completion: 0,
+      userId: userId,
+      projectId: projectId
     });
     for (var a = 0; a < concern.alphas.length; a++) {
       var alpha = concern.alphas[a];
@@ -28,10 +29,11 @@ var newProject = function(name, description, userId) {
         name: alpha.name,
         description: alphaDescriptions[alpha.name.toLowerCase()],
         order: alphaCounter + 1,
-        concernId: concernId,
         currentStateId: null,
+        completion: 0,
+        concernId: concernId,
         projectId: projectId,
-        completion: 0
+        userId: userId
       });
       alphaCounter++;
       for (var s = 0; s < alpha.states.length; s++) {
@@ -39,9 +41,10 @@ var newProject = function(name, description, userId) {
         stateId = States.insert({
           name: state,
           description: stateDescriptions[alpha.name.toLowerCase()][state.toLowerCase()],
-          alphaId: alphaId,
           order: s + 1,
-          projectId: projectId
+          alphaId: alphaId,
+          projectId: projectId,
+          userId: userId
         });
       }
     }
