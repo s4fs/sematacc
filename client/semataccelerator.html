@@ -1,11 +1,13 @@
 <head>
-    <link href='http://fonts.googleapis.com/css?family=ABeeZee|Krona+One'
-    rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=ABeeZee|Krona+One" rel="stylesheet" type="text/css" />
     <title>
         Semat Accelerator
     </title>
 </head>
 <body>
+    <div class="top">
+        {{loginButtons}}
+    </div>
     <div class="wrapper">
         <div class="left">
             <h1>SEMAT Accelerator</h1>
@@ -18,8 +20,16 @@
             <div class="kernel">
                 <h1 id="kernel">Kernel</h1>
                 <h1 id="message"></h1>
+                {{#if current_user}}
+                    {{#if selected_project}}
+                        {{> kernel}}
+                    {{else}}
+                        {{> dashboard}}
+                    {{/if}}
+                {{else}}
+                    Please Login or Register.
+                {{/if}}
             </div>
-            {{> kernel}}
         </div>
         <div class="right">
             <h1>
@@ -35,6 +45,28 @@
     </div>
 </body>
 
+
+<template name="dashboard">
+    Projects (<a href="#" id="open_newproject">Add New</a>)
+    <div class="newproject">
+        <ul>
+            <li><input type="text" name="name" /></li>
+            <li><textarea name="description" /></li>
+            <li><button id="btn_newproject">Ciao</button></li>
+        </ul>
+    </div>
+    <ul class="projects">
+        {{#each user_projects}}
+        <li class="project">
+            <a href="#" id="{{this.id}}">{{name}}</a>
+            <a href="">Edit</a>
+            <a href="">Remove</a>
+            <div class="description">{{description}}</div>
+        </li>
+        {{/each}}
+    </ul>
+</template>
+
 <template name="kernel">
     <section class="ac-container">
         {{#each concerns}} {{#each alphas this._id}}
@@ -42,10 +74,10 @@
             <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"
             {{#if checkable this._id}}checked="checked" {{/if}}/>
             <label for="{{this._id}}" class="accordionlabel">
-                {{this.name}}
-                <em>
-                    {{current_state this.current_state_id}}
-                </em>
+            {{this.name}}
+            <em>
+            {{current_state this.current_state_id}}
+            </em>
             </label>
             <article class="ac-small">
                 <ul>
@@ -55,13 +87,13 @@
                             &#10004;
                         </div>
                         {{else}}
-                        <li id="{{this._id}}" class="item selectable">
-                            <div>
-                                &nbsp;
-                            </div>
-                            {{/if}} {{this.name}}
-                        </li>
-                        {{/each}}
+                    <li id="{{this._id}}" class="item selectable">
+                        <div>
+                            &nbsp;
+                        </div>
+                        {{/if}} {{this.name}}
+                    </li>
+                    {{/each}}
                 </ul>
             </article>
         </div>
@@ -73,7 +105,7 @@
     <canvas id="graph_rose_alphas" class="graph">
         [No canvas support]
     </canvas>
-    <canvas id="graph_hbar_overall"  class="graph">
+    <canvas id="graph_hbar_overall" class="graph">
         [No canvas support]
     </canvas>
 </template>

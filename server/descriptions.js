@@ -1,3 +1,47 @@
+var kernel_skeleton = {
+    concerns: [{
+      name: 'Customer',
+      description: 'Description of Customer',
+      alphas: [{
+        name: 'Opportunity',
+        current_state: null,
+        states: ['Identified', 'Solution Needed', 'Value Established', 'Viable', 'Addressed', 'Benefit Accrued']
+      }, {
+        name: 'Stakeholders',
+        current_state: null,
+        states: ['Recognized', 'Represented', 'Involved', 'In Agreement', 'Satisfied for Deployment', 'Satisfied in Use']
+      }]
+    }, {
+      name: 'Solution',
+      description: 'Description of Solution',
+      alphas: [{
+        name: 'Requirements',
+        current_state: null,
+        states: ['Conceived', 'Bounded', 'Coherent', 'Acceptable', 'Addressed', 'Fulfilled']
+      }, {
+        name: 'Software System',
+        current_state: null,
+        states: ['Architecture Selected', 'Demonstrable', 'Usable', 'Ready', 'Operational', 'Retired']
+      }]
+    }, {
+      name: 'Endeavor',
+      description: 'Description of Endeavor',
+      alphas: [{
+        name: 'Work',
+        current_state: null,
+        states: ['Initiated', 'Prepared', 'Started', 'Under Control', 'Concluded', 'Closed']
+      }, {
+        name: 'Team',
+        current_state: null,
+        states: ['Seeded', 'Formed', 'Collaborating', 'Performing', 'Adjourned']
+      }, {
+        name: 'Way-of-Working',
+        current_state: null,
+        states: ['Principles Established', 'Foundation Established', 'In Use', 'In Place', 'Working Well', 'Retired']
+      }]
+    }]
+  };
+
 var alpha_descriptions = {
   'opportunity': 'The set of circumstances that makes it appropriate to ' +
   'develop or change a software system. <br/> The opportunity articulates the' +

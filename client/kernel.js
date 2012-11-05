@@ -1,10 +1,17 @@
+Template.kernel.user_projects = function () {
+  return Projects.find({user_id: this.userId});
+};
+
+
  Template.kernel.concerns = function() {
-   return Concerns.find();
+  var project_id = Session.get('selected_project_id');
+  return Concerns.find({project_id : project_id});
  };
 
  Template.kernel.alphas = function(concern_id) {
+  //var project_id = Session.get('selected_project_id');
    return Alphas.find({
-     concern_id: concern_id
+     concern_id: concern_id,
    });
  };
 
@@ -93,5 +100,23 @@
        window.clearTimeout(time_out);
      }*/
      $(".hints .hint").text();
+   },
+
+   'click a#open_newproject': function(event){
+      event.preventDefault();
+      $(".newproject").toggle("slow");
+   },
+
+   'click button#btn_newproject': function(event){
+      event.preventDefault();
+   },
+
+
+   'mouseenter li.project': function(event){
+      $(".description").toggle("slow");
+   },
+
+   'mouseleave li.project': function(event){
+      $(".description").toggle("slow");
    }
  });

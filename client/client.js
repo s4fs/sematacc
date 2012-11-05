@@ -1,18 +1,16 @@
-var Kernel = new Meteor.Collection("Kernel");
-var Concerns = new Meteor.Collection("Concerns");
-var Alphas = new Meteor.Collection("Alphas");
-var States = new Meteor.Collection("States");
-
-if(Meteor.isClient) {
+var Kernel = new Meteor.Collection('Kernel');
+var Projects = new Meteor.Collection('Projects');
+var Concerns = new Meteor.Collection('Concerns');
+var Alphas = new Meteor.Collection('Alphas');
+var States = new Meteor.Collection('States');
 
   Meteor.startup(function() {
-    Meteor.subscribe("Kernel");
-    Meteor.subscribe("Concerns");
-    Meteor.subscribe("Alphas");
-    Meteor.subscribe("States", draw_graphs);
-
+    Meteor.subscribe('Projects');
+    Meteor.subscribe('Kernel');
+    Meteor.subscribe('Concerns');
+    Meteor.subscribe('Alphas');
+    Meteor.subscribe('States', draw_graphs);
     resize_graph_divs();
-
   });
 
   // React to Session["selected_alpha_id"] changes
@@ -21,10 +19,10 @@ if(Meteor.isClient) {
           var ctx = new Meteor.deps.Context(); // invalidation context
           ctx.onInvalidate(update); // rerun update() on invalidation
           ctx.run(function() {
-            var alpha_id = Session.get("selected_alpha_id");
-            if(!alpha_id) return;
-            $("input.accordionitem").attr("checked", false);
-            $("#" + alpha_id).attr("checked", true);
+            var alpha_id = Session.get('selected_alpha_id');
+            if (!alpha_id) return;
+            $('input.accordionitem').attr('checked', false);
+            $('#' + alpha_id).attr('checked', true);
           });
         };
       update();
@@ -76,12 +74,10 @@ if(Meteor.isClient) {
       });
     };
 
- 
-
   var query = Concerns.find({});
   var handle = query.observe({
     changed: function(alpha) {
       draw_graphs();
     }
   });
-}
+
