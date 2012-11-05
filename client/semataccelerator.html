@@ -22,7 +22,7 @@
             <div class="kernel">
                 <h1 id="kernel">Kernel</h1>
                 <h1 id="message"></h1>
-                {{#if isLoggedIn}}
+                {{#if currentUser}}
                     {{#if selectedProjectId}}
                         {{> kernel}}
                     {{else}}
@@ -38,7 +38,7 @@
                 Status
             </h1>
             <div class="graphs">
-                {{#if isLoggedIn}}
+                {{#if currentUser}}
                     {{#if selectedProjectId}}
                         {{> graph}}
                     {{else}}
