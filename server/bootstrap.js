@@ -55,7 +55,6 @@ var newProject = function(name, description, userId) {
 
 function setup() {
   Projects.remove({});
-  Kernel.remove({});
   Concerns.remove({});
   Alphas.remove({});
   States.remove({});
