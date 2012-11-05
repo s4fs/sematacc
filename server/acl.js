@@ -33,3 +33,12 @@ Concerns.allow({
   },
   //fetch: ['owner']
 });
+
+Projects.allow({
+  remove: function (userId, projects) {
+    return _.all(projects, function(project) {
+      return project.userId === userId;
+    });
+  },
+  fetch: ['userId']
+});

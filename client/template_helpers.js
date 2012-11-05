@@ -1,5 +1,5 @@
-Handlebars.registerHelper('selected_project',function(input){
-  var selected_project_id = Session.get('selected_project_id');
+Handlebars.registerHelper('selectedProjectId',function(input){
+  var selected_project_id = Session.get('selectedProjectId');
   //TODO automatic selection of the first project
   /*
   projects_count = Projects.find({user_id: this.userId}).count();

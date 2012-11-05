@@ -9,31 +9,31 @@ var States = new Meteor.Collection('States');
     Meteor.subscribe('Kernel');
     Meteor.subscribe('Concerns');
     Meteor.subscribe('Alphas');
-    Meteor.subscribe('States', draw_graphs);
-    resize_graph_divs();
+    Meteor.subscribe('States', drawGraphs);
+    resizeGraphDivs();
   });
 
-  // React to Session["selected_alpha_id"] changes
+  // React to Session["selectedAlphaId"] changes
   var onAlphaSelected = function() {
       var update = function() {
           var ctx = new Meteor.deps.Context(); // invalidation context
           ctx.onInvalidate(update); // rerun update() on invalidation
           ctx.run(function() {
-            var alpha_id = Session.get('selected_alpha_id');
-            if (!alpha_id) return;
+            var alphaId = Session.get('selectedAlphaId');
+            if (!alphaId) return;
             $('input.accordionitem').attr('checked', false);
-            $('#' + alpha_id).attr('checked', true);
+            $('#' + alphaId).attr('checked', true);
           });
         };
       update();
     };
   onAlphaSelected();
 
-  var update_concern_completions = function() {
+  var updateConcernCompletions = function() {
       var concerns = Concerns.find({});
       concerns.forEach(function(concern) {
         var alphas = Alphas.find({
-          concern_id: concern._id
+          concernId: concern._id
         }).fetch();
         var completions = 0;
         alphas.forEach(function(alpha) {
@@ -49,21 +49,21 @@ var States = new Meteor.Collection('States');
       });
     };
 
-  var update_alphas_completions = function() {
+  var updateAlphasCompletions = function() {
       var alphas = Alphas.find({});
       alphas.forEach(function(alpha) {
-        var alpha_states_count = States.find({
-          alpha_id: alpha._id
+        var alphaStatesCount = States.find({
+          alphaId: alpha._id
         }).count();
 
-        var current_state_position = 0;
-        if (alpha.current_state_id) {
-          current_state_position = States.findOne({
-            _id: alpha.current_state_id
+        var currentStatePosition = 0;
+        if (alpha.currentStateId) {
+          currentStatePosition = States.findOne({
+            _id: alpha.currentStateId
           }).order;
         }
 
-        var ratio = current_state_position / alpha_states_count * 100;
+        var ratio = currentStatePosition / alphaStatesCount * 100;
         Alphas.update({
           _id: alpha._id
         }, {
@@ -77,7 +77,7 @@ var States = new Meteor.Collection('States');
   var query = Concerns.find({});
   var handle = query.observe({
     changed: function(alpha) {
-      draw_graphs();
+      drawGraphs();
     }
   });
 

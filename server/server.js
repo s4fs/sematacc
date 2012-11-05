@@ -7,8 +7,8 @@ Meteor.startup(function () {
     setup: function () {
       return setup();
     },
-    new_project : function(name, description, user_id) {
-      return new_project(name, description, user_id);
+    newProject : function(name, description, userId) {
+      return newProject(name, description, userId);
     }
   });
 });

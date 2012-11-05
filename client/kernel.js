@@ -1,48 +1,47 @@
-Template.kernel.user_projects = function () {
-  return Projects.find({user_id: this.userId});
+Template.kernel.userProjects = function () {
+  return Projects.find({userId: this.userId});
 };
 
-
  Template.kernel.concerns = function() {
-  var project_id = Session.get('selected_project_id');
-  return Concerns.find({project_id : project_id});
+  var projectId = Session.get('selectedProjectId');
+  return Concerns.find({projectId : projectId});
  };
 
- Template.kernel.alphas = function(concern_id) {
-  //var project_id = Session.get('selected_project_id');
+ Template.kernel.alphas = function(concernId) {
+  var projectId = Session.get('selectedProjectId');
    return Alphas.find({
-     concern_id: concern_id,
+     concernId: concernId,
    });
  };
 
- Template.kernel.current_state = function(state_id) {
+ Template.kernel.currentState = function(stateId) {
    var state = States.findOne({
-     _id: state_id
+     _id: stateId
    });
    if(state) return ": " + state.name;
    else return "";
  };
 
- Template.kernel.states = function(alpha_id) {
-   if(alpha_id) return States.find({
-     alpha_id: alpha_id
+ Template.kernel.states = function(alphaId) {
+   if(alphaId) return States.find({
+     alphaId: alphaId
    });
    else return States.find();
  };
 
- Template.kernel.same_id = function(first_id, second_id) {
-   return first_id == second_id;
+ Template.kernel.sameId = function(firstId, secondId) {
+   return firstId == secondId;
  };
 
- Template.kernel.checkable = function(alpha_id) {
-   if(alpha_id == Session.get("selected_alpha_id")) return true;
+ Template.kernel.checkable = function(alphaId) {
+   if(alphaId == Session.get("selectedAlphaId")) return true;
    else return false;
  };
 
- var time_out;
+ var timeOut;
  Template.kernel.events({
    "mouseenter .accordionlabel": function(event) {
-    var concern = Concerns.findOne(this.concern_id);
+    var concern = Concerns.findOne(this.concernId);
      $('#message').html(concern.name);
      $(".hints .hint").html(this.description);
    },
@@ -51,35 +50,32 @@ Template.kernel.user_projects = function () {
      $(".hints .hint").text("");
    },
    'click .accordionitem': function(event) {
-     //TODO setting selected_alpha_id here makes the effect vanish
+     //TODO setting selectedAlphaId here makes the effect vanish
      $("input.accordionitem").attr("checked", false);
      $("#" + this._id).attr("checked", true);
-     //if (time_out) {
-     //  window.clearTimeout(time_out);
-     //}
    },
    'click li.selectable': function(event) {
      event.preventDefault();
-     Session.set("selected_alpha_id", this.alpha_id);
+     Session.set("selectedAlphaId", this.alphaId);
      Alphas.update({
-       _id: this.alpha_id
+       _id: this.alphaId
      }, {
        $set: {
-         current_state_id: this._id
+         currentStateId: this._id
        }
      });
-     update_alphas_completions();
-     update_concern_completions();
+     updateAlphasCompletions();
+     updateConcernCompletions();
    },
    'click li.item.selected': function(event) {  // a click on an already selected item removes it
-     var alpha_id = this.alpha_id;
-     Alphas.update({_id: alpha_id}, {
+     var alphaId = this.alphaId;
+     Alphas.update({_id: alphaId}, {
        $set: {
          completion: 0,
-         current_state_id: null
+         currentStateId: null
        }
      });
-     update_concern_completions();
+     updateConcernCompletions();
    },
    'mouseenter li.item.selected': function(event) {
      $(event.target).find('div').html("&#10008;");
@@ -89,28 +85,22 @@ Template.kernel.user_projects = function () {
    },
    'mouseenter li.item': function(event) {
      var description = this.description;
-     //time_out = window.setTimeout(function() {
      $(".hints .hint").html(description);
      $(".hints .hint p br").after('&#10004;');
      $(".hints .hint p").prepend('&#10004;');
-     //}, 1000);
    },
    'mouseleave li.item': function(event) {
-     /*if (time_out) {
-       window.clearTimeout(time_out);
-     }*/
      $(".hints .hint").text();
    },
 
-   'click a#open_newproject': function(event){
+   'click a#openNewproject': function(event){
       event.preventDefault();
       $(".newproject").toggle("slow");
    },
 
-   'click button#btn_newproject': function(event){
+   'click button#btnNewproject': function(event){
       event.preventDefault();
    },
-
 
    'mouseenter li.project': function(event){
       $(".description").toggle("slow");

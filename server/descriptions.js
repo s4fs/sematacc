@@ -1,14 +1,14 @@
-var kernel_skeleton = {
+var kernelSkeleton = {
     concerns: [{
       name: 'Customer',
       description: 'Description of Customer',
       alphas: [{
         name: 'Opportunity',
-        current_state: null,
+        currentState: null,
         states: ['Identified', 'Solution Needed', 'Value Established', 'Viable', 'Addressed', 'Benefit Accrued']
       }, {
         name: 'Stakeholders',
-        current_state: null,
+        currentState: null,
         states: ['Recognized', 'Represented', 'Involved', 'In Agreement', 'Satisfied for Deployment', 'Satisfied in Use']
       }]
     }, {
@@ -16,11 +16,11 @@ var kernel_skeleton = {
       description: 'Description of Solution',
       alphas: [{
         name: 'Requirements',
-        current_state: null,
+        currentState: null,
         states: ['Conceived', 'Bounded', 'Coherent', 'Acceptable', 'Addressed', 'Fulfilled']
       }, {
         name: 'Software System',
-        current_state: null,
+        currentState: null,
         states: ['Architecture Selected', 'Demonstrable', 'Usable', 'Ready', 'Operational', 'Retired']
       }]
     }, {
@@ -28,21 +28,21 @@ var kernel_skeleton = {
       description: 'Description of Endeavor',
       alphas: [{
         name: 'Work',
-        current_state: null,
+        currentState: null,
         states: ['Initiated', 'Prepared', 'Started', 'Under Control', 'Concluded', 'Closed']
       }, {
         name: 'Team',
-        current_state: null,
+        currentState: null,
         states: ['Seeded', 'Formed', 'Collaborating', 'Performing', 'Adjourned']
       }, {
         name: 'Way-of-Working',
-        current_state: null,
+        currentState: null,
         states: ['Principles Established', 'Foundation Established', 'In Use', 'In Place', 'Working Well', 'Retired']
       }]
     }]
   };
 
-var alpha_descriptions = {
+var alphaDescriptions = {
   'opportunity': 'The set of circumstances that makes it appropriate to ' +
   'develop or change a software system. <br/> The opportunity articulates the' +
   'reason for the creation of the new, or changed, software system. It ' +
@@ -87,7 +87,7 @@ var alpha_descriptions = {
   'way of working and adapt it as necessary to their current context.'
 };
 
-var state_descriptions = {
+var stateDescriptions = {
   'stakeholders' : {
     'recognized' : '<p>All the different groups of stakeholders that are, or will be, affected by the development and operation of the software system are identified. <br/>' +
     'There is agreement on the stakeholder groups to be represented. At a minimum, the stakeholders groups that fund, use, support, and maintain the system have been considered. <br/> ' +

@@ -5,7 +5,7 @@ var Alphas = new Meteor.Collection("Alphas");
 var States = new Meteor.Collection("States");
 
 Meteor.publish("Projects", function () {
-  return Projects.find({user_id: Meteor.userId}, {});
+  return Projects.find({userId: Meteor.userId}, {});
 });
 
 Meteor.publish("Kernel", function () {
