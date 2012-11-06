@@ -120,8 +120,7 @@
     <section class="ac-container">
         {{#each concerns}} {{#each alphas this._id}}
         <div class="concern-container">
-            <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"
-            {{#if checkable this._id}}checked="checked" {{/if}}/>
+            <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio" />
             <label for="{{this._id}}" class="accordionlabel">
             {{this.name}}
             <em>

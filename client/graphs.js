@@ -83,7 +83,6 @@ function buildRoseAlphasGraph(elemId, selectedProjectId) {
   var roseAlphaGraph = buildRoseGraph(elemId, data, labels, meteorIds);
   roseAlphaGraph.onclick = function(e, shape) {
     id = roseAlphaGraph.meteorIds[shape[6]];
-    //Session.set("selectedAlphaId", id);
     $("input.accordionitem").attr("checked", false);
     $("#" + id).attr("checked", true);
   };

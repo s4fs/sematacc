@@ -16,40 +16,25 @@ Meteor.autosubscribe(function () {
 
   Meteor.autorun(function () {
     if (!Meteor.userId()) {
-      Session.set('selectedAlphaId', null);
       Session.set('selectedProjectId', null);
       Session.set('selectedProjectName', null);
     }
   });
 
-  // React to Session["selectedAlphaId"] changes
-  var onAlphaSelected = function() {
-      var update = function() {
-          var ctx = new Meteor.deps.Context(); // invalidation context
-          ctx.onInvalidate(update); // rerun update() on invalidation
-          ctx.run(function() {
-            var alphaId = Session.get('selectedAlphaId');
-            if (!alphaId) return;
-            $('input.accordionitem').attr('checked', false);
-            $('#' + alphaId).attr('checked', true);
-          });
-        };
-      update();
-    };
-  onAlphaSelected();
-
   var updateConcernCompletions = function() {
       var concerns = Concerns.find({});
       concerns.forEach(function(concern) {
         var alphas = Alphas.find({
-          concernId: concern._id
+          concernId: concern._id,
+          userId: Meteor.userId()
         }).fetch();
         var completions = 0;
         alphas.forEach(function(alpha) {
           completions += alpha.completion;
         });
         Concerns.update({
-          _id: concern._id
+          _id: concern._id,
+          userId: Meteor.userId()
         }, {
           $set: {
             completion: completions / alphas.length
@@ -62,19 +47,22 @@ Meteor.autosubscribe(function () {
       var alphas = Alphas.find({});
       alphas.forEach(function(alpha) {
         var alphaStatesCount = States.find({
-          alphaId: alpha._id
+          alphaId: alpha._id,
+          userId: Meteor.userId()
         }).count();
 
         var currentStatePosition = 0;
         if (alpha.currentStateId) {
           currentStatePosition = States.findOne({
-            _id: alpha.currentStateId
+            _id: alpha.currentStateId,
+            userId: Meteor.userId()
           }).order;
         }
 
         var ratio = currentStatePosition / alphaStatesCount * 100;
         Alphas.update({
-          _id: alpha._id
+          _id: alpha._id,
+          userId: Meteor.userId()
         }, {
           $set: {
             completion: ratio
