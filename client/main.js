@@ -1,12 +1,4 @@
 Meteor.startup(function() {
-  var query = Concerns.find({
-    userId: Meteor.userId()
-  });
-  var handle = query.observe({
-    changed: function(concern) {
-      drawGraphs(Session.get('selectedProjectId'));
-    }
-  });
   resizeGraphDivs();
 });
 
@@ -15,6 +7,14 @@ Meteor.autorun(function() {
     Session.set('selectedProjectId', null);
     Session.set('selectedProjectName', null);
   }
+  var query = Concerns.find({
+    userId: Meteor.userId()
+  });
+  var handle = query.observe({
+    changed: function(concern) {
+      drawGraphs(Session.get('selectedProjectId'));
+    }
+  });
 });
 
 Handlebars.registerHelper('selectedProjectId', function(input) {
