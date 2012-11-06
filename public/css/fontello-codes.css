@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+
+.icon-plus:before { content: '\2b'; } /* '+' */
+.icon-attention:before { content: '\26a0'; } /* '⚠' */
+.icon-edit:before { content: '\270d'; } /* '✍' */
+.icon-pencil:before { content: '\270e'; } /* '✎' */
+.icon-ok:before { content: '\2713'; } /* '✓' */
+.icon-cancel:before { content: '\2715'; } /* '✕' */
+.icon-attention-circle:before { content: '\2757'; } /* '❗' */
+.icon-plus-circle:before { content: '\2795'; } /* '➕' */
+.icon-back:before { content: '\e706'; } /* '' */
+.icon-comment:before { content: '\e718'; } /* '' */
+.icon-trash:before { content: '\e729'; } /* '' */
+.icon-down-open:before { content: '\e75c'; } /* '' */
+.icon-left-open:before { content: '\e75d'; } /* '' */
+.icon-right-open:before { content: '\e75e'; } /* '' */
+.icon-up-open:before { content: '\e75f'; } /* '' */
+.icon-doc:before { content: '📄'; } /* '\1f4c4' */
+.icon-chart:before { content: '📈'; } /* '\1f4c8' */
