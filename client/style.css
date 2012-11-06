@@ -247,8 +247,22 @@ ul.projects li {
     -webkit-box-shadow: 0px 4px 6px #b7b7b7;
 }
 
-.description {
+.commands {
     display:none;
+}
+
+span.projectName {
+    display:block;
+    float:left;
+    width:80%;
+}
+
+span.commands {
+    display: block;
+    float:left;
+    text-align: right;
+    width:15%;
+    margin-right: 5%;
 }
 
 
@@ -393,6 +407,7 @@ li.selected {
 
 .ac-container input:checked ~ article.ac-large {
     height: 230px;
+    padding:20px;
 }
 
 .section {

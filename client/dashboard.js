@@ -25,6 +25,15 @@ Template.dashboard.events({
       }
    },
 
+   'mouseenter .accordionlabel': function(event) {
+      var project_id = $(event.currentTarget).attr('for');
+      $('#projectCommands' + this._id).show();
+   },
+
+   'mouseleave .accordionlabel': function(event) {
+     $('.projectCommands').hide();
+   },
+
    'click .accordionitem': function(event) {
      $('input.accordionitem').attr('checked', false);
      $('#' + this._id).attr('checked', true);
@@ -32,7 +41,7 @@ Template.dashboard.events({
 
    'click a.viewProject': function(event) {
       event.preventDefault();
-      var project_id = $(event.currentTarget).parent().attr('id');
+      var project_id = $(event.currentTarget).parent().parent().attr('for');
       Session.set('selectedProjectId', project_id);
       var project_name = Projects.findOne({_id: project_id, userId: this.userId});
       Session.set('selectedProjectName', project_name.name);
@@ -40,21 +49,13 @@ Template.dashboard.events({
 
    'click a.deleteProject': function(event) {
       event.preventDefault();
-      var project_id = $(event.currentTarget).parent().attr('for');
+      var project_id = $(event.currentTarget).parent().parent().attr('for');
       if (Session.equals('selectedProjectId', project_id)){
          Session.set('selectedProjectId', null);
          Session.set('selectedProjectName', null);
       }
       Projects.remove({_id: project_id});
    },
-
-   'mouseenter li.project': function(event) {
-      $('div#descriptionProject'+this._id).dequeue().stop(true, true).show(400);
-   },
-
-   'mouseleave li.project': function(event) {
-      $('div#descriptionProject'+this._id).dequeue().stop(true, true).hide(400);
-   }
 });
 
 Template.dashboard.rendered = function(){
