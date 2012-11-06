@@ -3,13 +3,28 @@ var Concerns = new Meteor.Collection('Concerns');
 var Alphas = new Meteor.Collection('Alphas');
 var States = new Meteor.Collection('States');
 
+Meteor.autosubscribe(function () {
+  Meteor.subscribe('Projects', Meteor.userId());
+  Meteor.subscribe('Concerns');
+  Meteor.subscribe('Alphas');
+  Meteor.subscribe('States');
+});
+
   Meteor.startup(function() {
-    Meteor.subscribe('Projects');
-    Meteor.subscribe('Concerns');
-    Meteor.subscribe('Alphas');
-    Meteor.subscribe('States');
     resizeGraphDivs();
   });
+/*
+  Meteor.autorun(function(handle) {
+    if (!Meteor.userId()) 
+      return;
+    alert('ha');
+    Template.dashboard(['asd']);
+    Meteor.flush();
+    Meteor.flush();
+    handle.stop();
+  });
+*/
+
 
   // React to Session["selectedAlphaId"] changes
   var onAlphaSelected = function() {

@@ -1,6 +1,6 @@
 Template.dashboard.userProjects = function() {
    return Projects.find({
-      userId: this.userId
+      userId: Meteor.userId()
    });
 };
 

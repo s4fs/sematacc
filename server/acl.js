@@ -1,5 +1,5 @@
-Meteor.publish("Projects", function () {
-  return Projects.find({userId: Meteor.userId}, {});
+Meteor.publish("Projects", function (userId) {
+  return Projects.find({userId: userId}, {});
 });
 Meteor.publish("Concerns", function () {
   return Concerns.find({userId: Meteor.userId}, {
