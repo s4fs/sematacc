@@ -54,6 +54,13 @@ Concerns.allow({
 });
 
 Projects.allow({
+  update: function (userId, docs, fields, modifier) {
+    Meteor._debug("can we?" +  userId);
+    return _.all(docs, function (doc) {
+      Meteor._debug("can we?" + doc.userId + " - " + userId);
+      return doc.userId === userId;
+    });
+  },
   remove: function (userId, docs) {
     return _.all(docs, function(doc) {
       return doc.userId === userId;
