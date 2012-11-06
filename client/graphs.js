@@ -68,7 +68,7 @@ function buildHbarGraph(elemId, data, labels, meteorIds) {
 function buildRoseAlphasGraph(elemId, selectedProjectId) {
   if (elemId == null) elemId = 'graphRoseAlphas';
 
-  var alphas = Alphas.find({projectId: selectedProjectId}).fetch();
+  var alphas = Alphas.find({projectId: selectedProjectId, userId: Meteor.userId()}).fetch();
   var data = [];
   var labels = [];
   var meteorIds = [];
@@ -96,7 +96,7 @@ function buildRoseAlphasGraph(elemId, selectedProjectId) {
 
 var buildHbarOverallGraph = function(elemId, selectedProjectId) {
   if (elemId == null) elemId = 'graphHbarOverall';
-  var concerns = Concerns.find({projectId: selectedProjectId}).fetch();
+  var concerns = Concerns.find({projectId: selectedProjectId, userId: Meteor.userId()}).fetch();
   var completions = [];
   var names = [];
   concerns.forEach(function(concern) {
@@ -105,9 +105,7 @@ var buildHbarOverallGraph = function(elemId, selectedProjectId) {
   });
   var hbarOverallGraph = buildHbarGraph(elemId, completions, names, null);
   return hbarOverallGraph;
-
 }
-
 
 
 var drawGraphs = function(selectedProjectId) {

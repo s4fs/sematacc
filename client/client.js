@@ -14,6 +14,14 @@ Meteor.autosubscribe(function () {
     resizeGraphDivs();
   });
 
+  Meteor.autorun(function () {
+    if (!Meteor.userId()) {
+      Session.set('selectedAlphaId', null);
+      Session.set('selectedProjectId', null);
+      Session.set('selectedProjectName', null);
+    }
+  });
+
   // React to Session["selectedAlphaId"] changes
   var onAlphaSelected = function() {
       var update = function() {
