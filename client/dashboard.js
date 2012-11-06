@@ -25,6 +25,11 @@ Template.dashboard.events({
       }
    },
 
+   'click .accordionitem': function(event) {
+     $('input.accordionitem').attr('checked', false);
+     $('#' + this._id).attr('checked', true);
+   },
+
    'click a.viewProject': function(event) {
       event.preventDefault();
       var project_id = $(event.currentTarget).parent().attr('id');
@@ -35,13 +40,12 @@ Template.dashboard.events({
 
    'click a.deleteProject': function(event) {
       event.preventDefault();
-      var project_id = $(event.currentTarget).parent().attr('id');
+      var project_id = $(event.currentTarget).parent().attr('for');
       if (Session.equals('selectedProjectId', project_id)){
          Session.set('selectedProjectId', null);
          Session.set('selectedProjectName', null);
       }
       Projects.remove({_id: project_id});
-
    },
 
    'mouseenter li.project': function(event) {

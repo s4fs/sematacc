@@ -39,7 +39,6 @@
                 {{#if currentUser}}
                     {{> graph}}
                 {{/if}}
-            </div>
         </div>
     </div>
     <div class="bottom">
@@ -51,25 +50,30 @@
 <template name="dashboard">
     <h1 id="kernel">Projects <a href="#" id="showNewProject" class="icon-doc big" title="Add New Project"></a></h1>
     <h1 id="message"></h1>
-    <div class="dashboard">
         <div class="newProject">
             <ul>
                 <li><input type="text" name="projectName" id="nameNewProject" /></li>
                 <li><textarea name="projectDescription" id="descriptionNewProject"></textarea></li>
-                <li><button id="makeNewProject" class="icon-plus-circle">Save</button></li>
+                <li><button id="makeNewProject" class="css3button icon-plus-circle">Add</button></li>
             </ul>
         </div>
-        <ul class="projects">
-            {{#each userProjects}}
-            <li class="project" id="{{this._id}}">
-                <a href="#" class="viewProject">{{name}}</a>
+        <section class="ac-container">
+        {{#each userProjects}}
+        <div class="concern-container">
+            <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"
+            {{#if checkable this._id}}checked="checked" {{/if}}/>
+            <label for="{{this._id}}" class="accordionlabel">
+                {{this.name}}
+                <a href="#" class="viewProject">{{Open}}</a>
                 <a href="#" class="editProject icon-edit" title="Edit Project"></a>
                 <a href="#" class="deleteProject icon-trash" title="Delete Project"></a>
-                <div class="description" id="descriptionProject{{this._id}}">{{description}}</div>
-            </li>
-            {{/each}}
-        </ul>
-    </div>
+            </label>
+            <article class="ac-small">
+                {{this.description}}
+            </article>
+        </div>
+        {{/each}}
+        </section>
 </template>
 
 <template name="kernel">

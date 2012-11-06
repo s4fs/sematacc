@@ -157,6 +157,13 @@ a {
 
 div.newProject {
     display:none;
+    width: 90%;
+    text-align: left;
+    margin: auto;
+    padding: 0;
+    box-shadow: 0px 4px 6px #b7b7b7;
+    -moz-box-shadow: 0px 4px 6px #b7b7b7;
+    -webkit-box-shadow: 0px 4px 6px #b7b7b7;
 }
 
 
@@ -193,14 +200,41 @@ textarea#descriptionNewProject{
 }
 
 button#makeNewProject{
-    width:50%;
+    width:40%;
     height:1.9em;
     margin:auto;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
 
 }
+
+button.css3button {
+    font-size:1em;
+    color: #333333;
+    background-color: #b7b7b7;
+    /*
+    background: -moz-linear-gradient(
+        top,
+        #e0eff1 0%,
+        #7db4b5);
+    background: -webkit-gradient(
+        linear, left top, left bottom, 
+        from(#e0eff1),
+        to(#7db4b5));
+    */
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -moz-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,1);
+    -webkit-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,1);
+    box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,1);
+    
+}
+
 
 ul.projects {
     list-style-type: none;
