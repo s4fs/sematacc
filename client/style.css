@@ -34,8 +34,20 @@ h1#kernel {
 }
 
 h1#message {
-    color: #7DB4B5;
+    color: #E0EFF1;
     height: 50px;
+}
+
+h1.sectiontitle {
+    color: #7DB4B5;
+    margin:0;
+    padding:0;
+    height:auto;
+}
+
+.big {
+    font-size: 1.2em;
+    margin-left:5px;
 }
 
 a {
@@ -111,7 +123,7 @@ a {
 
 .hints h1 {
     font-size: 1.2em;
-    color: #7DB4B5;
+    color: #E0EFF1;
     height: auto;
 }
 

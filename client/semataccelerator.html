@@ -12,16 +12,14 @@
     </div>
     <div class="wrapper">
         <div class="left">
-            <h1>SEMAT Accelerator</h1>
+                <h1>SEMAT Accelerator</h1>
             <div class="hints">
                 <h1 class="icon-comment">Hint Box</h1>
                 <div class="hint"></div>
             </div>
         </div>
         <div class="center">
-            <div class="kernel">
-                <h1 id="kernel">Kernel</h1>
-                <h1 id="message"></h1>
+            <div class="kernel"> 
                 {{#if currentUser}}
                     {{#if selectedProjectId}}
                         {{> kernel}}
@@ -29,22 +27,17 @@
                         {{> dashboard}}
                     {{/if}}
                 {{else}}
-                    Please Login or Register.
+                    <h1 id="kernel">Welcome</h1>
+                    <h1 id="message"></h1>
+                    <div class="dashboard" style="height:100px">
+                        Please Login or Register.
+                    </div>
                 {{/if}}
             </div>
         </div>
         <div class="right">
-            <h1>
-                Status
-            </h1>
-            <div class="graphs">
                 {{#if currentUser}}
-                    {{#if selectedProjectId}}
-                        {{> graph}}
-                    {{else}}
-                        Please select a project.
-                    {{/if}}
-                {{else}}
+                    {{> graph}}
                 {{/if}}
             </div>
         </div>
@@ -56,8 +49,9 @@
 
 
 <template name="dashboard">
+    <h1 id="kernel">Projects <a href="#" id="showNewProject" class="icon-doc big" title="Add New Project"></a></h1>
+    <h1 id="message"></h1>
     <div class="dashboard">
-        Projects <a href="#" id="showNewProject" class="icon-doc" title="Add New Project"></a>
         <div class="newProject">
             <ul>
                 <li><input type="text" name="projectName" id="nameNewProject" /></li>
@@ -79,7 +73,8 @@
 </template>
 
 <template name="kernel">
-    Project <a href="#" id="clearSelectedProjectId" class="icon-back" title="Back to Projects"></a>
+    <h1 id="kernel">Kernel for {{selectedProjectName}}<a href="#" id="clearSelectedProjectId" class="icon-back big"></a></h1>
+    <h1 id="message"></h1>
     <section class="ac-container">
         {{#each concerns}} {{#each alphas this._id}}
         <div class="concern-container">
@@ -112,10 +107,20 @@
 </template>
 
 <template name="graph">
+<h1>Status</h1>
+{{#if selectedProjectId}}
+    
+<div class="graphs">
     <canvas id="graphRoseAlphas" class="graph">
         [No canvas support]
     </canvas>
     <canvas id="graphHbarOverall" class="graph">
         [No canvas support]
     </canvas>
+</div>
+{{else}}
+<div class="graphs">
+    Select a project. Graphs will appear in this area.
+</div>
+{{/if}}
 </template>

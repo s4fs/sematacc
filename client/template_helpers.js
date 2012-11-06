@@ -3,6 +3,7 @@ Handlebars.registerHelper('selectedProjectId',function(input){
   return selectedProjectId;
 });
 
-Handlebars.registerHelper('isLoggedIn',function(input){
-  return this.userId;
+Handlebars.registerHelper('selectedProjectName',function(input){
+  var selectedProjectName = Session.get('selectedProjectName');
+  return selectedProjectName;
 });

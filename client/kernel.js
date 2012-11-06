@@ -43,6 +43,7 @@ Template.kernel.userProjects = function () {
   'click a#clearSelectedProjectId': function(event) {
       event.preventDefault();
       Session.set('selectedProjectId', null);
+      Session.set('selectedProjectName', null);
    },
    'mouseenter .accordionlabel': function(event) {
     var concern = Concerns.findOne(this.concernId);

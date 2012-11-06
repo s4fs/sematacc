@@ -29,13 +29,17 @@ Template.dashboard.events({
       event.preventDefault();
       var project_id = $(event.currentTarget).parent().attr('id');
       Session.set('selectedProjectId', project_id);
+      var project_name = Projects.findOne({_id: project_id, userId: this.userId});
+      Session.set('selectedProjectName', project_name.name);
    },
 
    'click a.deleteProject': function(event) {
       event.preventDefault();
       var project_id = $(event.currentTarget).parent().attr('id');
-      if (Session.equals('selectedProjectId', project_id))
+      if (Session.equals('selectedProjectId', project_id)){
          Session.set('selectedProjectId', null);
+         Session.set('selectedProjectName', null);
+      }
       Projects.remove({_id: project_id});
 
    },
