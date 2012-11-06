@@ -11,7 +11,7 @@ Template.dashboard.events({
       $('input#nameNewProject').val("");
       $('textarea#descriptionNewProject').val("");
       $('button#makeNewProject').html('Add');
-      $('div.newProject').show(400);
+      $('div.newProject').show('400');
    },
 
    'click button#makeNewProject': function(event) {

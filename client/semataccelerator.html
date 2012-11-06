@@ -15,7 +15,24 @@
                 <h1>SEMAT Accelerator</h1>
             <div class="hints">
                 <h1 class="icon-comment">Hint Box</h1>
-                <div class="hint"></div>
+                <div class="hint">
+                    {{#if currentUser}}
+                        {{#unless selectedProjectId}}
+                        <p>
+                            To create a new project, click the <span class="icon-doc"></span> icon. <br/>
+                            Hover the mouse pointer on a project to see the available commands. <br/>
+                            Click <span class="icon-right-open"></span> to open a project. <br/>
+                            Click <span class="icon-pencil"></span> to edit a project. <br/>
+                            Click <span class="icon-trash"></span> to delete a project. <br/>
+                            Click anywhere else to see the project description.
+                        </p>
+                        {{/unless}}
+                    {{else}}
+                        <p>
+                            Please Login or Register (upper-right corner).
+                        </p>
+                    {{/if}}
+                </div>
             </div>
         </div>
         <div class="center">
@@ -29,8 +46,19 @@
                 {{else}}
                     <h1 id="kernel">Welcome</h1>
                     <h1 id="message"></h1>
-                    <div class="dashboard" style="height:100px">
-                        Please Login or Register.
+                    <div class="dashboard">
+                        <div style="padding:30px">
+                        <p>
+                        Welcome to SematAcc, the Essence Accelerator system.
+                        </p>
+                        <p>
+                            This web prototype was designed to speed up the 
+                            learning of <a href="http://semat.org/wp-content/uploads/2012/02/12-08-15.pdf">Essence Theory</a> in Software Engineering and to easily test it with a software project.
+                        </p>
+                        <p>
+                            SematAcc was implemented by <a href="http://www.inf.unibz.it/s4fs">S4FS</a> at the Free University of Bozen-Bolzano an is free for everybody to use.
+                        </p>
+                        </div>
                     </div>
                 {{/if}}
             </div>
@@ -128,7 +156,9 @@
 </div>
 {{else}}
 <div class="graphs">
-    Select a project. Graphs will appear in this area.
+    <p style="padding:20px">
+        Select a project. Graphs will appear in this area.
+    </p>
 </div>
 {{/if}}
 </template>
