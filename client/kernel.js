@@ -51,7 +51,8 @@ Template.kernel.userProjects = function () {
    'mouseenter .accordionlabel': function(event) {
     var concern = Concerns.findOne(this.concernId);
      $('#message').html(concern.name);
-     $('.hints .hint').html(this.description).prepend('<span class="icon-check"></span>');
+     $('.hints .hint').html(this.description);
+     //$('.hints .hint').html(this.description).prepend('<span class="icon-comment"></span>');
    },
    'mouseleave .accordionlabel': function(event) {
    },

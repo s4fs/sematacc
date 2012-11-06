@@ -28,7 +28,10 @@
 }
 
 .icon-plus:before { content: '\2b'; } /* '+' */
+.icon-play:before { content: '\25b6'; } /* '▶' */
+.icon-check:before { content: '\2611'; } /* '☑' */
 .icon-attention:before { content: '\26a0'; } /* '⚠' */
+.icon-attention-1:before { content: '\e800'; } /* '' */
 .icon-edit:before { content: '\270d'; } /* '✍' */
 .icon-pencil:before { content: '\270e'; } /* '✎' */
 .icon-ok:before { content: '\2713'; } /* '✓' */
@@ -44,3 +47,4 @@
 .icon-up-open:before { content: '\e75f'; } /* '' */
 .icon-doc:before { content: '📄'; } /* '\1f4c4' */
 .icon-chart:before { content: '📈'; } /* '\1f4c8' */
+.icon-search:before { content: '🔍'; } /* '\1f50d' */
