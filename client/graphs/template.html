@@ -1,0 +1,20 @@
+<template name="graphs">
+  <h1>Status</h1>
+  {{#if selectedProjectId}}
+      
+  <div class="graphs">
+      <canvas id="graphRoseAlphas" class="graph">
+          [No canvas support]
+      </canvas>
+      <canvas id="graphHbarOverall" class="graph">
+          [No canvas support]
+      </canvas>
+  </div>
+  {{else}}
+  <div class="graphs">
+      <p style="padding:20px">
+          Select a project. Graphs will appear in this area.
+      </p>
+  </div>
+  {{/if}}
+</template>

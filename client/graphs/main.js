@@ -4,7 +4,6 @@
 var resizeGraphDivs = function() {
     graphsW = $('.graphs').width();
     graphsH = $('.graphs').width();
-    
     $('canvas#graphRoseAlphas').attr('width', graphsW - 20);
     $('canvas#graphRoseAlphas').attr('height', graphsH / 1.618);
 
@@ -12,15 +11,11 @@ var resizeGraphDivs = function() {
     $('canvas#graphHbarOverall').attr('height', (graphsH - (graphsH / 1.618)));
   };
 
-Template.graph.rendered = function() {
-  drawGraphs();
-};
-
 $(window).resize(function() {
   drawGraphs();
 });
 
-function buildRoseGraph(elemId, data, labels, meteorIds) {
+var buildRoseGraph = function(elemId, data, labels, meteorIds) {
   var roseGraph = new RGraph.Rose(elemId, data);
 
   var halfWidth = $('canvas#' + elemId).attr('width') / 2;
@@ -43,9 +38,9 @@ function buildRoseGraph(elemId, data, labels, meteorIds) {
   roseGraph.Set('chart.ymax', 100);
   roseGraph.meteorIds = meteorIds;
   return roseGraph;
-}
+};
 
-function buildHbarGraph(elemId, data, labels, meteorIds) {
+var buildHbarGraph = function(elemId, data, labels, meteorIds) {
   var hbar = new RGraph.HBar(elemId, data);
 
   // Configure the chart to appear as wished.
@@ -63,9 +58,9 @@ function buildHbarGraph(elemId, data, labels, meteorIds) {
   hbar.Set('chart.xmax', 100);
   return hbar;
 
-}
+};
 
-function buildRoseAlphasGraph(elemId, selectedProjectId) {
+var buildRoseAlphasGraph = function(elemId, selectedProjectId) {
   if (elemId == null) elemId = 'graphRoseAlphas';
 
   var alphas = Alphas.find({projectId: selectedProjectId, userId: Meteor.userId()}).fetch();
@@ -81,17 +76,18 @@ function buildRoseAlphasGraph(elemId, selectedProjectId) {
   });
 
   var roseAlphaGraph = buildRoseGraph(elemId, data, labels, meteorIds);
+  // RGraph events
   roseAlphaGraph.onclick = function(e, shape) {
     id = roseAlphaGraph.meteorIds[shape[6]];
-    $("input.accordionitem").attr("checked", false);
-    $("#" + id).attr("checked", true);
+    $('input.accordionitem').attr('checked', false);
+    $('#' + id).attr('checked', true);
   };
   roseAlphaGraph.onmousemove = function(e, shape) {
     e.target.style.cursor = 'pointer';
   };
 
   return roseAlphaGraph;
-}
+};
 
 var buildHbarOverallGraph = function(elemId, selectedProjectId) {
   if (elemId == null) elemId = 'graphHbarOverall';
@@ -104,7 +100,7 @@ var buildHbarOverallGraph = function(elemId, selectedProjectId) {
   });
   var hbarOverallGraph = buildHbarGraph(elemId, completions, names, null);
   return hbarOverallGraph;
-}
+};
 
 
 var drawGraphs = function(selectedProjectId) {
@@ -125,4 +121,4 @@ var drawGraphs = function(selectedProjectId) {
 
   RGraph.Effects.Rose.Grow(roseGraph, null, null);
   RGraph.Effects.HBar.Grow(hbarGraph, null, null);
-}
+};

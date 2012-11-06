@@ -1,11 +1,3 @@
-Template.dashboard.userProjects = function() {
-   var projects = Projects.find({userId: Meteor.userId()});
-   if (projects.count() === 0)
-      return null;
-   else
-      return projects;
-};
-
 Template.dashboard.events({
    'click a#showNewProject': function(event) {
       event.preventDefault();
@@ -80,8 +72,3 @@ Template.dashboard.events({
       Projects.remove({_id: project_id});
    }
 });
-
-Template.dashboard.rendered = function() {
-   $('input#nameNewProject').watermark('Project Name');
-   $('textarea#descriptionNewProject').watermark('Project Description');
-};

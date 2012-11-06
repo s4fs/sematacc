@@ -1,5 +1,12 @@
-var newProject = function(name, description, userId) {
+Meteor.startup(function() {
+  Meteor.methods({
+    newProject: function(name, description, userId) {
+      return newProject(name, description, userId);
+    }
+  });
+});
 
+var newProject = function(name, description, userId) {
   var concernId = 0;
   var alphaId = 0;
   var stateId = 0;
@@ -49,13 +56,5 @@ var newProject = function(name, description, userId) {
       }
     }
   }
-
   return projectId;
 };
-
-function setup() {
-  Projects.remove({});
-  Concerns.remove({});
-  Alphas.remove({});
-  States.remove({});
-}
