@@ -6,7 +6,6 @@
 preserve-inputs
 jquery
 accounts-twitter
-accounts-facebook
 accounts-github
 accounts-google
 accounts-password

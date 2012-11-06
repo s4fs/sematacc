@@ -1,5 +1,5 @@
 Template.kernel.userProjects = function () {
-  return Projects.find({userId: this.userId});
+  return Projects.find({userId: Meteor.userId()});
 };
 
  Template.kernel.concerns = function() {

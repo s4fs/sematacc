@@ -27,7 +27,7 @@ States.allow({
   update: function (userId, docs, fields, modifier) {
     // can only change your own documents
     return _.all(docs, function (doc) {
-      return true; //doc.owner === userId;
+      return doc.userId === userId;
     });
   },
   fetch: ['userId']
@@ -37,7 +37,7 @@ Alphas.allow({
   update: function (userId, docs, fields, modifier) {
     // can only change your own documents
     return _.all(docs, function (doc) {
-      return true; //doc.owner === userId;
+      return doc.userId === userId;
     });
   },
   fetch: ['userId']
@@ -47,7 +47,7 @@ Concerns.allow({
   update: function (userId, docs, fields, modifier) {
     // can only change your own documents
     return _.all(docs, function (doc) {
-      return true; //doc.owner === userId;
+      return doc.userId === userId;
     });
   },
   fetch: ['userId']

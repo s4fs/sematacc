@@ -13,18 +13,6 @@ Meteor.autosubscribe(function () {
   Meteor.startup(function() {
     resizeGraphDivs();
   });
-/*
-  Meteor.autorun(function(handle) {
-    if (!Meteor.userId()) 
-      return;
-    alert('ha');
-    Template.dashboard(['asd']);
-    Meteor.flush();
-    Meteor.flush();
-    handle.stop();
-  });
-*/
-
 
   // React to Session["selectedAlphaId"] changes
   var onAlphaSelected = function() {

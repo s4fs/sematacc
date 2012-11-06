@@ -1,7 +1,9 @@
 Template.dashboard.userProjects = function() {
-   return Projects.find({
-      userId: Meteor.userId()
-   });
+   var projects = Projects.find({userId: Meteor.userId()});
+   if (projects.count() === 0)
+      return null;
+   else
+      return projects;
 };
 
 Template.dashboard.events({
@@ -21,10 +23,10 @@ Template.dashboard.events({
       if (name && description) {
          var projectId = Session.get('editProjectId');
          if (projectId){
-            Projects.update({_id: projectId, userId: this.userId}, {$set: {name: name, description: description}});
+            Projects.update({_id: projectId, userId: Meteor.userId()}, {$set: {name: name, description: description}});
             Session.set('editProjectId', null);
          }else{
-            Meteor.call('newProject', name, description, this.userId,
+            Meteor.call('newProject', name, description, Meteor.userId(),
                function(error, result) {
                   if (error) {
                      alert('Error when creating project: ' + error);
@@ -53,7 +55,7 @@ Template.dashboard.events({
       event.preventDefault();
       var project_id = $(event.currentTarget).parent().parent().attr('for');
       Session.set('selectedProjectId', project_id);
-      var project_name = Projects.findOne({_id: project_id, userId: this.userId});
+      var project_name = Projects.findOne({_id: project_id, userId: Meteor.userId()});
       Session.set('selectedProjectName', project_name.name);
    },
 
@@ -61,7 +63,7 @@ Template.dashboard.events({
       event.preventDefault();
       var project_id = $(event.currentTarget).parent().parent().attr('for');
       Session.set('editProjectId', project_id);
-      var project = Projects.findOne({_id: project_id, userId: this.userId});
+      var project = Projects.findOne({_id: project_id, userId: Meteor.userId()});
       $('input#nameNewProject').val(project.name);
       $('textarea#descriptionNewProject').val(project.description);
       $('button#makeNewProject').html('Edit');
