@@ -14,10 +14,10 @@ Template.dashboard.events({
       var description = $('textarea#descriptionNewProject').val();
       if (name && description) {
          var projectId = Session.get('editProjectId');
-         if (projectId){
+         if (projectId) {
             Projects.update({_id: projectId, userId: Meteor.userId()}, {$set: {name: name, description: description}});
             Session.set('editProjectId', null);
-         }else{
+         } else {
             Meteor.call('newProject', name, description, Meteor.userId(),
                function(error, result) {
                   if (error) {
@@ -38,10 +38,15 @@ Template.dashboard.events({
      $('.projectCommands').hide();
    },
 
-   'click .accordionitem': function(event) {
-     $('input.accordionitem').attr('checked', false);
-     $('#' + this._id).attr('checked', true);
-   },
+   'click .accordionlabel': function(event) {
+    if (!$('input#' + this._id).attr('checked')) {
+      $('input.accordionitem').removeAttr('checked');
+    } else {
+      setTimeout(function() {
+        $('input.accordionitem').removeAttr('checked');
+      }, 100);
+    }
+  },
 
    'click a.viewProject': function(event) {
       event.preventDefault();

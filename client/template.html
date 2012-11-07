@@ -8,11 +8,11 @@
 </head>
 <body>
     <div class="top">
-        {{loginButtons}}
+        <div class="login">{{loginButtons}}</div>
     </div>
     <div class="wrapper">
         <div class="left">
-                <h1>SEMAT Accelerator</h1>
+                <h1 class="heading">SEMAT Accelerator</h1>
             <div class="hints">
                 <h1 class="icon-comment">Hint Box</h1>
                 <div class="hint">
@@ -44,8 +44,8 @@
                         {{> dashboard}}
                     {{/if}}
                 {{else}}
-                    <h1 id="kernel">Welcome</h1>
-                    <h1 id="message"></h1>
+                    <h1 id="kernel" class="heading">Welcome</h1>
+                    <h1 id="message" class="heading"></h1>
                     <div class="dashboard">
                         <div style="padding:30px">
                         <p>
