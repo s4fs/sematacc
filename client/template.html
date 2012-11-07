@@ -29,7 +29,7 @@
                         {{/unless}}
                     {{else}}
                         <p>
-                            Please Login or Register (upper-right corner).
+                            {{> pleaseLogin}}
                         </p>
                     {{/if}}
                 </div>
@@ -47,17 +47,20 @@
                     <h1 id="kernel" class="heading">Welcome</h1>
                     <h1 id="message" class="heading"></h1>
                     <div class="dashboard">
-                        <div style="padding:30px">
-                        <p>
-                        Welcome to SematAcc, the Essence Accelerator system.
-                        </p>
-                        <p>
-                            This web prototype was designed to speed up the 
-                            learning of <a href="http://semat.org/wp-content/uploads/2012/02/12-08-15.pdf">Essence Theory</a> in Software Engineering and to easily test it with a software project.
-                        </p>
-                        <p>
-                            SematAcc was implemented by <a href="http://www.inf.unibz.it/s4fs">S4FS</a> at the Free University of Bozen-Bolzano an is free for everybody to use.
-                        </p>
+                        <div class="home">
+                            <p>
+                                Welcome to SematAcc, the Essence Accelerator system!
+                            </p>
+                            <p>
+                                This tool is designed to speed up the learning of <a href="http://semat.org/wp-content/uploads/2012/02/12-08-15.pdf">Essence Theory</a> in Software Engineering (see <a href="http://semat.org">Semat website</a>) and to easily test it with any software project in your company. 
+                            </p>
+                            <p>
+                                The tool is implemented by <a href="http://www.inf.unibz.it/s4fs">S4FS</a> at the Free University of Bozen-Bolzano in Italy and it is free for everyone to use.
+                            </p>
+                            <p>
+                                We are seeking for Essence enthusiasts to join in to the development of the SematAcc. <br />
+                                If you became interested, please contact professor Pekka Abrahamsson at firstname.lastname(at)unibz.it.
+                            </p>
                         </div>
                     </div>
                 {{/if}}
@@ -73,3 +76,7 @@
         Being developed using cutting-edge <a href="http://meteor.com/">Meteor framework</a> by <a href="http://www.inf.unibz.it/s4fs">S4FS</a> at the <a href="http://www.unibz.it">Free University of Bozen-Bolzano</a>
     </div>
 </body>
+
+<template name="pleaseLogin">
+    Please <a href="#" id="pleaselogin">Login or Register</a> (upper-right corner).
+</template>

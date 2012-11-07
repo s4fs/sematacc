@@ -63,9 +63,21 @@ if (Meteor.isServer) {
 // subscribe
 if (Meteor.isClient) {
   Meteor.autosubscribe(function() {
-    Meteor.subscribe('Projects', Meteor.userId());
+    Meteor.subscribe('Projects', Meteor.userId() ,onProjectSubscription);
     Meteor.subscribe('Concerns');
     Meteor.subscribe('Alphas');
     Meteor.subscribe('States');
   });
+
+  var onProjectSubscription = function() {
+  var projects = Projects.find({userId: Meteor.userId()}).count();
+   if (projects === 0) {
+      Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.', Meteor.userId(),
+        function(error, result) {
+          if (error) {
+            alert('Error when creating the default project: ' + error);
+          }
+        });
+   }
+  };
 }

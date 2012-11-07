@@ -88,6 +88,14 @@ div.top {
     padding: 0;
 }
 
+.home {
+    padding:30px;
+}
+
+.home p {
+    margin-bottom: 20px;
+}
+
 .right {
     width: 30%;
     height: 100%;

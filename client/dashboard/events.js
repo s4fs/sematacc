@@ -69,11 +69,26 @@ Template.dashboard.events({
 
    'click a.deleteProject': function(event) {
       event.preventDefault();
+
+      var isUserSure = window.confirm("Are you sure you want to delete this Project?");
+      if (!isUserSure)
+         return;
+
       var project_id = $(event.currentTarget).parent().parent().attr('for');
       if (Session.equals('selectedProjectId', project_id)) {
          Session.set('selectedProjectId', null);
          Session.set('selectedProjectName', null);
       }
-      Projects.remove({_id: project_id});
+      Projects.remove({_id: project_id, userId: Meteor.userId()});
+
+      projectsCount = Projects.find({userId: Meteor.userId()}).count();
+      if (projectsCount === 0) {
+      Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.', Meteor.userId(),
+        function(error, result) {
+          if (error) {
+            alert('Error when creating the default project: ' + error);
+          }
+        });
+   }
    }
 });
