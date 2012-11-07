@@ -1,5 +1,5 @@
 var updateConcernCompletions = function() {
-    var concerns = Concerns.find({});
+    var concerns = Concerns.find({userId: Meteor.userId()});
     concerns.forEach(function(concern) {
       var alphas = Alphas.find({
         concernId: concern._id,
@@ -21,7 +21,7 @@ var updateConcernCompletions = function() {
   };
 
 var updateAlphasCompletions = function() {
-    var alphas = Alphas.find({});
+    var alphas = Alphas.find({userId: Meteor.userId()});
     alphas.forEach(function(alpha) {
       var alphaStatesCount = States.find({
         alphaId: alpha._id,
