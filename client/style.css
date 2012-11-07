@@ -240,18 +240,19 @@ ul.projects li {
     display: none;
 }
 
-span.projectName {
-    display: block;
+div.projectName {
     float: left;
-    width: 80%;
+    width: 75%;
+    margin:0;
+    padding:0;
 }
 
-span.commands {
-    display: block;
-    float: left;
+div.projectCommands {
+    float:left;
     text-align: right;
-    width: 15%;
-    margin-right: 5%;
+    margin: 0;
+    padding: 0;
+    display:none;
 }
 
 /************

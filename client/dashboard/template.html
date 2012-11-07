@@ -15,14 +15,14 @@
                 <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"
                 {{#if checkable this._id}}checked="checked" {{/if}}/>
                 <label for="{{this._id}}" class="accordionlabel">
-                    <span class="projectName">
+                    <div class="projectName">
                         {{this.name}}
-                    </span>
-                    <span class="projectCommands" id="projectCommands{{this._id}}">
+                    </div>
+                    <div class="projectCommands" id="projectCommands{{this._id}}">
                         <a href="#" class="viewProject icon-play" title="Run Project on SematAcc"></a>
                         <a href="#" class="editProject icon-pencil" title="Edit Project"></a>
                         <a href="#" class="deleteProject icon-trash" title="Delete Project"></a>
-                    </span>
+                    </div>
                 </label>
                 <article class="ac-large">
                     {{this.description}}
