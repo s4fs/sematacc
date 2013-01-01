@@ -1,2 +1,5 @@
 .DS_Store
 .meteor
+.iml
+.idea
+.dbshell
