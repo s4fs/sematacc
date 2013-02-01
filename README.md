@@ -13,9 +13,17 @@ Just create your account (the simplest sign-up ever!) and use it as much as you 
 
 The [S4FS Research team](http://www.inf.unibz.it/s4fs/) at the Free University of Bozen-Bolzano released SematAcc as OSS and certainly invite those interested in continuing developing it further to join the excitement. 
 
+BEFORE YOU START
+================
+
+We use Google Analytics to analyze sematacc.meteor.com traffic. 
+If you want to use it, too, please set the `ganalaytics` variable to your tracking code (in the form of 'XX-XXXXXXX-X').
+The variable is defined at the bottom of `client/main.js`.
+
 
 LICENSE
 =======
+
 SematAcc is released under the GNU Affero General Public License. See the LICENSE file for more details.
 
 CREDITS
