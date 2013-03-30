@@ -35,42 +35,32 @@ if (Meteor.isServer) {
   });
   // ACL
   Projects.allow({
-    update: function(userId, docs, fields, modifier) {
-      return _.all(docs, function(doc) {
+    update: function(userId, doc, fields, modifier) {
         return doc.userId === userId;
-      });
     },
-    remove: function(userId, docs) {
-      return _.all(docs, function(doc) {
+    remove: function(userId, doc) {
         return doc.userId === userId;
-      });
     },
     fetch: ['userId']
   });
   Concerns.allow({
-    update: function(userId, docs, fields, modifier) {
+    update: function(userId, doc, fields, modifier) {
       // can only change your own documents
-      return _.all(docs, function(doc) {
         return doc.userId === userId;
-      });
     },
     fetch: ['userId']
   });
   Alphas.allow({
-    update: function(userId, docs, fields, modifier) {
+    update: function(userId, doc, fields, modifier) {
       // can only change your own documents
-      return _.all(docs, function(doc) {
         return doc.userId === userId;
-      });
     },
     fetch: ['userId']
   });
   States.allow({
-    update: function(userId, docs, fields, modifier) {
+    update: function(userId, doc, fields, modifier) {
       // can only change your own documents
-      return _.all(docs, function(doc) {
         return doc.userId === userId;
-      });
     },
     fetch: ['userId']
   });

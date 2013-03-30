@@ -42,13 +42,12 @@ Template.kernel.events({
     }
   },
   'click li.selectable': function(event) {
-    event.preventDefault();
     Alphas.update({
-      _id: this.alphaId
-    }, {
-      $set: {
-        currentStateId: this._id
-      }
+        _id: this.alphaId
+      }, {
+        $set: {
+          currentStateId: this._id
+        }
     });
     updateAlphasCompletions();
     updateConcernCompletions();

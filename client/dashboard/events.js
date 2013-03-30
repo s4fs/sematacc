@@ -31,7 +31,7 @@ Template.dashboard.events({
       if (name && description) {
          var projectId = Session.get('editProjectId');
          if (projectId) {
-            Projects.update({_id: projectId, userId: Meteor.userId()}, {$set: {name: name, description: description}});
+            Projects.update({_id: projectId}, {$set: {name: name, description: description}});
             Session.set('editProjectId', null);
          } else {
             Meteor.call('newProject', name, description, Meteor.userId(),
@@ -95,7 +95,7 @@ Template.dashboard.events({
          Session.set('selectedProjectId', null);
          Session.set('selectedProjectName', null);
       }
-      Projects.remove({_id: project_id, userId: Meteor.userId()});
+      Projects.remove(project_id);
 
       projectsCount = Projects.find({userId: Meteor.userId()}).count();
       if (projectsCount === 0) {

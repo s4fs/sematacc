@@ -120,8 +120,10 @@ var buildHbarOverallGraph = function(elemId, selectedProjectId) {
 
 
 var drawGraphs = function(selectedProjectId) {
+  
   if (!selectedProjectId)
     selectedProjectId = Session.get('selectedProjectId');
+
   if (!selectedProjectId)
     return;
 
