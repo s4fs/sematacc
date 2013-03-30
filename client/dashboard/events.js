@@ -1,19 +1,8 @@
 /**
- * Copyright (C) 2013  Daniel Graziotin
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Semat Essence Accelerator
+ * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
+ * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
-
 Template.dashboard.events({
    'click a#showNewProject': function(event) {
       event.preventDefault();
@@ -31,7 +20,7 @@ Template.dashboard.events({
       if (name && description) {
          var projectId = Session.get('editProjectId');
          if (projectId) {
-            Projects.update({_id: projectId, userId: Meteor.userId()}, {$set: {name: name, description: description}});
+            Projects.update({_id: projectId}, {$set: {name: name, description: description}});
             Session.set('editProjectId', null);
          } else {
             Meteor.call('newProject', name, description, Meteor.userId(),
@@ -95,7 +84,7 @@ Template.dashboard.events({
          Session.set('selectedProjectId', null);
          Session.set('selectedProjectName', null);
       }
-      Projects.remove({_id: project_id, userId: Meteor.userId()});
+      Projects.remove(project_id);
 
       projectsCount = Projects.find({userId: Meteor.userId()}).count();
       if (projectsCount === 0) {

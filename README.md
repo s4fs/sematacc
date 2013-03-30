@@ -24,7 +24,7 @@ The variable is defined at the bottom of `client/main.js`.
 LICENSE
 =======
 
-SematAcc is released under the GNU Affero General Public License. See the LICENSE file for more details.
+SematAcc is released under the The BSD 3-Clause License. See the LICENSE file for more details.
 
 CREDITS
 ================

@@ -1,19 +1,8 @@
 /**
- * Copyright (C) 2013  Daniel Graziotin
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Semat Essence Accelerator
+ * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
+ * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
-
 var Projects = new Meteor.Collection('Projects');
 var Concerns = new Meteor.Collection('Concerns');
 var Alphas = new Meteor.Collection('Alphas');
@@ -35,42 +24,32 @@ if (Meteor.isServer) {
   });
   // ACL
   Projects.allow({
-    update: function(userId, docs, fields, modifier) {
-      return _.all(docs, function(doc) {
+    update: function(userId, doc, fields, modifier) {
         return doc.userId === userId;
-      });
     },
-    remove: function(userId, docs) {
-      return _.all(docs, function(doc) {
+    remove: function(userId, doc) {
         return doc.userId === userId;
-      });
     },
     fetch: ['userId']
   });
   Concerns.allow({
-    update: function(userId, docs, fields, modifier) {
+    update: function(userId, doc, fields, modifier) {
       // can only change your own documents
-      return _.all(docs, function(doc) {
         return doc.userId === userId;
-      });
     },
     fetch: ['userId']
   });
   Alphas.allow({
-    update: function(userId, docs, fields, modifier) {
+    update: function(userId, doc, fields, modifier) {
       // can only change your own documents
-      return _.all(docs, function(doc) {
         return doc.userId === userId;
-      });
     },
     fetch: ['userId']
   });
   States.allow({
-    update: function(userId, docs, fields, modifier) {
+    update: function(userId, doc, fields, modifier) {
       // can only change your own documents
-      return _.all(docs, function(doc) {
         return doc.userId === userId;
-      });
     },
     fetch: ['userId']
   });
