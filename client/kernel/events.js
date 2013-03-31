@@ -3,48 +3,74 @@
  * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
-var timeOut;
+
+/**
+ * This file is responsible to handle all events triggered by the user
+ * when using the Kernel
+ */
+
 Template.kernel.events({
+  /**
+   * Exit the Project view by unselecting the related Session variables
+   */
   'click a#clearSelectedProjectId': function(event) {
     event.preventDefault();
     Session.set('selectedProjectId', null);
     Session.set('selectedProjectName', null);
   },
+  /**
+   * Display the Concern name and description when hovering the mouse
+   * on a Concern area (including Alphas and States)
+   */
   'mouseenter .accordionlabel': function(event) {
     var concern = Concerns.findOne(this.concernId);
     $('#message').html(concern.name);
     $('.hints .hint').html(this.description);
-    //$('.hints .hint').html(this.description).prepend('<span class="icon-comment"></span>');
   },
   'mouseleave .accordionlabel': function(event) {},
   'mouseleave .ac-container': function(event) {
     $('#message').text('');
     $('.hints .hint').text('');
   },
+  /**
+   * Close the other Accordion Items when one is clicked
+   */
   'click .accordionlabel': function(event) {
-    if (!$('input#' + this._id).attr('checked')) {
-      $('input.accordionitem').removeAttr('checked');
-    } else {
-      setTimeout(function() {
-        $('input.accordionitem').removeAttr('checked');
-      }, 100);
-    }
+    $('input.accordionitem').prop('checked', false);
   },
+  /**
+   * A click on a non selected State sets the State as the active one.
+   */
   'click li.selectable': function(event) {
     Alphas.update({
-        _id: this.alphaId
-      }, {
-        $set: {
-          currentStateId: this._id
-        }
+      _id: this.alphaId
+    }, {
+      $set: {
+        currentStateId: this._id
+      }
     });
-    updateAlphasCompletions();
-    updateConcernCompletions();
+    Meteor.call('updateAlphasCompletions', function(error, result) {
+      Meteor.call('updateConcernCompletions', function(error, result) {
+        drawGraphs();
+      });
+    });
   },
-  'click li.item.selected': function(event) { // a click on an already selected item removes it
+  /**
+   * A click on an already selected State remove the state from the active set.
+   */
+  'click li.item.selected': function(event) {
     var alphaId = this.alphaId;
-    Alphas.update({_id: alphaId, userId: Meteor.userId()}, { $set: { completion: 0, currentStateId: null }});
-    updateConcernCompletions();
+    Alphas.update({
+      _id: alphaId
+    }, {
+      $set: {
+        completion: 0,
+        currentStateId: null
+      }
+    });
+    Meteor.call('updateConcernCompletions', function(error, result) {
+      drawGraphs();
+    });
   },
   'mouseenter li.item.selected': function(event) {
     $(event.target).find('div').removeClass('icon-ok');
@@ -68,22 +94,5 @@ Template.kernel.events({
   },
   'mouseleave li.item': function(event) {
     $('.hints .hint').text();
-  },
-
-  'click a#openNewproject': function(event) {
-    event.preventDefault();
-    $('.newproject').toggle('slow');
-  },
-
-  'click button#btnNewproject': function(event) {
-    event.preventDefault();
-  },
-
-  'mouseenter li.project': function(event) {
-    $('.description').toggle('slow');
-  },
-
-  'mouseleave li.project': function(event) {
-    $('.description').toggle('slow');
   }
 });
