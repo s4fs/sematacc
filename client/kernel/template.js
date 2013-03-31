@@ -3,11 +3,10 @@
  * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
-Template.kernel.userProjects = function() {
-  return Projects.find({
-    userId: Meteor.userId()
-  });
-};
+
+/**
+ * Render Concerns, Alphas, and States for a Project.
+ */
 
 Template.kernel.concerns = function() {
   var projectId = Session.get('selectedProjectId');
@@ -27,15 +26,16 @@ Template.kernel.alphas = function(concernId) {
 
 Template.kernel.currentState = function(stateId) {
   var state = States.findOne({
-    _id: stateId,
-    userId: Meteor.userId()
+    _id: stateId
   });
-  if(state) return ': ' + state.name;
-  else return '';
+  if (state)
+    return ': ' + state.name;
+  else 
+    return '';
 };
 
 Template.kernel.states = function(alphaId) {
-  if(alphaId) return States.find({
+  if (alphaId) return States.find({
     alphaId: alphaId,
     userId: Meteor.userId()
   });

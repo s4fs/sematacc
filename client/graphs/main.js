@@ -3,9 +3,11 @@
  * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
+
 /**
- * Chart utilities
+ * Chart utilities.
  */
+
 var resizeGraphDivs = function() {
     graphsW = $('.graphs').width();
     graphsH = $('.graphs').width();
@@ -66,7 +68,8 @@ var buildHbarGraph = function(elemId, data, labels, meteorIds) {
 };
 
 var buildRoseAlphasGraph = function(elemId, selectedProjectId) {
-  if (elemId == null) elemId = 'graphRoseAlphas';
+  if (elemId === null)
+    return;
 
   var alphas = Alphas.find({projectId: selectedProjectId, userId: Meteor.userId()}).fetch();
   var data = [];
@@ -94,8 +97,10 @@ var buildRoseAlphasGraph = function(elemId, selectedProjectId) {
   return roseAlphaGraph;
 };
 
+
 var buildHbarOverallGraph = function(elemId, selectedProjectId) {
-  if (elemId == null) elemId = 'graphHbarOverall';
+  if (elemId === null)
+    return;
   var concerns = Concerns.find({projectId: selectedProjectId, userId: Meteor.userId()}).fetch();
   var completions = [];
   var names = [];
@@ -107,9 +112,11 @@ var buildHbarOverallGraph = function(elemId, selectedProjectId) {
   return hbarOverallGraph;
 };
 
-
+/**
+ * Draw the graphs for the current project
+ */
 var drawGraphs = function(selectedProjectId) {
-  
+
   if (!selectedProjectId)
     selectedProjectId = Session.get('selectedProjectId');
 
