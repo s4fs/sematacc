@@ -3,18 +3,20 @@
  * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
-/**
- * Chart utilities
- */
-var resizeGraphDivs = function() {
-    graphsW = $('.graphs').width();
-    graphsH = $('.graphs').width();
-    $('canvas#graphRoseAlphas').attr('width', graphsW - 20);
-    $('canvas#graphRoseAlphas').attr('height', graphsH / 1.618);
 
-    $('canvas#graphHbarOverall').attr('width', graphsW - 20);
-    $('canvas#graphHbarOverall').attr('height', (graphsH - (graphsH / 1.618)));
-  };
+/**
+ * Chart utilities.
+ */
+
+var resizeGraphDivs = function() {
+  graphsW = $('.graphs').width();
+  graphsH = $('.graphs').width();
+  $('canvas#graphRoseAlphas').attr('width', graphsW - 20);
+  $('canvas#graphRoseAlphas').attr('height', graphsH / 1.618);
+
+  $('canvas#graphHbarOverall').attr('width', graphsW - 20);
+  $('canvas#graphHbarOverall').attr('height', (graphsH - (graphsH / 1.618)));
+};
 
 $(window).resize(function() {
   drawGraphs();
@@ -66,9 +68,12 @@ var buildHbarGraph = function(elemId, data, labels, meteorIds) {
 };
 
 var buildRoseAlphasGraph = function(elemId, selectedProjectId) {
-  if (elemId == null) elemId = 'graphRoseAlphas';
+  if (elemId === null) return;
 
-  var alphas = Alphas.find({projectId: selectedProjectId, userId: Meteor.userId()}).fetch();
+  var alphas = Alphas.find({
+    projectId: selectedProjectId,
+    userId: Meteor.userId()
+  }).fetch();
   var data = [];
   var labels = [];
   var meteorIds = [];
@@ -94,9 +99,13 @@ var buildRoseAlphasGraph = function(elemId, selectedProjectId) {
   return roseAlphaGraph;
 };
 
+
 var buildHbarOverallGraph = function(elemId, selectedProjectId) {
-  if (elemId == null) elemId = 'graphHbarOverall';
-  var concerns = Concerns.find({projectId: selectedProjectId, userId: Meteor.userId()}).fetch();
+  if (elemId === null) return;
+  var concerns = Concerns.find({
+    projectId: selectedProjectId,
+    userId: Meteor.userId()
+  }).fetch();
   var completions = [];
   var names = [];
   concerns.forEach(function(concern) {
@@ -107,14 +116,13 @@ var buildHbarOverallGraph = function(elemId, selectedProjectId) {
   return hbarOverallGraph;
 };
 
-
+/**
+ * Draw the graphs for the current project
+ */
 var drawGraphs = function(selectedProjectId) {
-  
-  if (!selectedProjectId)
-    selectedProjectId = Session.get('selectedProjectId');
+  if (!selectedProjectId) selectedProjectId = Session.get('selectedProjectId');
 
-  if (!selectedProjectId)
-    return;
+  if (!selectedProjectId) return;
 
   resizeGraphDivs();
   graphIds = ['graphRoseAlphas', 'graphHbarOverall'];
