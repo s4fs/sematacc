@@ -30,7 +30,7 @@ Template.kernel.currentState = function(stateId) {
   });
   if (state)
     return ': ' + state.name;
-  else 
+  else
     return '';
 };
 

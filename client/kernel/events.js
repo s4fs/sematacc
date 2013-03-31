@@ -49,8 +49,11 @@ Template.kernel.events({
         currentStateId: this._id
       }
     });
-    updateAlphasCompletions();
-    updateConcernCompletions();
+    Meteor.call('updateAlphasCompletions', function(error, result) {
+      Meteor.call('updateConcernCompletions', function(error, result) {
+        drawGraphs();
+      });
+    });
   },
   /**
    * A click on an already selected State remove the state from the active set.
@@ -65,7 +68,9 @@ Template.kernel.events({
         currentStateId: null
       }
     });
-    updateConcernCompletions();
+    Meteor.call('updateConcernCompletions', function(error, result) {
+      drawGraphs();
+    });
   },
   'mouseenter li.item.selected': function(event) {
     $(event.target).find('div').removeClass('icon-ok');

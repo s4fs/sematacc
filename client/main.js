@@ -22,23 +22,6 @@ Deps.autorun(function() {
   }
 });
 
-/**
- * Re-draw the graph everytime an Alpha changes.
- */
-//TODO optimize
-Deps.autorun(function() {
-  selectedProjectId = Session.get('selectedProjectId');
-  if (!selectedProjectId) return;
-
-  var query = Concerns.find({
-    userId: Meteor.userId()
-  });
-  var handle = query.observe({
-    changed: function(concern) {
-      drawGraphs(Session.get('selectedProjectId'));
-    }
-  });
-});
 
 Handlebars.registerHelper('selectedProjectId', function(input) {
   var selectedProjectId = Session.get('selectedProjectId');

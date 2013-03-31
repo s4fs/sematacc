@@ -87,6 +87,7 @@ Template.projects.events({
       userId: Meteor.userId()
     });
     Session.set('selectedProjectName', project_name.name);
+    drawGraphs();
   },
 
   'click a.editProject': function(event) {
