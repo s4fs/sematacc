@@ -37,3 +37,4 @@ The development of this software was made possible using the following component
  - [JQuery](http://jquery.org) - MIT License
  - [Meteor](http://meteor.com) - MIT License
  - [Fontello](http://fontello.com) - MIT License
+ - [Colorbox](http://www.jacklmoore.com/colorbox/) - MIT License
