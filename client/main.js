@@ -49,6 +49,8 @@ Deps.autorun(function() {
   if (!Meteor.userId()) {
     Session.set('selectedProjectId', null);
     Session.set('selectedProjectName', null);
+  } else {
+    Meteor.subscribe('Projects', onProjectSubscription);
   }
 });
 
@@ -97,7 +99,7 @@ var correctDropdownZIndexes = function() {
  * Render Google Analytics template.
  */
 Template.analytics.created = function() {
-  var ganalytics = '';
+  var ganalytics = ''; // 'UA-5685155-8'
   if (ganalytics === '') return;
 
   if (!window._gaq) window._gaq = [];
@@ -113,4 +115,8 @@ Template.analytics.created = function() {
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(ga, s);
   })();
+};
+
+Template.about.rendered = function() {
+  $('.inline').colorbox({inline:true, width:'90%', height: '90%'});
 };
