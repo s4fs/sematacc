@@ -18,7 +18,7 @@ BEFORE YOU START
 
 We use Google Analytics to analyze sematacc.meteor.com traffic. 
 If you want to use it, too, please set the `ganalaytics` variable to your tracking code (in the form of 'XX-XXXXXXX-X').
-The variable is defined at the bottom of `client/main.js`.
+The variable is defined in `client/ganalytics.js`.
 
 
 LICENSE
