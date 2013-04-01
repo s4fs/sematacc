@@ -40,7 +40,6 @@ Meteor.autosubscribe(function() {
   Meteor.subscribe('States');
 });
 
-
 /**
  * Called every time a dependency changes.
  */
@@ -54,82 +53,3 @@ Deps.autorun(function() {
   }
 });
 
-
-Handlebars.registerHelper('selectedProjectId', function(input) {
-  var selectedProjectId = Session.get('selectedProjectId');
-  return selectedProjectId;
-});
-
-Handlebars.registerHelper('selectedProjectName', function(input) {
-  var selectedProjectName = Session.get('selectedProjectName');
-  return selectedProjectName;
-});
-
-
-Template.pleaseLogin.events({
-  'click a#pleaselogin': function(event) {
-    event.preventDefault();
-    var loginButtonsSession = Accounts._loginButtonsSession;
-    loginButtonsSession.set('dropdownVisible', true);
-    Meteor.flush();
-    correctDropdownZIndexes();
-  }
-});
-
-/**
- * Copied from Meteor login system.
- */
-var correctDropdownZIndexes = function() {
-  // IE <= 7 has a z-index bug that means we can't just give the
-  // dropdown a z-index and expect it to stack above the rest of
-  // the page even if nothing else has a z-index.  The nature of
-  // the bug is that all positioned elements are considered to
-  // have z-index:0 (not auto) and therefore start new stacking
-  // contexts, with ties broken by page order.
-  //
-  // The fix, then is to give z-index:1 to all ancestors
-  // of the dropdown having z-index:0.
-  for (var n = document.getElementById('login-dropdown-list').parentNode;
-  n.nodeName !== 'BODY';
-  n = n.parentNode)
-  if (n.style.zIndex === 0) n.style.zIndex = 1;
-};
-
-/**
- * Render Google Analytics template
- */
-Template.analytics.created = function() {
-  var ganalytics = ''; // 'UA-5685155-8'
-  if (ganalytics === '') return;
-
-  if (!window._gaq) window._gaq = [];
-
-  _gaq.push(['_setAccount', ganalytics]);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script');
-    ga.type = 'text/javascript';
-    ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(ga, s);
-  })();
-};
-
-Template.about.rendered = function() {
-  $('.inline').colorbox({inline:true, width:'90%', height: '90%'});
-};
-
-Template.about.events({
-  /**
-   * Exit the Project view by unselecting the related Session variables
-   */
-  'click a#export': function(event) {
-    event.preventDefault();
-    projectId = Session.get('selectedProjectId');
-    Meteor.call('getEvents', projectId, function(error, result) {
-      $.colorbox({width: '98%', height: '95%', html: '<textarea style="width:95%;height:95%">' + result + '</textarea>'});
-    });
-  }
-});
