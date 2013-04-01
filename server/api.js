@@ -1,9 +1,27 @@
-var newProject = function(name, description, userId) {
+/**
+ * Semat Essence Accelerator
+ * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
+ * Licensed under the BSD 3-Clause. See the LICENSE File for details.
+ */
+
+/**
+ * This file implement the server-side methods, which will be public for the client. 
+ */
+
+/**
+ * Create and save a new Project
+ * @param  {string} name        Name of the Project
+ * @param  {string} description Description of the Project
+ * @return {int}             The Meteor/MongoDB id of the Project
+ */
+var newProject = function(name, description) {
   var concernId = 0;
   var alphaId = 0;
   var stateId = 0;
 
   var alphaCounter = 0;
+
+  var userId = Meteor.userId();
 
   projectId = Projects.insert({
     name: name,
@@ -51,6 +69,10 @@ var newProject = function(name, description, userId) {
   return projectId;
 };
 
+/**
+ * Calculate the percentage of completion of each Concern.
+ * Should be called after an Alpha switches to a new State and its completion has been done.
+ */
 var updateConcernCompletions = function() {
   var concerns = Concerns.find({
     userId: Meteor.userId()
@@ -75,6 +97,9 @@ var updateConcernCompletions = function() {
   });
 };
 
+/**
+ * Calculate the percentage of completion of each Alpha.
+ */
 var updateAlphasCompletions = function() {
   var alphas = Alphas.find({
     userId: Meteor.userId()

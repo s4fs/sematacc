@@ -11,6 +11,10 @@ Meteor.startup(function() {
   resizeGraphDivs();
 });
 
+$(window).resize(function() {
+  drawGraphs();
+});
+
 /**
  * Called every time a dependency changes.
  */
@@ -67,7 +71,7 @@ var correctDropdownZIndexes = function() {
  * Render Google Analytics template.
  */
 Template.analytics.created = function() {
-  var ganalytics = 'UA-5685155-8';
+  var ganalytics = '';
   if (ganalytics === '') return;
 
   if (!window._gaq) window._gaq = [];
