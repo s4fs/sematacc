@@ -149,7 +149,15 @@ var insertEvent = function(projectId, who, what) {
   Events.insert(eventobj);
 };
 
+/**
+ * Return events as a CSV text string
+ */
 var getEvents = function(projectId) {
   var userId = Meteor.userId();
-  return Events.find({projectId: projectId, userId : userId}).fetch();
+  var events = Events.find({projectId: projectId, userId : userId});
+  var buffer = 'WHEN,WHO,WHAT\n';
+  events.forEach(function(ev){
+    buffer = buffer + '"' + ev.when.toISOString() + '","' + ev.who + '","' + ev.what + '"\n';
+  });
+  return buffer;
 };

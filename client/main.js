@@ -96,7 +96,7 @@ var correctDropdownZIndexes = function() {
 };
 
 /**
- * Render Google Analytics template.
+ * Render Google Analytics template
  */
 Template.analytics.created = function() {
   var ganalytics = ''; // 'UA-5685155-8'
@@ -120,3 +120,16 @@ Template.analytics.created = function() {
 Template.about.rendered = function() {
   $('.inline').colorbox({inline:true, width:'90%', height: '90%'});
 };
+
+Template.about.events({
+  /**
+   * Exit the Project view by unselecting the related Session variables
+   */
+  'click a#export': function(event) {
+    event.preventDefault();
+    projectId = Session.get('selectedProjectId');
+    Meteor.call('getEvents', projectId, function(error, result) {
+      $.colorbox({width: '98%', height: '95%', html: '<textarea style="width:95%;height:95%">' + result + '</textarea>'});
+    });
+  }
+});

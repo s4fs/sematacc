@@ -122,9 +122,9 @@ div.top {
     color: #7DB4B5;
 }
 
-a.inline {
+a.inline, a.export {
     font-size:2em;
-    margin-bottom:5px;
+    margin-right:20px;
 }
 
 .about {
