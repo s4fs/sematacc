@@ -16,6 +16,32 @@ $(window).resize(function() {
 });
 
 /**
+ * Create a default empty project on user first login.
+ */
+var onProjectSubscription = function() {
+  var projects = Projects.find({
+    userId: Meteor.userId()
+  }).count();
+  if (projects === 0) {
+    Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.',
+
+    function(error, result) {
+      if (error) {
+        alert('Error when creating the default project: ' + error);
+      }
+    });
+  }
+};
+
+Meteor.autosubscribe(function() {
+  Meteor.subscribe('Projects', onProjectSubscription);
+  Meteor.subscribe('Concerns');
+  Meteor.subscribe('Alphas');
+  Meteor.subscribe('States');
+});
+
+
+/**
  * Called every time a dependency changes.
  */
 Deps.autorun(function() {
