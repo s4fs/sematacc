@@ -129,3 +129,27 @@ var updateAlphasCompletions = function() {
     });
   });
 };
+
+/**
+ * Log an event in the database
+ * @param  {string} projectId Meteor/MongoDB id of the project
+ * @param  {string} who       who is causing the event / where is the event happening
+ * @param  {string} what      the event happening
+ */
+var insertEvent = function(projectId, who, what) {
+  var userId = Meteor.userId();
+  var timestamp = new Date();
+  eventobj = {
+    when : timestamp,
+    projectId : projectId,
+    who : who,
+    what : what,
+    userId : Meteor.userId()
+  };
+  Events.insert(eventobj);
+};
+
+var getEvents = function(projectId) {
+  var userId = Meteor.userId();
+  return Events.find({projectId: projectId, userId : userId}).fetch();
+};

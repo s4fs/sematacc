@@ -41,6 +41,11 @@ States.allow({
 /**
  * Publish the collections of the models, to the connected client.
  */
+Meteor.publish('Events', function() {
+  return Events.find({
+    userId: this.userId
+  }, {});
+});
 Meteor.publish('Projects', function() {
   return Projects.find({
     userId: this.userId
@@ -86,5 +91,11 @@ Meteor.methods({
   },
   updateConcernCompletions: function() {
     return updateConcernCompletions();
+  },
+  insertEvent: function(projectId, who, what) {
+    return insertEvent(projectId, who, what);
+  },
+  getEvents: function(projectId) {
+    return getEvents(projectId);
   }
 });
