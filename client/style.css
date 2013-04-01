@@ -72,8 +72,7 @@ div.top {
 
 .wrapper {
     width: 98%;
-    height: 96%;
-
+    height: 94%;
     padding-left: 1%;
     padding-right: 1%;
 }
@@ -111,10 +110,10 @@ div.top {
 }
 
 .bottom {
-    width: 100%;
-    height: 2%;
+    width: 96%;
+    height: 3%;
     margin: 0;
-    padding: 0;
+    padding: 0 2%;
     text-align: right;
     font-size: 0.8em;
 }
@@ -122,6 +121,41 @@ div.top {
 .bottom a, p a {
     color: #7DB4B5;
 }
+
+a.inline {
+    font-size:2em;
+    margin-bottom:5px;
+}
+
+.about {
+    background-image: url(/img/background.png);
+    padding:30px;
+}
+
+.about div.section {
+    margin-bottom:20px;
+}
+
+.about h1 {
+    height: auto;
+    text-align: left;
+}
+
+.about p {
+    margin: 20px;
+    padding: normal;
+    font-size:normal;
+}
+
+.about pre {
+    overflow: scroll;
+}
+
+.about ul, .about ul li {
+    margin:10px;
+    list-style-type: disc;
+}
+
 
 /***********
  * HINT BOX
