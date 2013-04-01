@@ -3,6 +3,13 @@
  * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
+
+/**
+ * This file contains the pre-defined description of the database when a Project is created.
+ * That is, the Concerns, Alphas, and States are defined here.
+ * Additionally, the description of all the entities can be found in this file.
+ */
+
 var kernelSkeleton = {
     concerns: [{
       name: 'Customer',

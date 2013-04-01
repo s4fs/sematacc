@@ -124,7 +124,7 @@ Template.projects.events({
       userId: Meteor.userId()
     }).count();
     if (projectsCount === 0) {
-      Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.', Meteor.userId(),
+      Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.',
 
       function(error, result) {
         if (error) {
