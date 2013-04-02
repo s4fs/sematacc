@@ -53,7 +53,6 @@ Template.kernel.events({
     state = States.findOne(this._id);
     Meteor.call('updateAlphasCompletions', function(error, result) {
       Meteor.call('updateConcernCompletions', function(error, result) {
-        drawGraphs();
         Meteor.call('insertEvent', Session.get('selectedProjectId'), alpha.name+'.state', state.name);
       });
     });
@@ -72,7 +71,6 @@ Template.kernel.events({
       }
     });
     Meteor.call('updateConcernCompletions', function(error, result) {
-      drawGraphs();
       Meteor.call('insertEvent', Session.get('selectedProjectId'), alpha.name+'.state', 'NULL');
     });
   },
