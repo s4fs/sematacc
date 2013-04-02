@@ -2,16 +2,30 @@ SEMAT Accelerator
 =================
 SEMAT Accelerator (a.k.a. SematAcc) is a web positioning system for [SEMAT](http://semat.org) Essence Theory of Software Engineering.
 
-SematAcc provides practical ways to learn the Essence theory, as it enables a web positioning system to represent a software system status using Essence Kernel (currently, only the Alphas and the States are supported).
+SematAcc is a response to the lack of practicability of the Essence Theory of Software Engineering. It provides practical ways to learn the Essence theory, as it enables a web positioning system to represent a software system status using Essence Kernel (currently, only the Concerns, Alphas and the States are supported).
 
-The tool itself serves for multiple use cases. In short, it is an awareness creator, self-positioning system, discussion generator as well as visualization of your project's current state.
-
-The tool is a fully working prototype implemented using cutting-edge [Meteor](http://meteor.com) framework.
-
-SematAcc latest version is always on-line at http://sematacc.meteor.com/
-Just create your account (the simplest sign-up ever!) and use it as much as you want.
+The tool itself serves for multiple use cases.
+In short, it is an awareness creator, self-positioning system, discussion generator as well as visualization of your project’s current state.
+SematAcc was also developed with research in mind. It enables research on Essence by logging the events on each State change.
+It might be employed as a valuable tool for controlled experiments and case studies.
 
 The [S4FS Research team](http://www.inf.unibz.it/s4fs/) at the Free University of Bozen-Bolzano released SematAcc as OSS and certainly invite those interested in continuing developing it further to join the excitement. 
+
+
+ESSENCE THEORY OF SOFTWARE ENGINEERING
+======================================
+
+SEMAT Essence Theory of Software Engineering [aims to](http://semat.org/?page_id=2):
+
+    Refound software engineering based on a solid theory, proven principles and best practices that:
+    -Include a kernel of widely-agreed elements, extensible for specific uses
+    -Addresses both technology and people issues
+    -Are supported by industry, academia, researchers and users
+    -Support extension in the face of changing requirements and technology
+
+A simple introduction to the Essence theory can be found in the materials 
+of [a special lecture](http://task3.cc/1328/special-lecture-on-semat-essence-of-software-engineering/) held at the Free University of Bozen-Bolzano. 
+Useful references to complete materials are available there, as well.
 
 BEFORE YOU START
 ================
@@ -19,6 +33,19 @@ BEFORE YOU START
 We use Google Analytics to analyze sematacc.meteor.com traffic. 
 If you want to use it, too, please set the `ganalaytics` variable to your tracking code (in the form of 'XX-XXXXXXX-X').
 The variable is defined in `client/ganalytics.js`.
+
+USAGE
+=====
+SematAcc is a regular [Meteor](http://meteor.com) application and it requires it as a dependency.
+Please refer to [Meteor documentation](http://docs.meteor.com) in order to run it.
+
+A live version of SematAcc runs on Meteor servers at http://sematacc.meteor.com for demo and testing purposes. 
+Although we try to keep the data stored on there, please do not heavily rely on it.
+
+In order to quickly have your own copy of SematAcc running on a private instance of Meteor servers, deploy it under a different URL:
+<pre style='lang:bash'>
+meteor deploy -p your-chosen-name.meteor.com
+</pre>
 
 
 LICENSE
