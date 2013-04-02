@@ -43,6 +43,10 @@ Meteor.autosubscribe(function() {
 /**
  * Called every time a dependency changes.
  */
+
+//TODO: event insertion should logically go here.
+//hover, they currently don't work here. They live in
+//kernel/events.js
 Deps.autorun(function() {
   // If no user logged id, then no Project is selected.
   if (!Meteor.userId()) {
@@ -51,5 +55,19 @@ Deps.autorun(function() {
   } else {
     Meteor.subscribe('Projects', onProjectSubscription);
   }
-});
 
+  var projectId = Session.get('selectedProjectId');
+  if (!projectId)
+    return;
+
+  var alphaQuery = Alphas.find({
+    projectId: projectId
+  });
+  var handle = alphaQuery.observeChanges({
+    changed: function(id, fields) {
+      if (fields.hasOwnProperty('completion')) {
+        drawGraphs();
+      }
+    }
+  });
+});
