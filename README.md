@@ -34,23 +34,28 @@ We use Google Analytics to analyze sematacc.meteor.com traffic.
 If you want to use it, too, please set the `ganalaytics` variable to your tracking code (in the form of 'XX-XXXXXXX-X').
 The variable is defined in `client/ganalytics.js`.
 
+DEPENDENCIES
+============
+SematAcc is a regular [Meteor](http://meteor.com) application and it requires it as a dependency.
+Please refer to [Meteor documentation](http://docs.meteor.com) in order to install it.
+Although Microsoft Windows is unoficially supported, we advice to try SematAcc either in a GNU/Linux environment or on Mac OS X. 
+
+
 USAGE
 =====
-SematAcc is a regular [Meteor](http://meteor.com) application and it requires it as a dependency.
-Please refer to [Meteor documentation](http://docs.meteor.com) in order to run it.
+SematAcc is a regular [Meteor](http://meteor.com) application and it runs as any other Meteor application.
+In order to run SematAcc on a development machine, issue the following command in the root folder of the project:
+    meteor 
 
 A live version of SematAcc runs on Meteor servers at http://sematacc.meteor.com for demo and testing purposes. 
 Although we try to keep the data stored on there, please do not heavily rely on it.
 
-In order to quickly have your own copy of SematAcc running on a private instance of Meteor servers, deploy it under a different URL:
-<pre style='lang:bash'>
-meteor deploy -p your-chosen-name.meteor.com
-</pre>
+In order to [deploy](http://docs.meteor.com/#deploying) SematAcc as a private instance on Meteor's free servers, issue the following command:
+    meteor deploy your-chosen-name.meteor.com
 
 
 LICENSE
 =======
-
 SematAcc is released under the The BSD 3-Clause License. See the LICENSE file for more details.
 
 CREDITS
