@@ -42,7 +42,10 @@ USAGE
 =====
 SematAcc is a regular [Meteor](http://meteor.com) application and it runs as any other Meteor application.
 In order to run SematAcc on a development machine, issue the following command in the root folder of the project:
+
     meteor 
+
+SematAcc should be ready and accessible at http://127.0.0.1:3000.
 
 A live version of SematAcc runs on Meteor servers at http://sematacc.meteor.com for demo and testing purposes. 
 Although we try to keep the data stored on there, please do not heavily rely on it.
