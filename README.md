@@ -14,7 +14,6 @@ The [S4FS Research team](http://www.inf.unibz.it/s4fs/) at the Free University o
 
 ESSENCE THEORY OF SOFTWARE ENGINEERING
 ======================================
-
 SEMAT Essence Theory of Software Engineering [aims to](http://semat.org/?page_id=2):
 
     Refound software engineering based on a solid theory, proven principles and best practices that:
@@ -29,7 +28,6 @@ Useful references to complete materials are available there, as well.
 
 BEFORE YOU START
 ================
-
 We use Google Analytics to analyze sematacc.meteor.com traffic. 
 If you want to use it, too, please set the `ganalaytics` variable to your tracking code (in the form of 'XX-XXXXXXX-X').
 The variable is defined in `client/ganalytics.js`.
@@ -38,8 +36,7 @@ DEPENDENCIES
 ============
 SematAcc is a regular [Meteor](http://meteor.com) application and it requires it as a dependency.
 Please refer to [Meteor documentation](http://docs.meteor.com) in order to install it.
-Although Microsoft Windows is unoficially supported, we advice to try SematAcc either in a GNU/Linux environment or on Mac OS X. 
-
+Although Microsoft Windows is unoficially supported, we advice to try SematAcc either in a GNU/Linux environment or on Mac OS X.
 
 USAGE
 =====
@@ -60,7 +57,9 @@ The events for a project are transparently exportable by the user as a CSV strin
 It is straightforward to add other events. 
 Please see [client/kernel/events.js](https://github.com/s4fs/sematacc/blob/master/client/kernel/events.js) for more.
 In particular, the line
+
     Meteor.call('insertEvent', Session.get('selectedProjectId'), alpha.name+'.state', state.name);
+    
 Is responsible to log an event.
 
 LICENSE
@@ -69,7 +68,6 @@ SematAcc is released under the The BSD 3-Clause License. See the LICENSE file fo
 
 CREDITS
 ================
-
 The development of this software was made possible using the following components:
 
  - [RGraph](http://rgraph.net) - Creative Commons Attribution-NonCommercial 3.0
