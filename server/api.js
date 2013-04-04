@@ -147,6 +147,7 @@ var insertEvent = function(projectId, who, what) {
     userId : Meteor.userId()
   };
   Events.insert(eventobj);
+  return true;
 };
 
 /**
