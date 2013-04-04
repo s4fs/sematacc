@@ -51,6 +51,7 @@ A live version of SematAcc runs on Meteor servers at http://sematacc.meteor.com 
 Although we try to keep the data stored on there, please do not heavily rely on it.
 
 In order to [deploy](http://docs.meteor.com/#deploying) SematAcc as a private instance on Meteor's free servers, issue the following command:
+ 
     meteor deploy your-chosen-name.meteor.com
 
 EVENT LOGGING
