@@ -53,6 +53,15 @@ Although we try to keep the data stored on there, please do not heavily rely on 
 In order to [deploy](http://docs.meteor.com/#deploying) SematAcc as a private instance on Meteor's free servers, issue the following command:
     meteor deploy your-chosen-name.meteor.com
 
+EVENT LOGGING
+=============
+SematAcc logs events. Currently only changes in an alpha's state is recorded.
+The events for a project are transparently exportable by the user as a CSV string.
+It is straightforward to add other events. 
+Please see [client/kernel/events.js](https://github.com/s4fs/sematacc/blob/master/client/kernel/events.js) for more.
+In particular, the line
+    Meteor.call('insertEvent', Session.get('selectedProjectId'), alpha.name+'.state', state.name);
+Is responsible to log an event.
 
 LICENSE
 =======
