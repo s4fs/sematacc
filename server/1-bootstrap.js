@@ -10,7 +10,7 @@
  * Additionally, the description of all the entities can be found in this file.
  */
 
-var kernelSkeleton = {
+kernelSkeleton = {
     concerns: [{
       name: 'Customer',
       description: 'Description of Customer',
@@ -54,7 +54,7 @@ var kernelSkeleton = {
     }]
   };
 
-var alphaDescriptions = {
+alphaDescriptions = {
   'opportunity': 'The set of circumstances that makes it appropriate to ' +
   'develop or change a software system. <br/> The opportunity articulates the' +
   'reason for the creation of the new, or changed, software system. It ' +
@@ -99,7 +99,7 @@ var alphaDescriptions = {
   'way of working and adapt it as necessary to their current context.'
 };
 
-var stateDescriptions = {
+stateDescriptions = {
   'stakeholders' : {
     'recognized' : '<p>All the different groups of stakeholders that are, or will be, affected by the development and operation of the software system are identified. <br/>' +
     'There is agreement on the stakeholder groups to be represented. At a minimum, the stakeholders groups that fund, use, support, and maintain the system have been considered. <br/> ' +

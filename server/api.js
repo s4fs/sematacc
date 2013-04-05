@@ -14,7 +14,7 @@
  * @param  {string} description Description of the Project
  * @return {int}             The Meteor/MongoDB id of the Project
  */
-var newProject = function(name, description) {
+newProject = function(name, description) {
   var concernId = 0;
   var alphaId = 0;
   var stateId = 0;
@@ -73,7 +73,7 @@ var newProject = function(name, description) {
  * Calculate the percentage of completion of each Concern.
  * Should be called after an Alpha switches to a new State and its completion has been done.
  */
-var updateConcernCompletions = function() {
+updateConcernCompletions = function() {
   var concerns = Concerns.find({
     userId: Meteor.userId()
   });
@@ -100,7 +100,7 @@ var updateConcernCompletions = function() {
 /**
  * Calculate the percentage of completion of each Alpha.
  */
-var updateAlphasCompletions = function() {
+updateAlphasCompletions = function() {
   var alphas = Alphas.find({
     userId: Meteor.userId()
   });
@@ -136,7 +136,7 @@ var updateAlphasCompletions = function() {
  * @param  {string} who       who is causing the event / where is the event happening
  * @param  {string} what      the event happening
  */
-var insertEvent = function(projectId, who, what) {
+log = function(projectId, who, what) {
   var userId = Meteor.userId();
   var timestamp = new Date();
   eventobj = {
@@ -153,7 +153,7 @@ var insertEvent = function(projectId, who, what) {
 /**
  * Return events as a CSV text string
  */
-var getEvents = function(projectId) {
+getLog = function(projectId) {
   var userId = Meteor.userId();
   var events = Events.find({projectId: projectId, userId : userId});
   var buffer = 'WHEN,WHO,WHAT\n';

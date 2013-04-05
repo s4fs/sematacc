@@ -62,7 +62,7 @@ It is straightforward to add other events.
 Please see [client/kernel/events.js](https://github.com/s4fs/sematacc/blob/master/client/kernel/events.js) for more.
 In particular, the line
 
-    Meteor.call('insertEvent', Session.get('selectedProjectId'), alpha.name+'.state', state.name);
+    Meteor.call('log', Session.get('selectedProjectId'), alpha.name+'.state', state.name);
     
 Is responsible to log an event.
 

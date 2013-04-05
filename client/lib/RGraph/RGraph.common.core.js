@@ -8,7 +8,7 @@
     * | purposes there is a small one-time licensing fee to pay and for non          |
     * | commercial  purposes it is free to use. You can read the full license here:  |
     * |                                                                              |
-    * |                      http://www.rgraph.net/LICENSE.txt                       |
+    * |                      http://www.rgraph.net/license                           |
     * o------------------------------------------------------------------------------o
     */
 
@@ -31,13 +31,30 @@
     RGraph.ObjectRegistry.objects            = {};
     RGraph.ObjectRegistry.objects.byUID      = [];
     RGraph.ObjectRegistry.objects.byCanvasID = [];
-    
+
+
     /**
     * Some "constants"
     */
-    HALFPI = (Math.PI / 2);
-    PI     = Math.PI;
-    TWOPI  = PI * 2;
+    PI       = Math.PI;
+    HALFPI   = PI / 2;
+    TWOPI    = PI * 2;
+    ISFF     = navigator.userAgent.indexOf('Firefox') != -1;
+    ISOPERA  = navigator.userAgent.indexOf('Opera') != -1;
+    ISCHROME = navigator.userAgent.indexOf('Chrome') != -1;
+    ISSAFARI = navigator.userAgent.indexOf('Safari') != -1;
+    ISWEBKIT = navigator.userAgent.indexOf('WebKit') != -1;
+    //ISIE     is defined below
+    //ISIE6    is defined below
+    //ISIE7    is defined below
+    //ISIE8    is defined below
+    //ISIE9    is defined below
+    //ISIE9    is defined below
+    //ISIE9UP  is defined below
+    //ISIE10   is defined below
+    //ISIE10UP is defined below
+    //ISOLD    is defined below
+
 
     /**
     * Returns five values which are used as a nice scale
@@ -121,6 +138,222 @@
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+    * Returns an appropriate scale. The return value is actualy anm object consiosting of:
+    *  scale.max
+    *  scale.min
+    *  scale.scale
+    * 
+    * @param  obj object  The graph object
+    * @param  prop object An object consisting of configuration properties
+    * @return     object  An object containg scale information
+    */
+    RGraph.getScale2 = function (obj, opt)
+    {
+        var ca   = obj.canvas;
+        var co   = obj.context;
+        var prop = obj.properties;
+        
+        var numlabels    = typeof(opt['ylabels.count']) == 'number' ? opt['ylabels.count'] : 5;
+        var units_pre    = typeof(opt['units.pre']) == 'string' ? opt['units.pre'] : '';
+        var units_post   = typeof(opt['units.post']) == 'string' ? opt['units.post'] : '';
+        var max          = Number(opt['max']);
+        var min          = typeof(opt['min']) == 'number' ? opt['min'] : 0;
+        var strict       = opt['strict'];
+        var decimals     = Number(opt['scale.decimals']); // Sometimes the default is null
+        var point        = opt['scale.point']; // Default is a string in all chart libraries so no need to cast it
+        var thousand     = opt['scale.thousand']; // Default is a string in all chart libraries so no need to cast it
+        var original_max = max;
+        var round        = opt['scale.round'];
+        var scale        = {'max':1,'labels':[]};
+
+
+
+        /**
+        * Special case for 0
+        * 
+        * ** Must be first **
+        */
+        if (!max) {
+
+            var max   = 1;
+
+            var scale = {max:1,min:0,labels:[]};
+
+            for (var i=0; i<numlabels; ++i) {
+                var label = ((((max - min) / numlabels) + min) * (i + 1)).toFixed(decimals);
+                scale.labels.push(units_pre + label + units_post);
+            }
+
+        /**
+        * Manually do decimals
+        */
+        } else if (max <= 1 && !strict) {
+
+            if (max > 0.5) {
+
+                max  = 1;
+                min  = min;
+                scale.min = min;
+
+                for (var i=0; i<numlabels; ++i) {
+                    var label = ((((max - min) / numlabels) * (i + 1)) + min).toFixed(decimals);
+
+                    scale.labels.push(units_pre + label + units_post);
+                }
+
+            } else if (max >= 0.1) {
+                
+                max  = 0.5;
+                min = min;
+                scale = {'max': 0.5, 'min':min,'labels':[]}
+
+                for (var i=0; i<numlabels; ++i) {
+                    var label = ((((max - min) / numlabels) + min) * (i + 1)).toFixed(decimals);
+                    scale.labels.push(units_pre + label + units_post);
+                }
+
+            } else {
+                scale = {'min':min,'labels':[]}
+                var max_str = String(max);
+                
+                if (max_str.indexOf('e') > 0) {
+                    var numdecimals = Math.abs(max_str.substring(max_str.indexOf('e') + 1));
+                } else {
+                    var numdecimals = String(max).length - 2;
+                }
+
+                var max = 1  / Math.pow(10,numdecimals - 1);
+
+                for (var i=0; i<numlabels; ++i) {
+                    var label = ((((max - min) / numlabels) + min) * (i + 1));
+                        label = label.toExponential();
+                        label = label.split(/e/);
+                        label[0] = Math.round(label[0]);
+                        label = label.join('e');
+                    scale.labels.push(label);
+                }
+
+                //This makes the top scale value of the format 10e-2 instead of 1e-1
+                tmp = scale.labels[scale.labels.length - 1].split(/e/);
+                tmp[0] += 0;
+                tmp[1] = Number(tmp[1]) - 1;
+                tmp = tmp[0] + 'e' + tmp[1];
+                scale.labels[scale.labels.length - 1] = tmp;
+                
+                // Add the units
+                for (var i=0; i<scale.labels.length ; ++i) {
+                    scale.labels[i] = units_pre + scale.labels[i] + units_post;
+                }
+                
+                scale.max = Number(max);
+            }
+
+
+        } else if (!strict) {
+
+    
+            /**
+            * Now comes the scale handling for integer values
+            */
+
+
+            // This accomodates decimals by rounding the max up to the next integer
+            max = Math.ceil(max);
+
+            var interval = Math.pow(10, Number(String(Number(max) - Number(min)).length - 1));
+    
+            var topValue = interval;
+    
+            while (topValue < max) {
+                topValue += (interval / 2);
+            }
+    
+            // Handles cases where the max is (for example) 50.5
+            if (Number(original_max) > Number(topValue)) {
+                topValue += (interval / 2);
+            }
+    
+            // Custom if the max is greater than 5 and less than 10
+            if (max <= 10) {
+                topValue = (Number(original_max) <= 5 ? 5 : 10);
+            }
+    
+    
+            // Added 02/11/2010 to create "nicer" scales
+            if (obj && typeof(round) == 'boolean' && round) {
+                topValue = 10 * interval;
+            }
+
+            scale.max = topValue;
+
+            // Now generate the scale. Temporarily set the objects chart.scale.decimal and chart.scale.point to those
+            //that we've been given as the number_format functuion looks at those instead of using argumrnts.
+            var tmp_point    = prop['chart.scale.point'];
+            var tmp_thousand = prop['chart.scale.thousand'];
+
+            obj.Set('chart.scale.thousand', thousand);
+            obj.Set('chart.scale.point', point);
+
+
+            for (var i=0; i<numlabels; ++i) {
+                scale.labels.push( RGraph.number_format(obj, ((((i+1) / numlabels) * (topValue - min)) + min).toFixed(decimals), units_pre, units_post) );
+            }
+
+            obj.Set('chart.scale.thousand', tmp_thousand);
+            obj.Set('chart.scale.point', tmp_point);
+        
+        } else if (typeof(max) == 'number' && strict) {
+
+            /**
+            * ymax is set and also strict
+            */
+            for (var i=0; i<numlabels; ++i) {
+                scale.labels.push( RGraph.number_format(obj, ((((i+1) / numlabels) * (max - min)) + min).toFixed(decimals), units_pre, units_post) );
+            }
+            
+            // ???
+            scale.max = max;
+        }
+
+        
+        scale.units_pre  = units_pre;
+        scale.units_post = units_post;
+        scale.point      = point;
+        scale.decimals   = decimals;
+        scale.thousand   = thousand;
+        scale.numlabels  = numlabels;
+        scale.round      = Boolean(round);
+        scale.min        = min;
+
+
+        return scale;
+    }
+
+
+
     /**
     * Returns the maximum numeric value which is in an array
     * 
@@ -174,6 +407,7 @@
     }
 
 
+
     /**
     * An array sum function
     * 
@@ -204,25 +438,27 @@
     */
     RGraph.array_linearize = function ()
     {
-        var arr = [];
+        var arr  = [];
+        var args = arguments;
 
-        for (var i=0; i<arguments.length; ++i) {
+        for (var i=0; i<args.length; ++i) {
 
-            if (typeof(arguments[i]) == 'object' && arguments[i]) {
+            if (typeof(args[i]) == 'object' && args[i]) {
                 for (var j=0; j<arguments[i].length; ++j) {
-                    var sub = RGraph.array_linearize(arguments[i][j]);
+                    var sub = RGraph.array_linearize(args[i][j]);
                     
                     for (var k=0; k<sub.length; ++k) {
                         arr.push(sub[k]);
                     }
                 }
             } else {
-                arr.push(arguments[i]);
+                arr.push(args[i]);
             }
         }
 
         return arr;
     }
+
 
 
     /**
@@ -242,66 +478,69 @@
     * @param int            The angle that the text should be rotate at (IN DEGREES)
     * @param string         Background color for the text
     * @param bool           Whether the text is bold or not
-    * @param bool           Whether the bounding box has a placement indicator
     */
-    RGraph.Text =function (context, font, size, x, y, text)
+    RGraph.Text = function (context, font, size, x, y, text)
     {
+        // "Cache" the args as a local variable
+        var args = arguments;
+
         // Handle undefined - change it to an empty string
         if ((typeof(text) != 'string' && typeof(text) != 'number') || text == 'undefined') {
             return;
         }
 
-        /**
-        * Adjust the vertical Y coord if it should be vertically centered
-        */
-        if (typeof(text) == 'string') {
-            if (text.indexOf('\r\n') > 0 && arguments[6] == 'center') {
-                var line_count = text.split('\r\n').length;
-                y = y - ((line_count - 1.5) * size);
-            
-            } else if (text.indexOf('\r\n') > 0 && arguments[6] == 'bottom') {
-                var line_count = text.split('\r\n').length;
-                y = y - ((line_count - 0.5) * size);
-            }
-        }
 
 
 
         /**
-        * This calls the text function recursively to accommodate multi-line text
+        * This accommodates multi-line text
         */
         if (typeof(text) == 'string' && text.match(/\r\n/)) {
-            
+
+            var dimensions = RGraph.MeasureText('M', args[11], font, size);
+
+            /**
+            * Measure the text (width and height)
+            */
+
             var arr = text.split('\r\n');
 
+            /**
+            * Adjust the Y position
+            */
+            
+            // This adjusts the initial y position
+            if (args[6] && args[6] == 'center') y = (y - (dimensions[1] * ((arr.length - 1) / 2)));
+
+            for (var i=1; i<arr.length; ++i) {
+    
+                RGraph.Text(context,
+                            font,
+                            size,
+                            args[9] == -90 ? (x + (size * 1.5)) : x,
+                            y + (dimensions[1] * i),
+                            arr[i],
+                            args[6] ? args[6] : null,
+                            args[7],
+                            args[8],
+                            args[9],
+                            args[10],
+                            args[11],
+                            args[12]);
+            }
+            
+            // Update text to just be the first line
             text = arr[0];
-            arr = RGraph.array_shift(arr);
-
-            var nextline = arr.join('\r\n')
-
-            RGraph.Text(context,
-                        font,
-                        size,
-                        arguments[9] == -90 ? (x + (size * 1.5)) : x,
-                        y + (size * 1.5),
-                        nextline,
-                        arguments[6] ? arguments[6] : null,
-                        arguments[7],
-                        arguments[8],
-                        arguments[9],
-                        arguments[10],
-                        arguments[11],
-                        arguments[12]);
         }
 
 
         // Accommodate MSIE
-        if (RGraph.isOld()) {
+        if (document.all && ISOLD) {
             y += 2;
         }
 
 
-        context.font = (arguments[11] ? 'Bold ': '') + size + 'pt ' + font;
+        context.font = (args[11] ? 'Bold ': '') + size + 'pt ' + font;
 
         var i;
         var origX = x;
@@ -310,16 +549,15 @@
         var originalLineWidth = context.lineWidth;
 
         // Need these now the angle can be specified, ie defaults for the former two args
-        if (typeof(arguments[6]) == null) arguments[6]  = 'bottom'; // Vertical alignment. Default to bottom/baseline
-        if (typeof(arguments[7]) == null) arguments[7]  = 'left';   // Horizontal alignment. Default to left
-        if (typeof(arguments[8]) == null) arguments[8]  = null;     // Show a bounding box. Useful for positioning during development. Defaults to false
-        if (typeof(arguments[9]) == null) arguments[9]  = 0;        // Angle (IN DEGREES) that the text should be drawn at. 0 is middle right, and it goes clockwise
-        if (typeof(arguments[12]) == null) arguments[12] = true;    // Whether the bounding box has the placement indicator
+        if (typeof(args[6])  == 'undefined') args[6]  = 'bottom'; // Vertical alignment. Default to bottom/baseline
+        if (typeof(args[7])  == 'undefined') args[7]  = 'left';   // Horizontal alignment. Default to left
+        if (typeof(args[8])  == 'undefined') args[8]  = null;     // Show a bounding box. Useful for positioning during development. Defaults to false
+        if (typeof(args[9])  == 'undefined') args[9]  = 0;        // Angle (IN DEGREES) that the text should be drawn at. 0 is middle right, and it goes clockwise
 
         // The alignment is recorded here for purposes of Opera compatibility
         if (navigator.userAgent.indexOf('Opera') != -1) {
-            context.canvas.__rgraph_valign__ = arguments[6];
-            context.canvas.__rgraph_halign__ = arguments[7];
+            context.canvas.__rgraph_valign__ = args[6];
+            context.canvas.__rgraph_halign__ = args[7];
         }
 
         // First, translate to x/y coords
@@ -331,34 +569,37 @@
             context.translate(x, y);
             x = 0;
             y = 0;
-            
+
             // Rotate the canvas if need be
-            if (arguments[9]) {
-                context.rotate(arguments[9] / 57.3);
+            if (args[9]) {
+                context.rotate(args[9] / (180 / PI));
             }
 
+
             // Vertical alignment - defaults to bottom
-            if (arguments[6]) {
-                var vAlign = arguments[6];
+            if (args[6]) {
+
+                var vAlign = args[6];
 
                 if (vAlign == 'center') {
-                    context.translate(0, size / 2);
+                    context.textBaseline = 'middle';
                 } else if (vAlign == 'top') {
-                    context.translate(0, size);
+                    context.textBaseline = 'top';
                 }
             }
 
 
             // Hoeizontal alignment - defaults to left
-            if (arguments[7]) {
-                var hAlign = arguments[7];
+            if (args[7]) {
+
+                var hAlign = args[7];
                 var width  = context.measureText(text).width;
     
                 if (hAlign) {
                     if (hAlign == 'center') {
-                        context.translate(-1 * (width / 2), 0)
+                        context.textAlign = 'center';
                     } else if (hAlign == 'right') {
-                        context.translate(-1 * width, 0)
+                        context.textAlign = 'right';
                     }
                 }
             }
@@ -372,52 +613,38 @@
             context.save();
                  context.fillText(text,0,0);
                  context.lineWidth = 1;
-                
-                if (arguments[8]) {
 
-                    var width = context.measureText(text).width;
-                    var ieOffset = RGraph.isIE8() ? 2 : 0;
+                var width = context.measureText(text).width;
+                var width_offset = (hAlign == 'center' ? (width / 2) : (hAlign == 'right' ? width : 0));
+                var height = size * 1.5; // !!!
+                var height_offset = (vAlign == 'center' ? (height / 2) : (vAlign == 'top' ? height : 0));
+                var ieOffset = ISOLD ? 2 : 0;
 
-                    context.translate(x, y);
+                if (args[8]) {
 
-                    context.strokeRect(AA(context.canvas.__object__, - 3), AA(context.canvas.__object__, 0 - 3 - size - ieOffset), width + 6, 0 + size + 6);
-
-
+                    context.strokeRect(-3 - width_offset,
+                                       0 - 3 - height - ieOffset + height_offset,
+                                       width + 6,
+                                       height + 6);
                     /**
                     * If requested, draw a background for the text
                     */
-                    if (arguments[10]) {
-        
-                        var offset = 3;
-                        var ieOffset = RGraph.isIE8() ? 2 : 0;
-                        var width = context.measureText(text).width
-
-                        //context.strokeStyle = 'gray';
-                        context.fillStyle = arguments[10];
-                        context.fillRect(AA(context.canvas.__object__, x - offset),
-                                         AA(context.canvas.__object__, y - size - offset - ieOffset),
-                                         width + (2 * offset),
-                                         size + (2 * offset));
-                        //context.strokeRect(x - offset, y - size - offset - ieOffset, width + (2 * offset), size + (2 * offset));
+                    if (args[10]) {
+                        context.fillStyle = args[10];
+                        context.fillRect(-3 - width_offset,
+                                           0 - 3 - height - ieOffset + height_offset,
+                                           width + 6,
+                                           height + 6);
                     }
+
                     
+                    context.fillStyle = originalFillStyle;
+
+
                     /**
                     * Do the actual drawing of the text
                     */
-                    context.fillStyle = originalFillStyle;
-                    if (arguments[6] = 'center') {
-                        context.ttextBaseline = 'middle';
-                    }
                     context.fillText(text,0,0);
-
-                    if (arguments[12]) {
-                        context.fillRect(
-                            arguments[7] == 'left' ? 0 : (arguments[7] == 'center' ? width / 2 : width ) - 2,
-                            arguments[6] == 'bottom' ? 0 : (arguments[6] == 'center' ? (0 - size) / 2 : 0 - size) - 2,
-                            4,
-                            4
-                        );
-                    }
                 }
             context.restore();
             
@@ -444,14 +671,14 @@
         var context = canvas.getContext('2d');
         var color   = arguments[1];
 
-        if (RGraph.isIE8() && !color) {
+        if (ISIE8 && !color) {
             color = 'white';
         }
 
         /**
         * Can now clear the canvas back to fully transparent
         */
-        if (!color || (color && color == 'transparent')) {
+        if (!color || (color && color == 'rgba(0,0,0,0)' || color == 'transparent')) {
 
             context.clearRect(0,0,canvas.width, canvas.height);
             
@@ -464,7 +691,7 @@
             context = canvas.getContext('2d');
             context.beginPath();
 
-            if (RGraph.isIE8()) {
+            if (ISIE8) {
                 context.fillRect(0,0,canvas.width,canvas.height);
             } else {
                 context.fillRect(-10,-10,canvas.width + 20,canvas.height + 20);
@@ -473,9 +700,9 @@
             context.fill();
         }
         
-        if (RGraph.ClearAnnotations) {
+        //if (RGraph.ClearAnnotations) {
             //RGraph.ClearAnnotations(canvas.id);
-        }
+        //}
         
         /**
         * This removes any background image that may be present
@@ -492,7 +719,7 @@
         * that which is being cleared
         */
         if (RGraph.Registry.Get('chart.tooltip')) {
-            RGraph.HideTooltip();
+            RGraph.HideTooltip(canvas);
             //RGraph.Redraw();
         }
 
@@ -516,83 +743,149 @@
     */
     RGraph.DrawTitle = function (obj, text, gutterTop)
     {
-        var canvas       = obj.canvas;
-        var context      = obj.context;
-        var gutterLeft   = obj.Get('chart.gutter.left');
-        var gutterRight  = obj.Get('chart.gutter.right');
-        var gutterBottom = obj.Get('chart.gutter.bottom');
+        var ca = canvas  = obj.canvas;
+        var co = context = obj.context;
+        var prop         = obj.properties;
+
+        var gutterLeft   = prop['chart.gutter.left'];
+        var gutterRight  = prop['chart.gutter.right'];
+        var gutterTop    = gutterTop;
+        var gutterBottom = prop['chart.gutter.bottom'];
         var size         = arguments[4] ? arguments[4] : 12;
-        var bold         = obj.Get('chart.title.bold');
-        var centerx      = (arguments[3] ? arguments[3] : ((obj.canvas.width - gutterLeft - gutterRight) / 2) + gutterLeft);
-        var keypos       = obj.Get('chart.key.position');
-        var vpos         = obj.Get('chart.title.vpos');
-        var hpos         = obj.Get('chart.title.hpos');
-        var bgcolor      = obj.Get('chart.title.background');
+        var bold         = prop['chart.title.bold'];
+        var centerx      = (arguments[3] ? arguments[3] : ((ca.width - gutterLeft - gutterRight) / 2) + gutterLeft);
+        var keypos       = prop['chart.key.position'];
+        var vpos         = prop['chart.title.vpos'];
+        var hpos         = prop['chart.title.hpos'];
+        var bgcolor      = prop['chart.title.background'];
+        var x            = prop['chart.title.x'];
+        var y            = prop['chart.title.y'];
+        var halign       = 'center';
+        var valign       = 'center';
 
         // Account for 3D effect by faking the key position
-        if (obj.type == 'bar' && obj.Get('chart.variant') == '3d') {
+        if (obj.type == 'bar' && prop['chart.variant'] == '3d') {
             keypos = 'gutter';
         }
 
-        context.beginPath();
-        context.fillStyle = obj.Get('chart.text.color') ? obj.Get('chart.text.color') : 'black';
+        co.beginPath();
+        co.fillStyle = prop['chart.text.color'] ? prop['chart.text.color'] : 'black';
+
+
+
+
 
         /**
         * Vertically center the text if the key is not present
         */
         if (keypos && keypos != 'gutter') {
-            var vCenter = 'center';
+            var valign = 'center';
 
         } else if (!keypos) {
-            var vCenter = 'center';
+            var valign = 'center';
 
         } else {
-            var vCenter = 'bottom';
+            var valign = 'bottom';
         }
 
-        // if chart.title.vpos does not equal 0.5, use that
-        if (typeof(obj.Get('chart.title.vpos')) == 'number') {
-            vpos = obj.Get('chart.title.vpos') * gutterTop;
 
-            if (obj.Get('chart.xaxispos') == 'top') {
-                vpos = obj.Get('chart.title.vpos') * gutterBottom + gutterTop + (obj.canvas.height - gutterTop - gutterBottom);
+
+
+
+        // if chart.title.vpos is a number, use that
+        if (typeof(prop['chart.title.vpos']) == 'number') {
+            vpos = prop['chart.title.vpos'] * gutterTop;
+
+            if (prop['chart.xaxispos'] == 'top') {
+                vpos = prop['chart.title.vpos'] * gutterBottom + gutterTop + (ca.height - gutterTop - gutterBottom);
             }
+
         } else {
             vpos = gutterTop - size - 5;
 
-            if (obj.Get('chart.xaxispos') == 'top') {
-                vpos = obj.canvas.height  - gutterBottom + size + 5;
+            if (prop['chart.xaxispos'] == 'top') {
+                vpos = ca.height  - gutterBottom + size + 5;
             }
         }
 
+
+
+
         // if chart.title.hpos is a number, use that. It's multiplied with the (entire) canvas width
         if (typeof(hpos) == 'number') {
-            centerx = hpos * canvas.width;
-        }
-        
-        // Set the colour
-        if (typeof(obj.Get('chart.title.color') != null)) {
-            var oldColor = context.fillStyle
-            var newColor = obj.Get('chart.title.color')
-            context.fillStyle = newColor ? newColor : 'black';
-        }
-        
-        /**
-        * Default font is Verdana
-        */
-        var font = obj.Get('chart.text.font');
-        
-        /**
-        * Override the default font with chart.title.font
-        */
-        if (typeof(obj.Get('chart.title.font')) == 'string') {
-            font = obj.Get('chart.title.font');
+            centerx = hpos * ca.width;
         }
 
         /**
-        * Draw the title itself
+        * Now the chart.title.x and chart.title.y settings override (is set) the above
         */
-        RGraph.Text(context, font, size, centerx, vpos, text, vCenter, 'center', bgcolor != null, null, bgcolor, bold);
+        if (typeof(x) == 'number') centerx = x;
+        if (typeof(y) == 'number') vpos    = y;
+
+
+
+
+        /**
+        * Horizontal alignment can now (Jan 2013) be specified
+        */
+        if (typeof(prop['chart.title.halign']) == 'string') {
+            halign = prop['chart.title.halign'];
+        }
+        
+        /**
+        * Vertical alignment can now (Jan 2013) be specified
+        */
+        if (typeof(prop['chart.title.valign']) == 'string') {
+            valign = prop['chart.title.valign'];
+        }
+
+
+
+
+        
+        // Set the colour
+        if (typeof(prop['chart.title.color'] != null)) {
+            var oldColor = context.fillStyle
+            var newColor = prop['chart.title.color']
+            context.fillStyle = newColor ? newColor : 'black';
+        }
+
+
+
+
+        /**
+        * Default font is Arial
+        */
+        var font = prop['chart.text.font'];
+
+
+
+
+        /**
+        * Override the default font with chart.title.font
+        */
+        if (typeof(prop['chart.title.font']) == 'string') {
+            font = prop['chart.title.font'];
+        }
+
+
+
+
+        /**
+        * Draw the title
+        */
+        RGraph.Text2(obj,{'font':font,
+                          'size':size,
+                          'x':centerx,
+                          'y':vpos,
+                          'text':text,
+                          'valign':valign,
+                          'halign':halign,
+                          'bounding':bgcolor != null,
+                          'bounding.fill':bgcolor,
+                          'bold':bold,
+                          'tag':'title'
+                         });
         
         // Reset the fill colour
         context.fillStyle = oldColor;
@@ -600,14 +893,15 @@
 
 
 
+
     /**
     * This function returns the mouse position in relation to the canvas
     * 
     * @param object e The event object.
-    */
+    *
     RGraph.getMouseXY = function (e)
     {
-        var el = ((RGraph.isIE8() || RGraph.isIE7()) ? event.srcElement : e.target);
+        var el = (ISOLD ? event.srcElement : e.target);
         var x;
         var y;
 
@@ -617,7 +911,7 @@
         var borderLeft  = el.style.borderLeftWidth ? parseInt(el.style.borderLeftWidth) : 0;
         var borderTop   = el.style.borderTopWidth  ? parseInt(el.style.borderTopWidth) : 0;
         
-        if (RGraph.isIE8()) e = event;
+        if (ISIE8) e = event;
 
         // Browser with offsetX and offsetY
         if (typeof(e.offsetX) == 'number' && typeof(e.offsetY) == 'number') {
@@ -641,6 +935,110 @@
         }
 
         return [x, y];
+    }*/
+
+
+    RGraph.getMouseXY = function(e)
+    {
+        var el      = e.target;
+        var ca      = el;
+        var caStyle = ca.style;
+        var offsetX = 0;
+        var offsetY = 0;
+        var x;
+        var y;
+        var ISFIXED     = (ca.style.position == 'fixed');
+        var borderLeft  = parseInt(caStyle.borderLeftWidth) || 0;
+        var borderTop   = parseInt(caStyle.borderTopWidth) || 0;
+        var paddingLeft = parseInt(caStyle.paddingLeft) || 0
+        var paddingTop  = parseInt(caStyle.paddingTop) || 0
+        var additionalX = borderLeft + paddingLeft;
+        var additionalY = borderTop + paddingTop;
+
+
+        if (typeof(e.offsetX) == 'number' && typeof(e.offsetY) == 'number') {
+
+        if (ISFIXED) {
+            if (ISOPERA) {
+                x = e.offsetX;
+                y = e.offsetY;
+            
+            } else if (ISWEBKIT) {
+                x = e.offsetX - paddingLeft - borderLeft;
+                y = e.offsetY - paddingTop - borderTop;
+            
+            } else if (ISIE) {
+                x = e.offsetX - paddingLeft;
+                y = e.offsetY - paddingTop;
+
+            } else {
+                x = e.offsetX;
+                y = e.offsetY;
+            }
+
+
+
+
+        } else {
+
+
+
+
+            if (!ISIE && !ISOPERA) {
+                x = e.offsetX - borderLeft - paddingLeft;
+                y = e.offsetY - borderTop - paddingTop;
+            
+            } else if (ISIE) {
+                x = e.offsetX - paddingLeft;
+                y = e.offsetY - paddingTop;
+            
+            } else {
+                x = e.offsetX;
+                y = e.offsetY;
+            }
+        }
+
+        /**
+        * This is for Firefox - which doesn't support .offsetX or .offsetY
+        */
+        } else if (e.layerX && e.layerY) {
+
+            // Give the canvas position if it has none
+            if (!ca.style.position) {
+                ca.style.position = 'relative';
+                ca.style.top = 0;
+                ca.style.left = 0;
+            }
+                
+            x = e.layerX;
+            y = e.layerY;
+            
+            if (ISFIXED) {
+                x = e.layerX - borderLeft - paddingLeft;
+                y = e.layerY - borderTop - paddingTop;
+            }
+
+        } else {
+
+            if (typeof(el.offsetParent) != 'undefined') {
+                do {
+                    offsetX += el.offsetLeft;
+                    offsetY += el.offsetTop;
+                } while ((el = el.offsetParent));
+            }
+
+            x = e.pageX - offsetX - additionalX;
+            y = e.pageY - offsetY - additionalY;
+
+            x -= (2 * (parseInt(document.body.style.borderLeftWidth) || 0));
+            y -= (2 * (parseInt(document.body.style.borderTopWidth) || 0));
+
+            x += (parseInt(caStyle.borderLeftWidth) || 0);
+            y += (parseInt(caStyle.borderTopWidth) || 0);
+        }
+
+        // We return a javascript array with x and y defined
+        return [x, y];
     }
 
 
@@ -653,18 +1051,24 @@
     */
     RGraph.getCanvasXY = function (canvas)
     {
-        var x   = 0;
-        var y   = 0;
-        var obj = canvas;
+        var x  = 0;
+        var y  = 0;
+        var el = canvas; // !!!
 
         do {
 
-            x += obj.offsetLeft;
-            y += obj.offsetTop;
+            x += el.offsetLeft;
+            y += el.offsetTop;
+            
+            // ACCOUNT FOR TABLES IN wEBkIT
+            if (el.tagName.toLowerCase() == 'table' && (ISCHROME || ISSAFARI)) {
+                x += parseInt(el.border) || 0;
+                y += parseInt(el.border) || 0;
+            }
 
-            obj = obj.offsetParent;
+            el = el.offsetParent;
 
-        } while (obj && obj.tagName.toLowerCase() != 'body');
+        } while (el && el.tagName.toLowerCase() != 'body');
 
 
         var paddingLeft = canvas.style.paddingLeft ? parseInt(canvas.style.paddingLeft) : 0;
@@ -672,8 +1076,40 @@
         var borderLeft  = canvas.style.borderLeftWidth ? parseInt(canvas.style.borderLeftWidth) : 0;
         var borderTop   = canvas.style.borderTopWidth  ? parseInt(canvas.style.borderTopWidth) : 0;
 
+        if (navigator.userAgent.indexOf('Firefox') > 0) {
+            x += parseInt(document.body.style.borderLeftWidth) || 0;
+            y += parseInt(document.body.style.borderTopWidth) || 0;
+        }
+
         return [x + paddingLeft + borderLeft, y + paddingTop + borderTop];
     }
+
+
+
+    /**
+    * This function determines whther a canvas is fixed (CSS positioning) or not. If not it returns
+    * false. If it is then the element that is fixed is returned (it may be a parent of the canvas).
+    * 
+    * @return Either false or the fixed positioned element
+    */
+    RGraph.isFixed = function (canvas)
+    {
+        var obj = canvas;
+        var i = 0;
+
+        while (obj.tagName.toLowerCase() != 'body' && i < 99) {
+
+            if (obj.style.position == 'fixed') {
+                return obj;
+            }
+            
+            obj = obj.offsetParent;
+        }
+
+        return false;
+    }
+
+
 
 
     /**
@@ -705,7 +1141,11 @@
         var tags = document.getElementsByTagName('canvas');
         for (var i=0; i<tags.length; ++i) {
             if (tags[i].__object__ && tags[i].__object__.isRGraph) {
-                RGraph.Clear(tags[i], arguments[0] ? arguments[0] : null);
+                
+                // Only clear the canvas if it's not Trace'ing - this applies to the Line/Scatter Trace effects
+                if (!tags[i].noclear) {
+                    RGraph.Clear(tags[i], arguments[0] ? arguments[0] : null);
+                }
             }
         }
 
@@ -757,191 +1197,202 @@
     */
     RGraph.background.Draw = function (obj)
     {
-        var canvas       = obj.canvas;
-        var context      = obj.context;
+        var ca = canvas  = obj.canvas;
+        var co = context = obj.context;
+        var prop         = obj.properties;
+
         var height       = 0;
-        var gutterLeft   = obj.Get('chart.gutter.left');
-        var gutterRight  = obj.Get('chart.gutter.right');
-        var gutterTop    = obj.Get('chart.gutter.top');
-        var gutterBottom = obj.Get('chart.gutter.bottom');
-        var variant      = obj.Get('chart.variant');
+        var gutterLeft   = obj.gutterLeft;
+        var gutterRight  = obj.gutterRight;
+        var gutterTop    = obj.gutterTop;
+        var gutterBottom = obj.gutterBottom;
+        var variant      = prop['chart.variant'];
         
-        context.fillStyle = obj.Get('chart.text.color');
+        co.fillStyle = prop['chart.text.color'];
         
         // If it's a bar and 3D variant, translate
         if (variant == '3d') {
-            context.save();
-            context.translate(10, -5);
+            co.save();
+            co.translate(10, -5);
         }
 
         // X axis title
-        if (typeof(obj.Get('chart.title.xaxis')) == 'string' && obj.Get('chart.title.xaxis').length) {
+        if (typeof(prop['chart.title.xaxis']) == 'string' && prop['chart.title.xaxis'].length) {
         
-            var size = obj.Get('chart.text.size') + 2;
-            var font = obj.Get('chart.text.font');
-            var bold = obj.Get('chart.title.xaxis.bold');
+            var size = prop['chart.text.size'] + 2;
+            var font = prop['chart.text.font'];
+            var bold = prop['chart.title.xaxis.bold'];
 
-            if (typeof(obj.Get('chart.title.xaxis.size')) == 'number') {
-                size = obj.Get('chart.title.xaxis.size');
+            if (typeof(prop['chart.title.xaxis.size']) == 'number') {
+                size = prop['chart.title.xaxis.size'];
             }
 
-            if (typeof(obj.Get('chart.title.xaxis.font')) == 'string') {
-                font = obj.Get('chart.title.xaxis.font');
+            if (typeof(prop['chart.title.xaxis.font']) == 'string') {
+                font = prop['chart.title.xaxis.font'];
             }
             
-            var hpos = ((obj.canvas.width - obj.gutterLeft - obj.gutterRight) / 2) + obj.gutterLeft;
-            var vpos = obj.canvas.height - obj.Get('chart.gutter.bottom') + 25;
+            var hpos = ((ca.width - gutterLeft - gutterRight) / 2) + gutterLeft;
+            var vpos = ca.height - gutterBottom + 25;
             
-            if (typeof(obj.Get('chart.title.xaxis.pos')) == 'number') {
-                vpos = obj.canvas.height - (gutterBottom * obj.Get('chart.title.xaxis.pos'));
+            if (typeof(prop['chart.title.xaxis.pos']) == 'number') {
+                vpos = ca.height - (gutterBottom * prop['chart.title.xaxis.pos']);
             }
-        
-            context.beginPath();
-            RGraph.Text(context,
-                        font,
-                        size,
-                        hpos,
-                        vpos,
-                        obj.Get('chart.title.xaxis'),
-                        'center',
-                        'center',
-                        false,
-                        false,
-                        false,
-                        bold);
-            context.fill();
+
+            RGraph.Text2(obj, {'font':font,
+                               'size':size,
+                               'x':hpos,
+                               'y':vpos,
+                               'text':prop['chart.title.xaxis'],
+                               'halign':'center',
+                               'valign':'center',
+                               'bold':bold,
+                               'tag': 'title xaxis'
+                              });
+            
         }
 
         // Y axis title
-        if (typeof(obj.Get('chart.title.yaxis')) == 'string' && obj.Get('chart.title.yaxis').length) {
+        if (typeof(prop['chart.title.yaxis']) == 'string' && prop['chart.title.yaxis'].length) {
 
-            var size  = obj.Get('chart.text.size') + 2;
-            var font  = obj.Get('chart.text.font');
+            var size  = prop['chart.text.size'] + 2;
+            var font  = prop['chart.text.font'];
             var angle = 270;
-            var bold  = obj.Get('chart.title.yaxis.bold');
-            var color = obj.Get('chart.title.yaxis.color');
+            var bold  = prop['chart.title.yaxis.bold'];
+            var color = prop['chart.title.yaxis.color'];
 
-            if (typeof(obj.Get('chart.title.yaxis.pos')) == 'number') {
-                var yaxis_title_pos = obj.Get('chart.title.yaxis.pos') * obj.Get('chart.gutter.left');
+            if (typeof(prop['chart.title.yaxis.pos']) == 'number') {
+                var yaxis_title_pos = prop['chart.title.yaxis.pos'] * gutterLeft;
             } else {
-                var yaxis_title_pos = ((obj.Get('chart.gutter.left') - 25) / obj.Get('chart.gutter.left')) * obj.Get('chart.gutter.left');
+                var yaxis_title_pos = ((gutterLeft - 25) / gutterLeft) * gutterLeft;
             }
 
-            if (typeof(obj.Get('chart.title.yaxis.size')) == 'number') {
-                size = obj.Get('chart.title.yaxis.size');
+            if (typeof(prop['chart.title.yaxis.size']) == 'number') {
+                size = prop['chart.title.yaxis.size'];
             }
 
-            if (typeof(obj.Get('chart.title.yaxis.font')) == 'string') {
-                font = obj.Get('chart.title.yaxis.font');
+            if (typeof(prop['chart.title.yaxis.font']) == 'string') {
+                font = prop['chart.title.yaxis.font'];
             }
 
-            if (obj.Get('chart.title.yaxis.align') == 'right' || obj.Get('chart.title.yaxis.position') == 'right') {
+            if (prop['chart.title.yaxis.align'] == 'right' || prop['chart.title.yaxis.position'] == 'right') {
                 angle = 90;
-                yaxis_title_pos = obj.Get('chart.title.yaxis.pos') ? (obj.canvas.width - obj.Get('chart.gutter.right')) + (obj.Get('chart.title.yaxis.pos') * obj.Get('chart.gutter.right')) :
-                                                                     obj.canvas.width - obj.Get('chart.gutter.right') + obj.Get('chart.text.size') + 5;
+                yaxis_title_pos = prop['chart.title.yaxis.pos'] ? (ca.width - gutterRight) + (prop['chart.title.yaxis.pos'] * gutterRight) :
+                                                                   ca.width - gutterRight + prop['chart.text.size'] + 5;
             } else {
                 yaxis_title_pos = yaxis_title_pos;
             }
-            
 
-            context.beginPath();
             context.fillStyle = color;
-            RGraph.Text(context,
-                        font,
-                        size,
-                        yaxis_title_pos,
-                        ((obj.canvas.height - obj.gutterTop - obj.gutterBottom) / 2) + obj.gutterTop,
-                        obj.Get('chart.title.yaxis'),
-                        'center',
-                        'center',
-                        false,
-                        angle,
-                        false,
-                        bold);
-            context.fill();
+            RGraph.Text2(obj, {'font':font,
+                               'size':size,
+                               'x':yaxis_title_pos,
+                               'y':((ca.height - gutterTop - gutterBottom) / 2) + gutterTop,
+                               'valign':'center',
+                               'halign':'center',
+                               'angle':angle,
+                               'bold':bold,
+                               'text':prop['chart.title.yaxis'],
+                               'tag':'title yaxis'
+                              });
         }
 
-        obj.context.beginPath();
+        /**
+        * If the background color is spec ified - draw that. It's a rectangle that fills the
+        * entire are within the gutters
+        */
+        var bgcolor = prop['chart.background.color'];
+        if (bgcolor) {
+            co.fillStyle = bgcolor;
+            co.fillRect(gutterLeft, gutterTop, ca.width - gutterLeft - gutterRight, ca.height - gutterTop - gutterBottom);
+        }
 
-        // Draw the horizontal bars
-        context.fillStyle = obj.Get('chart.background.barcolor1');
-        height = (obj.canvas.height - gutterBottom);
+        /**
+        * Draw horizontal background bars
+        */
+        co.beginPath(); // Necessary?
+
+        co.fillStyle   = prop['chart.background.barcolor1'];
+        co.strokeStyle = co.fillStyle;
+        height = (ca.height - gutterBottom);
 
         for (var i=gutterTop; i < height ; i+=80) {
-            obj.context.fillRect(gutterLeft, i, RGraph.GetWidth(obj) - gutterLeft - gutterRight, Math.min(40, RGraph.GetHeight(obj) - gutterBottom - i) );
+            co.fillRect(gutterLeft, i, ca.width - gutterLeft - gutterRight, Math.min(40, ca.height - gutterBottom - i) );
         }
 
-            context.fillStyle = obj.Get('chart.background.barcolor2');
-            height = (RGraph.GetHeight(obj) - gutterBottom);
-    
-            for (var i= (40 + gutterTop); i < height; i+=80) {
-                obj.context.fillRect(gutterLeft, i, RGraph.GetWidth(obj) - gutterLeft - gutterRight, i + 40 > (RGraph.GetHeight(obj) - gutterBottom) ? RGraph.GetHeight(obj) - (gutterBottom + i) : 40);
-            }
-            
-            context.stroke();
+        co.fillStyle   = prop['chart.background.barcolor2'];
+        co.strokeStyle = co.fillStyle;
+        height = (ca.height - gutterBottom);
+
+        for (var i= (40 + gutterTop); i < height; i+=80) {
+            co.fillRect(gutterLeft, i, ca.width - gutterLeft - gutterRight, i + 40 > (ca.height - gutterBottom) ? ca.height - (gutterBottom + i) : 40);
+        }
+        
+        //context.stroke();
+        co.beginPath();
     
 
         // Draw the background grid
-        if (obj.Get('chart.background.grid')) {
+        if (prop['chart.background.grid']) {
 
             // If autofit is specified, use the .numhlines and .numvlines along with the width to work
             // out the hsize and vsize
-            if (obj.Get('chart.background.grid.autofit')) {
+            if (prop['chart.background.grid.autofit']) {
 
                 /**
                 * Align the grid to the tickmarks
                 */
-                if (obj.Get('chart.background.grid.autofit.align')) {
+                if (prop['chart.background.grid.autofit.align']) {
+                    
                     // Align the horizontal lines
-                    obj.Set('chart.background.grid.autofit.numhlines', obj.Get('chart.ylabels.count'));
+                    obj.Set('chart.background.grid.autofit.numhlines', prop['chart.ylabels.count']);
 
                     // Align the vertical lines for the line
                     if (obj.type == 'line') {
-                        if (obj.Get('chart.labels') && obj.Get('chart.labels').length) {
-                            obj.Set('chart.background.grid.autofit.numvlines', obj.Get('chart.labels').length - 1);
+                        if (prop['chart.labels'] && prop['chart.labels'].length) {
+                            obj.Set('chart.background.grid.autofit.numvlines', prop['chart.labels'].length - 1);
                         } else {
                             obj.Set('chart.background.grid.autofit.numvlines', obj.data[0].length - 1);
                         }
 
                     // Align the vertical lines for the bar
-                    } else if (obj.type == 'bar' && obj.Get('chart.labels') && obj.Get('chart.labels').length) {
-                        obj.Set('chart.background.grid.autofit.numvlines', obj.Get('chart.labels').length);
+                    } else if (obj.type == 'bar' && prop['chart.labels'] && prop['chart.labels'].length) {
+                        obj.Set('chart.background.grid.autofit.numvlines', prop['chart.labels'].length);
                     }
                 }
 
-                var vsize = ((obj.canvas.width - gutterLeft - gutterRight)) / obj.Get('chart.background.grid.autofit.numvlines');
-                var hsize = (obj.canvas.height - gutterTop - gutterBottom) / obj.Get('chart.background.grid.autofit.numhlines');
+                var vsize = ((ca.width - gutterLeft - gutterRight)) / prop['chart.background.grid.autofit.numvlines'];
+                var hsize = (ca.height - gutterTop - gutterBottom) / prop['chart.background.grid.autofit.numhlines'];
 
                 obj.Set('chart.background.grid.vsize', vsize);
                 obj.Set('chart.background.grid.hsize', hsize);
             }
 
-            context.beginPath();
-            context.lineWidth   = obj.Get('chart.background.grid.width') ? obj.Get('chart.background.grid.width') : 1;
-            context.strokeStyle = obj.Get('chart.background.grid.color');
+            co.beginPath();
+            co.lineWidth   = prop['chart.background.grid.width'] ? prop['chart.background.grid.width'] : 1;
+            co.strokeStyle = prop['chart.background.grid.color'];
 
             // Draw the horizontal lines
-            if (obj.Get('chart.background.grid.hlines')) {
-                height = (RGraph.GetHeight(obj) - gutterBottom)
-                for (y=gutterTop; y<height; y+=obj.Get('chart.background.grid.hsize')) {
-                    context.moveTo(gutterLeft, AA(this, y));
-                    context.lineTo(RGraph.GetWidth(obj) - gutterRight, AA(this, y));
+            if (prop['chart.background.grid.hlines']) {
+                height = (ca.height - gutterBottom)
+                for (y=gutterTop; y<height; y+=prop['chart.background.grid.hsize']) {
+                    context.moveTo(gutterLeft, Math.round(y));
+                    context.lineTo(ca.width - gutterRight, Math.round(y));
                 }
             }
 
-            if (obj.Get('chart.background.grid.vlines')) {
+            if (prop['chart.background.grid.vlines']) {
                 // Draw the vertical lines
-                var width = (obj.canvas.width - gutterRight)
-                for (x=gutterLeft; x<=width; x+=obj.Get('chart.background.grid.vsize')) {
-                    context.moveTo(AA(this, x), gutterTop);
-                    context.lineTo(AA(this, x), obj.canvas.height - gutterBottom);
+                var width = (ca.width - gutterRight)
+                for (x=gutterLeft; x<=width; x+=prop['chart.background.grid.vsize']) {
+                    co.moveTo(Math.round(x), gutterTop);
+                    co.lineTo(Math.round(x), ca.height - gutterBottom);
                 }
             }
 
-            if (obj.Get('chart.background.grid.border')) {
+            if (prop['chart.background.grid.border']) {
                 // Make sure a rectangle, the same colour as the grid goes around the graph
-                context.strokeStyle = obj.Get('chart.background.grid.color');
-                context.strokeRect(AA(this, gutterLeft), AA(this, gutterTop), RGraph.GetWidth(obj) - gutterLeft - gutterRight, RGraph.GetHeight(obj) - gutterTop - gutterBottom);
+                co.strokeStyle = prop['chart.background.grid.color'];
+                co.strokeRect(Math.round(gutterLeft), Math.round(gutterTop), ca.width - gutterLeft - gutterRight, ca.height - gutterTop - gutterBottom);
             }
         }
 
@@ -949,57 +1400,24 @@
 
         // If it's a bar and 3D variant, translate
         if (variant == '3d') {
-            context.restore();
+            co.restore();
         }
 
         // Draw the title if one is set
-        if ( typeof(obj.Get('chart.title')) == 'string') {
+        if ( typeof(prop['chart.title']) == 'string') {
 
             if (obj.type == 'gantt') {
                 gutterTop -= 10;
             }
 
             RGraph.DrawTitle(obj,
-                             obj.Get('chart.title'),
+                             prop['chart.title'],
                              gutterTop,
                              null,
-                             obj.Get('chart.title.size') ? obj.Get('chart.title.size') : obj.Get('chart.text.size') + 2);
+                             prop['chart.title.size'] ? prop['chart.title.size'] : prop['chart.text.size'] + 2);
         }
 
-        context.stroke();
-    }
-
-
-    /**
-    * Returns the day number for a particular date. Eg 1st February would be 32
-    * 
-    * @param   object obj A date object
-    * @return  int        The day number of the given date
-    */
-    RGraph.GetDays = function (obj)
-    {
-        var year  = obj.getFullYear();
-        var days  = obj.getDate();
-        var month = obj.getMonth();
-
-        if (month == 0) return days;
-        if (month >= 1) days += 31; 
-        if (month >= 2) days += 28;
-
-        // Leap years. Crude, but it functions
-        if (year >= 2008 && year % 4 == 0) days += 1;
-
-        if (month >= 3) days += 31;
-        if (month >= 4) days += 30;
-        if (month >= 5) days += 31;
-        if (month >= 6) days += 30;
-        if (month >= 7) days += 31;
-        if (month >= 8) days += 31;
-        if (month >= 9) days += 30;
-        if (month >= 10) days += 31;
-        if (month >= 11) days += 30;
-        
-        return days;
+        co.stroke();
     }
 
 
@@ -1045,18 +1463,22 @@
     */
     RGraph.number_format = function (obj, num)
     {
+        var ca   = obj.canvas;
+        var co   = obj.context;
+        var prop = obj.properties;
+
         var i;
         var prepend = arguments[2] ? String(arguments[2]) : '';
         var append  = arguments[3] ? String(arguments[3]) : '';
         var output  = '';
         var decimal = '';
-        var decimal_seperator  = obj.Get('chart.scale.point') ? obj.Get('chart.scale.point') : '.';
-        var thousand_seperator = obj.Get('chart.scale.thousand') ? obj.Get('chart.scale.thousand') : ',';
+        var decimal_seperator  = typeof(prop['chart.scale.point']) == 'string' ? prop['chart.scale.point'] : '.';
+        var thousand_seperator = typeof(prop['chart.scale.thousand']) == 'string' ? prop['chart.scale.thousand'] : ',';
         RegExp.$1   = '';
         var i,j;
 
-        if (typeof(obj.Get('chart.scale.formatter')) == 'function') {
-            return obj.Get('chart.scale.formatter')(obj, num);
+        if (typeof(prop['chart.scale.formatter']) == 'function') {
+            return prop['chart.scale.formatter'](obj, num);
         }
 
         // Ignore the preformatted version of "1e-2"
@@ -1106,8 +1528,8 @@
 
         // Tidy up
         //output = output.replace(/^-,/, '-');
-        if (output.indexOf('-' + obj.Get('chart.scale.thousand')) == 0) {
-            output = '-' + output.substr(('-' + obj.Get('chart.scale.thousand')).length);
+        if (output.indexOf('-' + prop['chart.scale.thousand']) == 0) {
+            output = '-' + output.substr(('-' + prop['chart.scale.thousand']).length);
         }
 
         // Reappend the decimal
@@ -1127,6 +1549,7 @@
     }
 
 
+
     /**
     * Draws horizontal coloured bars on something like the bar, line or scatter
     */
@@ -1138,33 +1561,33 @@
         * Draws a horizontal bar
         */
         obj.context.beginPath();
-        
+
         for (i=0; i<hbars.length; ++i) {
             
             // If null is specified as the "height", set it to the upper max value
             if (hbars[i][1] == null) {
-                hbars[i][1] = obj.max;
+                hbars[i][1] = obj.scale2.max;
             
             // If the first index plus the second index is greater than the max value, adjust accordingly
-            } else if (hbars[i][0] + hbars[i][1] > obj.max) {
-                hbars[i][1] = obj.max - hbars[i][0];
+            } else if (hbars[i][0] + hbars[i][1] > obj.scale2.max) {
+                hbars[i][1] = obj.scale2.max - hbars[i][0];
             }
 
 
             // If height is negative, and the abs() value is greater than .max, use a negative max instead
-            if (Math.abs(hbars[i][1]) > obj.max) {
-                hbars[i][1] = -1 * obj.max;
+            if (Math.abs(hbars[i][1]) > obj.scale2.max) {
+                hbars[i][1] = -1 * obj.scale2.max;
             }
 
 
             // If start point is greater than max, change it to max
-            if (Math.abs(hbars[i][0]) > obj.max) {
-                hbars[i][0] = obj.max;
+            if (Math.abs(hbars[i][0]) > obj.scale2.max) {
+                hbars[i][0] = obj.scale2.max;
             }
             
             // If start point plus height is less than negative max, use the negative max plus the start point
-            if (hbars[i][0] + hbars[i][1] < (-1 * obj.max) ) {
-                hbars[i][1] = -1 * (obj.max + hbars[i][0]);
+            if (hbars[i][0] + hbars[i][1] < (-1 * obj.scale2.max) ) {
+                hbars[i][1] = -1 * (obj.scale2.max + hbars[i][0]);
             }
 
             // If the X axis is at the bottom, and a negative max is given, warn the user
@@ -1172,8 +1595,8 @@
                 alert('[' + obj.type.toUpperCase() + ' (ID: ' + obj.id + ') BACKGROUND HBARS] You have a negative value in one of your background hbars values, whilst the X axis is in the center');
             }
 
-            var ystart = (obj.grapharea - (((hbars[i][0] - obj.min) / (obj.max - obj.min)) * obj.grapharea));
-            var height = (Math.min(hbars[i][1], obj.max - hbars[i][0]) / (obj.max - obj.min)) * obj.grapharea;
+            var ystart = (obj.grapharea - (((hbars[i][0] - obj.scale2.min) / (obj.scale2.max - obj.scale2.min)) * obj.grapharea));
+            var height = (Math.min(hbars[i][1], obj.max - hbars[i][0]) / (obj.scale2.max - obj.scale2.min)) * obj.grapharea;
 
             // Account for the X axis being in the center
             if (obj.Get('chart.xaxispos') == 'center') {
@@ -1187,7 +1610,7 @@
             var y = ystart - height;
             var w = obj.canvas.width - obj.Get('chart.gutter.left') - obj.Get('chart.gutter.right');
             var h = height;
-            
+
             // Accommodate Opera :-/
             if (navigator.userAgent.indexOf('Opera') != -1 && obj.Get('chart.xaxispos') == 'center' && h < 0) {
                 h *= -1;
@@ -1278,26 +1701,26 @@
                             }
     
                             if (obj.Get('chart.variant') == 'dot') {
-                                context.moveTo(AA(obj, x), obj.coords[i][1] - 5);
-                                context.lineTo(AA(obj, x), obj.coords[i][1] - 5 - length);
+                                context.moveTo(Math.round(x), obj.coords[i][1] - 5);
+                                context.lineTo(Math.round(x), obj.coords[i][1] - 5 - length);
                                 
-                                var text_x = AA(obj, x);
+                                var text_x = Math.round(x);
                                 var text_y = obj.coords[i][1] - 5 - length;
                             
                             } else if (obj.Get('chart.variant') == 'arrow') {
-                                context.moveTo(AA(obj, x), obj.coords[i][1] - 5);
-                                context.lineTo(AA(obj, x), obj.coords[i][1] - 5 - length);
+                                context.moveTo(Math.round(x), obj.coords[i][1] - 5);
+                                context.lineTo(Math.round(x), obj.coords[i][1] - 5 - length);
                                 
-                                var text_x = AA(obj, x);
+                                var text_x = Math.round(x);
                                 var text_y = obj.coords[i][1] - 5 - length;
                             
                             } else {
     
-                                context.arc(AA(obj, x), y, 2.5, 0, 6.28, 0);
-                                context.moveTo(AA(obj, x), y);
-                                context.lineTo(AA(obj, x), y - length);
+                                context.arc(Math.round(x), y, 2.5, 0, 6.28, 0);
+                                context.moveTo(Math.round(x), y);
+                                context.lineTo(Math.round(x), y - length);
 
-                                var text_x = AA(obj, x);
+                                var text_x = Math.round(x);
                                 var text_y = y - length;
                             }
 
@@ -1313,16 +1736,16 @@
                                 labels_processed[i][3] == -1
                                ) {
 
-                                context.moveTo(AA(obj, x), y + 5);
-                                context.lineTo(AA(obj, x), y + 5 + length);
+                                context.moveTo(Math.round(x), y + 5);
+                                context.lineTo(Math.round(x), y + 5 + length);
                                 
                                 context.stroke();
                                 context.beginPath();                                
                                 
                                 // This draws the arrow
-                                context.moveTo(AA(obj, x), y + 5);
-                                context.lineTo(AA(obj, x) - 3, y + 10);
-                                context.lineTo(AA(obj, x) + 3, y + 10);
+                                context.moveTo(Math.round(x), y + 5);
+                                context.lineTo(Math.round(x) - 3, y + 10);
+                                context.lineTo(Math.round(x) + 3, y + 10);
                                 context.closePath();
                                 
                                 var text_x = x;
@@ -1333,16 +1756,16 @@
                                 var text_x = x;
                                 var text_y = y - 5 - length;
 
-                                context.moveTo(AA(obj, x), y - 5);
-                                context.lineTo(AA(obj, x), y - 5 - length);
+                                context.moveTo(Math.round(x), y - 5);
+                                context.lineTo(Math.round(x), y - 5 - length);
                                 
                                 context.stroke();
                                 context.beginPath();
                                 
                                 // This draws the arrow
-                                context.moveTo(AA(obj, x), y - 5);
-                                context.lineTo(AA(obj, x) - 3, y - 10);
-                                context.lineTo(AA(obj, x) + 3, y - 10);
+                                context.moveTo(Math.round(x), y - 5);
+                                context.lineTo(Math.round(x) - 3, y - 10);
+                                context.lineTo(Math.round(x) + 3, y - 10);
                                 context.closePath();
                             }
                         
@@ -1357,17 +1780,17 @@
                             // Fore ground color
                             context.fillStyle = (typeof(labels_processed[i]) == 'object' && typeof(labels_processed[i][1]) == 'string') ? labels_processed[i][1] : 'black';
 
-                            RGraph.Text(context,
-                                        obj.Get('chart.text.font'),
-                                        obj.Get('chart.text.size'),
-                                        text_x,
-                                        text_y,
-                                        (typeof(labels_processed[i]) == 'object' && typeof(labels_processed[i][0]) == 'string') ? labels_processed[i][0] : labels_processed[i],
-                                        'bottom',
-                                        'center',
-                                        true,
-                                        null,
-                                        (typeof(labels_processed[i]) == 'object' && typeof(labels_processed[i][2]) == 'string') ? labels_processed[i][2] : 'white');
+                            RGraph.Text2(obj,{'font':obj.Get('chart.text.font'),
+                                              'size':obj.Get('chart.text.size'),
+                                              'x':text_x,
+                                              'y':text_y,
+                                              'text': (typeof(labels_processed[i]) == 'object' && typeof(labels_processed[i][0]) == 'string') ? labels_processed[i][0] : labels_processed[i],
+                                              'valign': 'bottom',
+                                              'halign':'center',
+                                              'bounding':true,
+                                              'bounding.fill': (typeof(labels_processed[i]) == 'object' && typeof(labels_processed[i][2]) == 'string') ? labels_processed[i][2] : 'white',
+                                              'tag':'labels ingraph'
+                                             });
                         context.fill();
                     }
                 }
@@ -1383,7 +1806,7 @@
     */
     RGraph.FixEventObject = function (e)
     {
-        if (RGraph.isIE8() || RGraph.isIE7()) {
+        if (ISOLD) {
             var e = event;
 
             e.pageX  = (event.clientX + document.body.scrollLeft);
@@ -1497,9 +1920,8 @@
             {
                 var textObj = document.createElement('DIV');
                 textObj.innerHTML = text;
-                textObj.style.backgroundColor = 'white';
                 textObj.style.position = 'absolute';
-                textObj.style.top = -100
+                textObj.style.top = '-100px';
                 textObj.style.left = 0;
                 document.body.appendChild(textObj);
 
@@ -1759,45 +2181,6 @@
     }
 
 
-    /**
-    * This function suggests a gutter size based on the widest left label. Given that the bottom
-    * labels may be longer, this may be a little out.
-    * 
-    * @param object obj  The graph object
-    * @param array  data An array of graph data
-    * @return int        A suggested gutter setting
-    */
-    RGraph.getGutterSuggest = function (obj, data)
-    {
-        /**
-        * Calculate the minimum value
-        */
-        var min = 0;
-        for (var i=0; i<data.length; ++i) {
-            min = Math.min(min, data[i]);
-        }
-        var min = Math.abs(min);
-
-        var str = RGraph.number_format(obj, RGraph.array_max(RGraph.getScale(Math.max(min, RGraph.array_max(data)), obj)), obj.Get('chart.units.pre'), obj.Get('chart.units.post'));
-
-        // Take into account the HBar
-        if (obj.type == 'hbar') {
-
-            var str = '';
-            var len = 0;
-
-            for (var i=0; i<obj.Get('chart.labels').length; ++i) {
-                str = (obj.Get('chart.labels').length > str.length ? obj.Get('chart.labels')[i] : str);
-            }
-        }
-
-        obj.context.font = obj.Get('chart.text.size') + 'pt ' + obj.Get('chart.text.font');
-
-        len = obj.context.measureText(str).width + 5;
-
-        return (obj.type == 'hbar' ? len / 3 : len);
-    }
-
 
     /**
     * If you prefer, you can use the SetConfig() method to set the configuration information
@@ -1876,6 +2259,7 @@
             // When the image has loaded - redraw the canvas
             img.onload = function ()
             {
+                obj.__rgraph_background_image_loaded__ = true;
                 RGraph.Clear(obj.canvas);
                 RGraph.RedrawCanvas(obj.canvas);
             }
@@ -2000,10 +2384,12 @@
             }
         }
 
-        // RGraph.ObjectRegistry.objects.byCanvasID.push([canvasID, obj]);
 
         for (var i=0; i<RGraph.ObjectRegistry.objects.byCanvasID.length; ++i) {
-            if (RGraph.ObjectRegistry.objects.byCanvasID[i] && RGraph.ObjectRegistry.objects.byCanvasID[i][0] == id) {
+            if (   RGraph.ObjectRegistry.objects.byCanvasID[i]
+                && RGraph.ObjectRegistry.objects.byCanvasID[i][1]
+                && RGraph.ObjectRegistry.objects.byCanvasID[i][1].uid == uid) {
+                
                 RGraph.ObjectRegistry.objects.byCanvasID[i] = null;
             }
         }
@@ -2036,6 +2422,83 @@
             RGraph.ObjectRegistry.objects            = {};
             RGraph.ObjectRegistry.objects.byUID      = [];
             RGraph.ObjectRegistry.objects.byCanvasID = [];
+        }
+    }
+
+
+
+    /**
+    * Lists all objects in the ObjectRegistry
+    * 
+    * @param boolean ret Whether to return the list or alert() it
+    */
+    RGraph.ObjectRegistry.List = function ()
+    {
+        var list = [];
+
+        for (var i=0; i<RGraph.ObjectRegistry.objects.byUID.length; ++i) {
+            if (RGraph.ObjectRegistry.objects.byUID[i]) {
+                list.push(RGraph.ObjectRegistry.objects.byUID[i][1].type);
+            }
+        }
+        
+        if (arguments[0]) {
+            return list;
+        } else {
+            p(list);
+        }
+    }
+
+
+
+    /**
+    * Clears the ObjectRegistry of objects that are of a certain given type
+    * 
+    * @param type string The type to clear
+    */
+    RGraph.ObjectRegistry.ClearByType = function (type)
+    {
+        var objects = RGraph.ObjectRegistry.objects.byUID;
+
+        for (var i=0; i<objects.length; ++i) {
+            if (objects[i]) {
+                var uid = objects[i][0];
+                var obj = objects[i][1];
+                
+                if (obj && obj.type == type) {
+                    RGraph.ObjectRegistry.Remove(obj);
+                }
+            }
+        }
+    }
+
+
+
+    /**
+    * This function provides an easy way to go through all of the objects that are held in the
+    * Registry
+    * 
+    * @param func function This function is run for every object. Its passed the object as an argument
+    * @param string type Optionally, you can pass a type of object to look for
+    */
+    RGraph.ObjectRegistry.Iterate = function (func)
+    {
+        var objects = RGraph.ObjectRegistry.objects.byUID;
+
+        for (var i=0; i<objects.length; ++i) {
+        
+            if (typeof arguments[1] == 'string') {
+                
+                var types = arguments[1].split(/,/);
+
+                for (var j=0; j<types.length; ++j) {
+                    if (types[j] == objects[i][1].type) {
+                        func(objects[i][1]);
+                    }
+                }
+            } else {
+                func(objects[i][1]);
+            }
         }
     }
 
@@ -2101,6 +2564,7 @@
         var ret     = [];
         var objects = RGraph.ObjectRegistry.getObjectsByCanvasID(canvas.id);
 
+        // Retrieve objects "front to back"
         for (var i=(objects.length - 1); i>=0; --i) {
 
             var obj = objects[i].getObjectByXY(e);
@@ -2138,18 +2602,15 @@
     * @param  string type   The type to look for
     * @return array         An array of one or more objects
     */
-    RGraph.ObjectRegistry.getObjectsByType = function (canvas, type)
+    RGraph.ObjectRegistry.getObjectsByType = function (type)
     {
-        if (typeof(canvas) == 'string') {
-            canvas = document.getElementById(canvas);
-        }
-
-        var objects = RGraph.ObjectRegistry.getObjectsByCanvasID(canvas.id);
+        var objects = RGraph.ObjectRegistry.objects.byUID;
         var ret     = [];
 
         for (var i=0; i<objects.length; ++i) {
-            if (objects[i] && objects[i].type && objects[i].type == type) {
-                ret.push(objects[i]);
+
+            if (objects[i] && objects[i][1] && objects[i][1].type && objects[i][1].type && objects[i][1].type == type) {
+                ret.push(objects[i][1]);
             }
         }
 
@@ -2159,15 +2620,21 @@
 
     /**
     * Retrieves the FIRST object that matches the given type
-    * 
-    * @param  mixed  canvas The type to look for
+    *
     * @param  string type   The type of object to look for
     * @return object        The FIRST object that matches the given type
     */
-    RGraph.ObjectRegistry.getFirstObjectByType = function (canvas, type)
+    RGraph.ObjectRegistry.getFirstObjectByType = function (type)
     {
-        var objects = RGraph.ObjectRegistry.getObjectsByType(canvas, type);
-        return objects.length > 0 ? objects[0] : null;
+        var objects = RGraph.ObjectRegistry.objects.byUID;
+    
+        for (var i=0; i<objects.length; ++i) {
+            if (objects[i] && objects[i][1] && objects[i][1].type == type) {
+                return objects[i][1];
+            }
+        }
+        
+        return null;
     }
 
 
@@ -2270,6 +2737,7 @@
         * If this function exists, then the dynamic file has been included.
         */
         if (RGraph.InstallCanvasClickListener) {
+
             RGraph.InstallWindowMousedownListener(obj);
             RGraph.InstallWindowMouseupListener(obj);
             RGraph.InstallCanvasMousemoveListener(obj);
@@ -2285,7 +2753,10 @@
                    || obj.Get('chart.key.interactive')
                    || obj.Get('chart.events.click')
                    || obj.Get('chart.events.mousemove')
+                   || typeof obj.onclick == 'function'
+                   || typeof obj.onmousemove == 'function'
                   ) {
+
             alert('[RGRAPH] You appear to have used dynamic features but not included the file: RGraph.common.dynamic.js');
         }
     }
@@ -2297,60 +2768,56 @@
     */
     RGraph.pr = function (obj)
     {
-        var str = '';
-        var indent = (arguments[2] ? arguments[2] : '');
 
-        switch (typeof(obj)) {
-            case 'number':
-                if (indent == '') {
-                    str+= 'Number: '
-                }
-                str += String(obj);
-                break;
+        var indent = (arguments[2] ? arguments[2] : '    ');
+        var str    = '';
 
-            case 'string':
-                if (indent == '') {
-                    str+= 'String (' + obj.length + '):'
-                }
-                str += '"' + String(obj) + '"';
-                break;
-
+        var counter = typeof arguments[3] == 'number' ? arguments[3] : 0;
+        
+        if (counter >= 5) {
+            return '';
+        }
+        
+        switch (typeof obj) {
+            
+            case 'string':    str += obj + ' (' + (typeof obj) + ', ' + obj.length + ')'; break;
+            case 'number':    str += obj + ' (' + (typeof obj) + ')'; break;
+            case 'boolean':   str += obj + ' (' + (typeof obj) + ')'; break;
+            case 'function':  str += 'function () {}'; break;
+            case 'undefined': str += 'undefined'; break;
+            case 'null':      str += 'null'; break;
+            
             case 'object':
                 // In case of null
-                if (obj == null) {
-                    str += 'null';
-                    break;
-                }
-
-                str += 'Object\n' + indent + '(\n';
-                for (var i in obj) {
-                    if (typeof(i) == 'string' || typeof(i) == 'number') {
-                        str += indent + ' ' + i + ' => ' + RGraph.pr(obj[i], true, indent + '    ') + '\n';
+                if (RGraph.is_null(obj)) {
+                    str += indent + 'null\n';
+                } else {
+                    str += indent + 'Object {' + '\n'
+                    for (j in obj) {
+                        str += indent + '    ' + j + ' => ' + RGraph.pr(obj[j], true, indent + '    ', counter + 1) + '\n';
                     }
+                    str += indent + '}';
                 }
-
-                var str = str + indent + ')';
                 break;
-
-            case 'function':
-                str += obj;
-                break;
-
-            case 'boolean':
-                str += 'Boolean: ' + (obj ? 'true' : 'false');
+            
+            
+            default:
+                str += 'Unknown type: ' + typeof obj + '';
                 break;
         }
+
 
         /**
         * Finished, now either return if we're in a recursed call, or alert()
         * if we're not.
         */
-        if (arguments[1]) {
-            return str;
-        } else {
+        if (!arguments[1]) {
             alert(str);
         }
+        
+        return str;
     }
+
 
 
     /**
@@ -2437,120 +2904,6 @@
         context.translate(0 - x, 0 - y);    
     }
 
-        
-    /**
-    * This draws an extra set of axes
-    * 
-    * @param object obj   The chart object
-    * @param object prop  An assoc array of options:
-    *                      axis.x           REQUIRED
-    *                      axis.min         Minimum value - default is 0
-    *                      axis.max         Maximum value - REQUIRED
-    *                      axis.color       Color - default is black
-    *                      axis.title       Title - default is nothing
-    *                      axis.title.color The color of the title text, default is black
-    *                      axis.font        The font that the text is rendered in, default is Arial
-    *                      axis.text.size   The default is 12 (ish)
-    *                      axis.numticks    The number of tickmarks, default is 10
-    *                      axis.numylabels  The number of Y labels
-    *                      axis.align       This determines which side of the axis that the labels are draswn on.
-    *                                       It can be left or right
-    *                      axis.scale.formatter This should be a function which accepts two arguments - the chart
-    *                                           object and the value. The function should then format the number
-    *                                           as required and then return it.
-    */
-    RGraph.DrawAxes = function (obj, prop)
-    {
-        var gutterTop    = obj.gutterTop;
-        var gutterBottom = obj.gutterBottom;
-        var context      = obj.context;
-        var x            = prop['axis.x'];
-        var y            = obj.properties['chart.gutter.top'];
-        var min          = prop['axis.min'] ? prop['axis.min'] : 0;
-        var max          = prop['axis.max'];
-        var color        = prop['axis.color'] ? prop['axis.color'] : 'black';
-        var title        = prop['axis.title'] ? prop['axis.title'] : '';
-        var title_color  = prop['axis.title.color'] ? prop['axis.title.color'] : color;
-        var label_color  = prop['axis.text.color'] ? prop['axis.color'] : color;
-        var height       = obj.canvas.height - obj.gutterBottom - obj.gutterTop;
-        var numticks     = prop['axis.numticks'] ? prop['axis.numticks'] : 10;
-        var numlabels    = prop['axis.numlabels'] ? prop['axis.numlabels'] : 5;
-        var gap          = height / numticks;
-        var font         = prop['axis.font'] ? prop['axis.font'] : 'Arial';
-        var size         = prop['axis.text.size'] ? prop['axis.text.size'] : 10;
-        var align        = typeof(prop['axis.align']) == 'string'? prop['axis.align'] : 'left';
-        var formatter    = prop['axis.scale.formatter'];
-        var decimals     = prop['axis.scale.decimals'];
-        var units_pre    = prop['axis.units.pre'];
-        var units_post   = prop['axis.units.post'];
-
-
-        /**
-        * Set the color
-        */
-        context.strokeStyle = color;
-
-        /**
-        * Draw the main vertical line
-        */
-        context = obj.context;
-        context.beginPath();
-            context.moveTo(AA(obj, x), y);
-            context.lineTo(AA(obj, x), y + height);
-        context.stroke();
-        
-        /**
-        * Draw the axes tickmarks
-        */
-        context.beginPath();
-            for (var i=0; i<=numticks; ++i) {
-                context.moveTo(align == 'right' ? x + 3 : x - 3,AA(obj, y + (gap *i)));
-                context.lineTo(x,AA(obj, y + (gap *i)));
-            }
-        context.stroke();
-        
-        /**
-        * Draw the scale for the axes
-        */
-        context.fillStyle = label_color;
-        context.beginPath();
-            var text_len = 0;
-            for (var i=0; i<=numlabels; ++i) {
-            
-                var original = ((max - min) * ((numlabels-i) / numlabels)) + min;
-
-                var text     = RGraph.number_format(obj, original.toFixed(decimals), units_pre, units_post);
-                var text     = String(typeof(formatter) == 'function' ? formatter(obj, original) : text);
-                var text_len = Math.max(text_len, context.measureText(text).width);
-
-                RGraph.Text(
-                            context,
-                            font,
-                            size,
-                            x - (align == 'right' ? -5 : 5),
-                            gutterTop + ((height / numlabels)*i),
-                            text,
-                            'center',
-                            align == 'right' ? 'left' : 'right'
-                           );
-            }
-        context.stroke();
-
-        /**
-        * Draw the title for the axes
-        */
-        if (title) {
-            context.beginPath();
-                context.fillStyle = title_color
-                RGraph.Text(context, font, size + 2,
-                
-                align == 'right' ? x + size + text_len + 2 : x - size - text_len - 2,
-                
-                height / 2 + gutterTop, title, 'center', 'center', null, align == 'right' ? 90 : -90);
-            context.stroke();
-        }
-    }
-
 
 
     /**
@@ -2565,33 +2918,443 @@
     */
     RGraph.MeasureText = function (text, bold, font, size)
     {
-        var div = document.createElement('DIV');
-            div.innerHTML = text;
-            div.style.position = 'absolute';
-            div.style.top = 0;
-            div.style.left = 0;
-            div.style.backgroundColor = 'red';
-            div.style.fontFamily = font;
-            div.style.fontWeight = bold ? 'bold' : 'normal';
-            div.style.fontSize = size + 'pt';
-        document.body.appendChild(div);
+        // Add the sizes to the cache as adding DOM elements is costly and causes slow downs
+        if (typeof(__rgraph_measuretext_cache__) == 'undefined') {
+            __rgraph_measuretext_cache__ = [];
+        }
+
+        var str = text + ':' + bold + ':' + font + ':' + size;
+        if (typeof(__rgraph_measuretext_cache__) == 'object' && __rgraph_measuretext_cache__[str]) {
+            return __rgraph_measuretext_cache__[str];
+        }
+        
+        if (!__rgraph_measuretext_cache__['text-div']) {
+            var div = document.createElement('DIV');
+                div.style.position = 'absolute';
+                div.style.top = '-100px';
+                div.style.left = '-100px';
+            document.body.appendChild(div);
+            
+            // Now store the newly created DIV
+            __rgraph_measuretext_cache__['text-div'] = div;
+
+        } else if (__rgraph_measuretext_cache__['text-div']) {
+            var div = __rgraph_measuretext_cache__['text-div'];
+        }
+
+        div.innerHTML = text.replace(/\r\n/g, '<br />');
+        div.style.fontFamily = font;
+        div.style.fontWeight = bold ? 'bold' : 'normal';
+        div.style.fontSize = size + 'pt';
         
         var size = [div.offsetWidth, div.offsetHeight];
-        
-        document.body.removeChild(div);
+
+        //document.body.removeChild(div);
+        __rgraph_measuretext_cache__[str] = size;
         
         return size;
     }
 
 
 
+    /* New text function. Accepts two arguments:
+    *  o obj - The chart object
+    *  o opt - An object/hash/map of properties. This can consist of:
+    *          x                The X coordinate (REQUIRED)
+    *          y                The Y coordinate (REQUIRED)
+    *          text             The text to show (REQUIRED)
+    *          font             The font to use
+    *          size             The size of the text (in pt)
+    *          bold             Whether the text shouldd be bold or not
+    *          marker           Whether to show a marker that indicates the X/Y coordinates
+    *          valign           The vertical alignment
+    *          halign           The horizontal alignment
+    *          bounding         Whether to draw a bounding box for the text
+    *          boundingStroke   The strokeStyle of the bounding box
+    *          boundingFill     The fillStyle of the bounding box
+    */
+    RGraph.Text2 = function (obj, opt)
+    {
+        /**
+        * An RGraph object can be given, or a string or the 2D rendering context
+        * The coords are placed on the obj.coordsText variable ONLY if it's an RGraph object. The function
+        * still returns the cooords though in all cases.
+        */
+        if (obj && obj.isRGraph) {
+            var co = obj.context;
+            var ca = obj.canvas;
+        } else if (typeof obj == 'string') {
+            var ca = document.getElementById(obj);
+            var co = ca.getContext('2d');
+        } else if (typeof obj.getContext == 'function') {
+            var ca = obj;
+            var co = ca.getContext('2d');
+        } else if (obj.toString().indexOf('CanvasRenderingContext2D') != -1) {
+            var co = obj;
+            var ca = obj.context;
+        }
+
+        var x              = opt.x;
+        var y              = opt.y;
+        var originalX      = x;
+        var originalY      = y;
+        var text           = opt.text;
+        var text_multiline = text.split(/\r?\n/g);
+        var numlines       = text_multiline.length;
+        var font           = opt.font ? opt.font : 'Arial';
+        var size           = opt.size ? opt.size : 10;
+        var size_pixels    = size * 1.5;
+        var bold           = opt.bold;
+        var halign         = opt.halign ? opt.halign : 'left';
+        var valign         = opt.valign ? opt.valign : 'bottom';
+        var tag            = typeof opt.tag == 'string' && opt.tag.length > 0 ? opt.tag : '';
+        var marker         = opt.marker;
+        var angle          = opt.angle || 0;
+        
+        /**
+        * Changed the name of boundingFill/boundingStroke - this allows you to still use those names
+        */
+        if (typeof opt.boundingFill == 'string')   opt['bounding.fill']   = opt.boundingFill;
+        if (typeof opt.boundingStroke == 'string') opt['bounding.stroke'] = opt.boundingStroke;
+
+        var bounding                = opt.bounding;
+        var bounding_stroke         = opt['bounding.stroke'] ? opt['bounding.stroke'] : 'black';
+        var bounding_fill           = opt['bounding.fill'] ? opt['bounding.fill'] : 'rgba(255,255,255,0.7)';
+        var bounding_shadow         = opt['bounding.shadow'];
+        var bounding_shadow_color   = opt['bounding.shadow.color'] || '#ccc';
+        var bounding_shadow_blur    = opt['bounding.shadow.blur'] || 3;
+        var bounding_shadow_offsetx = opt['bounding.shadow.offsetx'] || 3;
+        var bounding_shadow_offsety = opt['bounding.shadow.offsety'] || 3;
+        var bounding_linewidth      = opt['bounding.linewidth'] || 1;
+
+
+
+        /**
+        * Initialize the return value to an empty object
+        */
+        var ret = {};
+
+
+
+        /**
+        * The text arg must be a string or a number
+        */
+        if (typeof text == 'number') {
+            text = String(text);
+        }
+
+        if (typeof text != 'string') {
+            alert('[RGRAPH TEXT] The text given must a string or a number');
+            return;
+        }
+        
+        
+        
+        /**
+        * This facilitates vertical text
+        */
+        if (angle != 0) {
+            co.save();
+            co.translate(x, y);
+            co.rotate((Math.PI / 180) * angle)
+            x = 0;
+            y = 0;
+        }
+
+
+        
+        /**
+        * Set the font
+        */
+        co.font = (opt.bold ? 'bold ' : '') + size + 'pt ' + font;
+
+
+
+        /**
+        * Measure the width/height. This must be done AFTER the font has been set
+        */
+        var width=0;
+        for (var i=0; i<numlines; ++i) {
+            width = Math.max(width, co.measureText(text_multiline[i]).width);
+        }
+        var height = size_pixels * numlines;
+
+
+
+
+        /**
+        * Accommodate old MSIE 7/8
+        */
+        if (document.all && ISOLD) {
+            //y += 2;
+        }
+
+
+
+        /**
+        * If marker is specified draw a marker at the X/Y coordinates
+        */
+        if (opt.marker) {
+            var marker_size = 10;
+            var strokestyle = co.strokeStyle;
+            obj.context.beginPath();
+                co.strokeStyle = 'red';
+                co.moveTo(x, y - marker_size);
+                co.lineTo(x, y + marker_size);
+                co.moveTo(x - marker_size, y);
+                co.lineTo(x + marker_size, y);
+            co.stroke();
+            co.strokeStyle = strokestyle;
+        }
+
+
+
+        /**
+        * Set the horizontal alignment
+        */
+        if (halign == 'center') {
+            co.textAlign = 'center';
+            var boundingX = x - 2 - (width / 2);
+        } else if (halign == 'right') {
+            co.textAlign = 'right';
+            var boundingX = x - 2 - width;
+        } else {
+            co.textAlign = 'left';
+            var boundingX = x - 2;
+        }
+
+
+        /**
+        * Set the vertical alignment
+        */
+        if (valign == 'center') {
+            
+            co.textBaseline = 'middle';
+            // Move the text slightly
+            y -= 1;
+            
+            y -= ((numlines - 1) / 2) * size_pixels;
+            var boundingY = y - (size_pixels / 2) - 2;
+        
+        } else if (valign == 'top') {
+            co.textBaseline = 'top';
+
+            var boundingY = y - 2;
+
+        } else {
+
+            co.textBaseline = 'bottom';
+            
+            // Move the Y coord if multiline text
+            if (numlines > 1) {
+                y -= ((numlines - 1) * size_pixels);
+            }
+
+            var boundingY = y - size_pixels - 2;
+        }
+        
+        var boundingW = width + 4;
+        var boundingH = height + 4;
+
+
+
+        /**
+        * Draw a bounding box if required
+        */
+        if (bounding) {
+
+            var pre_bounding_linewidth     = co.lineWidth;
+            var pre_bounding_strokestyle   = co.strokeStyle;
+            var pre_bounding_fillstyle     = co.fillStyle;
+            var pre_bounding_shadowcolor   = co.shadowColor;
+            var pre_bounding_shadowblur    = co.shadowBlur;
+            var pre_bounding_shadowoffsetx = co.shadowOffsetX;
+            var pre_bounding_shadowoffsety = co.shadowOffsetY;
+
+            co.lineWidth   = bounding_linewidth;
+            co.strokeStyle = bounding_stroke;
+            co.fillStyle   = bounding_fill;
+
+            if (bounding_shadow) {
+                co.shadowColor   = bounding_shadow_color;
+                co.shadowBlur    = bounding_shadow_blur;
+                co.shadowOffsetX = bounding_shadow_offsetx;
+                co.shadowOffsetY = bounding_shadow_offsety;
+            }
+
+            //obj.context.strokeRect(boundingX, boundingY, width + 6, (size_pixels * numlines) + 4);
+            //obj.context.fillRect(boundingX, boundingY, width + 6, (size_pixels * numlines) + 4);
+            co.strokeRect(boundingX, boundingY, boundingW, boundingH);
+            co.fillRect(boundingX, boundingY, boundingW, boundingH);
+
+            // Reset the linewidth,colors and shadow to it's original setting
+            co.lineWidth     = pre_bounding_linewidth;
+            co.strokeStyle   = pre_bounding_strokestyle;
+            co.fillStyle     = pre_bounding_fillstyle;
+            co.shadowColor   = pre_bounding_shadowcolor
+            co.shadowBlur    = pre_bounding_shadowblur
+            co.shadowOffsetX = pre_bounding_shadowoffsetx
+            co.shadowOffsetY = pre_bounding_shadowoffsety
+        }
+
+        
+        
+        /**
+        * Draw the text
+        */
+        if (numlines > 1) {
+            for (var i=0; i<numlines; ++i) {
+                co.fillText(text_multiline[i], x, y + (size_pixels * i));
+            }
+        } else {
+            co.fillText(text, x, y);
+        }
+        
+        
+        
+        /**
+        * If the text is at 90 degrees restore() the canvas - getting rid of the rotation
+        * and the translate that we did
+        */
+        if (angle != 0) {
+            if (angle == 90) {
+                if (halign == 'left') {
+                    if (valign == 'bottom') {boundingX = originalX - 2; boundingY = originalY - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'center') {boundingX = originalX - (height / 2) - 2; boundingY = originalY - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'top')    {boundingX = originalX - height - 2; boundingY = originalY - 2; boundingW = height + 4; boundingH = width + 4;}
+                
+                } else if (halign == 'center') {
+                    if (valign == 'bottom') {boundingX = originalX - 2; boundingY = originalY - (width / 2) - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'center') {boundingX = originalX - (height / 2) -  2; boundingY = originalY - (width / 2) - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'top')    {boundingX = originalX - height -  2; boundingY = originalY - (width / 2) - 2; boundingW = height + 4; boundingH = width + 4;}
+                
+                } else if (halign == 'right') {
+                    if (valign == 'bottom') {boundingX = originalX - 2; boundingY = originalY - width - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'center') {boundingX = originalX - (height / 2) - 2; boundingY = originalY - width - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'top')    {boundingX = originalX - height - 2; boundingY = originalY - width - 2; boundingW = height + 4; boundingH = width + 4;}
+                }
+
+            } else if (angle == 180) {
+
+                if (halign == 'left') {
+                    if (valign == 'bottom') {boundingX = originalX - width - 2; boundingY = originalY - 2; boundingW = width + 4; boundingH = height + 4;}
+                    if (valign == 'center') {boundingX = originalX - width - 2; boundingY = originalY - (height / 2) - 2; boundingW = width + 4; boundingH = height + 4;}
+                    if (valign == 'top')    {boundingX = originalX - width - 2; boundingY = originalY - height - 2; boundingW = width + 4; boundingH = height + 4;}
+                
+                } else if (halign == 'center') {
+                    if (valign == 'bottom') {boundingX = originalX - (width / 2) - 2; boundingY = originalY - 2; boundingW = width + 4; boundingH = height + 4;}
+                    if (valign == 'center') {boundingX = originalX - (width / 2) - 2; boundingY = originalY - (height / 2) - 2; boundingW = width + 4; boundingH = height + 4;}
+                    if (valign == 'top')    {boundingX = originalX - (width / 2) - 2; boundingY = originalY - height - 2; boundingW = width + 4; boundingH = height + 4;}
+                
+                } else if (halign == 'right') {
+                    if (valign == 'bottom') {boundingX = originalX - 2; boundingY = originalY - 2; boundingW = width + 4; boundingH = height + 4;}
+                    if (valign == 'center') {boundingX = originalX - 2; boundingY = originalY - (height / 2) - 2; boundingW = width + 4; boundingH = height + 4;}
+                    if (valign == 'top')    {boundingX = originalX - 2; boundingY = originalY - height - 2; boundingW = width + 4; boundingH = height + 4;}
+                }
+            
+            } else if (angle == 270) {
+
+                if (halign == 'left') {
+                    if (valign == 'bottom') {boundingX = originalX - height - 2; boundingY = originalY - width - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'center') {boundingX = originalX - (height / 2) - 4; boundingY = originalY - width - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'top')    {boundingX = originalX - 2; boundingY = originalY - width - 2; boundingW = height + 4; boundingH = width + 4;}
+                
+                } else if (halign == 'center') {
+                    if (valign == 'bottom') {boundingX = originalX - height - 2; boundingY = originalY - (width/2) - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'center') {boundingX = originalX - (height/2) - 4; boundingY = originalY - (width/2) - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'top')    {boundingX = originalX - 2; boundingY = originalY - (width/2) - 2; boundingW = height + 4; boundingH = width + 4;}
+                
+                } else if (halign == 'right') {
+                    if (valign == 'bottom') {boundingX = originalX - height - 2; boundingY = originalY - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'center') {boundingX = originalX - (height/2) - 2; boundingY = originalY - 2; boundingW = height + 4; boundingH = width + 4;}
+                    if (valign == 'top')    {boundingX = originalX - 2; boundingY = originalY - 2; boundingW = height + 4; boundingH = width + 4;}
+                }
+            }
+
+            obj.context.restore();
+        }
+
+
+
+
+        /**
+        * Reset the text alignment so that text rendered
+        */
+        co.textBaseline = 'alphabetic';
+        co.textAlign    = 'left';
+
+
+
+
+
+        /**
+        * Fill the ret variable with details of the text
+        */
+        ret.x      = boundingX;
+        ret.y      = boundingY;
+        ret.width  = boundingW;
+        ret.height = boundingH
+        ret.object = obj;
+        ret.text   = text;
+        ret.tag    = tag;
+
+
+
+        /**
+        * Save and then return the details of the text (but oly
+        * if it's an RGraph object that was given)
+        */
+        if (obj && obj.isRGraph && obj.coordsText) {
+            obj.coordsText.push(ret);
+        }
+
+        return ret;
+    }
+
+
+
+    /**
+    * Takes a sequential index abd returns the group/index variation of it. Eg if you have a
+    * sequential index from a grouped bar chart this function can be used to convert that into
+    * an appropriate group/index combination
+    * 
+    * @param nindex number The sequential index
+    * @param data   array  The original data (which is grouped)
+    * @return              The group/index information
+    */
+    RGraph.sequentialIndexToGrouped = function (index, data)
+    {
+        var group         = 0;
+        var grouped_index = 0;
+
+        while (--index >= 0) {
+            
+            // Allow for numbers as well as arrays in the dataset
+            if (typeof data[group] == 'number') {
+                group++
+                grouped_index = 0;
+                continue;
+            }
+
+            grouped_index++;
+            
+            if (grouped_index >= data[group].length) {
+                group++;
+                grouped_index = 0;
+            }
+        }
+        
+        return [group, grouped_index];
+    }
+
+
+
 // Some other functions. Because they're rarely changed - they're hand minified
-function AA(obj,value){var value=String(value).replace(/^(\d+)\.\d+/,'$1');var newvalue=Number(value)+0.5;return(newvalue-value)>=0?newvalue:Math.floor(value);}
-RGraph.LinearGradient=function(obj,x1,y1,x2,y2,color1,color2){var gradient=obj.context.createLinearGradient(x1,y1,x2,y2);gradient.addColorStop(0,color1);gradient.addColorStop(1,color2);return gradient;}
-RGraph.RadialGradient=function(obj,x1,y1,r1,x2,y2,r2,color1,color2){var gradient=obj.context.createRadialGradient(x1,y1,r1,x2,y2,r2);gradient.addColorStop(0,color1);gradient.addColorStop(1,color2);return gradient;}
+RGraph.LinearGradient=function(obj,x1,y1,x2,y2,color1,color2){var gradient=obj.context.createLinearGradient(x1,y1,x2,y2);var numColors=arguments.length-5;for (var i=5;i<arguments.length;++i){var color=arguments[i];var stop=(i-5)/(numColors-1);gradient.addColorStop(stop,color);}return gradient;}
+RGraph.RadialGradient=function(obj,x1,y1,r1,x2,y2,r2,color1,color2){var gradient=obj.context.createRadialGradient(x1,y1,r1,x2,y2,r2);var numColors=arguments.length-7;for(var i=7;i<arguments.length; ++i){var color=arguments[i];var stop=(i-7)/(numColors-1);gradient.addColorStop(stop,color);}return gradient;}
 RGraph.array_shift=function(arr){var ret=[];for(var i=1;i<arr.length;++i){ret.push(arr[i]);}return ret;}
 RGraph.AddEventListener=function(id,e,func){var type=arguments[3]?arguments[3]:'unknown';RGraph.Registry.Get('chart.event.handlers').push([id,e,func,type]);}
-RGraph.ClearEventListeners=function(id){}
+RGraph.ClearEventListeners=function(id){if(id&&id=='window'){window.removeEventListener('mousedown',window.__rgraph_mousedown_event_listener_installed__,false);window.removeEventListener('mouseup',window.__rgraph_mouseup_event_listener_installed__,false);}else{var canvas = document.getElementById(id);canvas.removeEventListener('mouseup',canvas.__rgraph_mouseup_event_listener_installed__,false);canvas.removeEventListener('mousemove',canvas.__rgraph_mousemove_event_listener_installed__,false);canvas.removeEventListener('mousedown',canvas.__rgraph_mousedown_event_listener_installed__,false);canvas.removeEventListener('click',canvas.__rgraph_click_event_listener_installed__,false);}}
 RGraph.HidePalette=function(){var div=RGraph.Registry.Get('palette');if(typeof(div)=='object'&&div){div.style.visibility='hidden';div.style.display='none';RGraph.Registry.Set('palette',null);}}
 RGraph.random=function(min,max){var dp=arguments[2]?arguments[2]:0;var r=Math.random();return Number((((max - min) * r) + min).toFixed(dp));}
 RGraph.NoShadow=function(obj){obj.context.shadowColor='rgba(0,0,0,0)';obj.context.shadowBlur=0;obj.context.shadowOffsetX=0;obj.context.shadowOffsetY=0;}
@@ -2600,6 +3363,7 @@ RGraph.array_reverse=function(arr){var newarr=[];for(var i=arr.length-1;i>=0;i--
 RGraph.Registry.Set=function(name,value){RGraph.Registry.store[name]=value;return value;}
 RGraph.Registry.Get=function(name){return RGraph.Registry.store[name];}
 RGraph.degrees2Radians=function(degrees){return degrees*(PI/180);}
+RGraph.log=(function(n,base){var log=Math.log;return function(n,base){return log(n)/(base?log(base):1);};})();
 RGraph.is_array=function(obj){return obj!=null&&obj.constructor.toString().indexOf('Array')!=-1;}
 RGraph.trim=function(str){return RGraph.ltrim(RGraph.rtrim(str));}
 RGraph.ltrim=function(str){return str.replace(/^(\s|\0)+/, '');}
@@ -2607,15 +3371,19 @@ RGraph.rtrim=function(str){return str.replace(/(\s|\0)+$/, '');}
 RGraph.GetHeight=function(obj){return obj.canvas.height;}
 RGraph.GetWidth=function(obj){return obj.canvas.width;}
 RGraph.is_null=function(arg){if(arg==null||(typeof(arg))=='object'&&!arg){return true;}return false;}
-RGraph.Timer=function(label){var d=new Date();console.log(label+': '+d.getSeconds()+'.'+d.getMilliseconds());}
+RGraph.Timer=function(label){if(typeof(RGraph.TIMER_LAST_CHECKPOINT)=='undefined'){RGraph.TIMER_LAST_CHECKPOINT=Date.now();}var now=Date.now();console.log(label+': '+(now-RGraph.TIMER_LAST_CHECKPOINT).toString());RGraph.TIMER_LAST_CHECKPOINT=now;}
 RGraph.Async=function(func){return setTimeout(func,arguments[1]?arguments[1]:1);}
-RGraph.isIE7=function(){return navigator.userAgent.indexOf('MSIE 7')>0;}
-RGraph.isIE8=function(){return navigator.userAgent.indexOf('MSIE 8')>0;}
-RGraph.isIE9=function(){return navigator.userAgent.indexOf('MSIE 9')>0;}
-RGraph.isIE9up=function(){navigator.userAgent.match(/MSIE (\d+)/);return Number(RegExp.$1)>=9;}
-RGraph.isOld=function(){return RGraph.isIE7()||RGraph.isIE8();}
-RGraph.Reset=function(canvas){canvas.width=canvas.width;}
+RGraph.isIE=function(){return navigator.userAgent.indexOf('MSIE')>0;};ISIE=RGraph.isIE();
+RGraph.isIE6=function(){return navigator.userAgent.indexOf('MSIE 6')>0;};ISIE6=RGraph.isIE6();
+RGraph.isIE7=function(){return navigator.userAgent.indexOf('MSIE 7')>0;};ISIE7=RGraph.isIE7();
+RGraph.isIE8=function(){return navigator.userAgent.indexOf('MSIE 8')>0;};ISIE8=RGraph.isIE8();
+RGraph.isIE9=function(){return navigator.userAgent.indexOf('MSIE 9')>0;};ISIE9=RGraph.isIE9();
+RGraph.isIE10=function(){return navigator.userAgent.indexOf('MSIE 10')>0;};ISIE10=RGraph.isIE10();
+RGraph.isIE9up=function(){navigator.userAgent.match(/MSIE (\d+)/);return Number(RegExp.$1)>=9;};ISIE9UP=RGraph.isIE9up();
+RGraph.isIE10up=function(){navigator.userAgent.match(/MSIE (\d+)/);return Number(RegExp.$1)>=10;};ISIE10UP=RGraph.isIE10up();
+RGraph.isOld=function(){return ISIE6||ISIE7||ISIE8;};ISOLD=RGraph.isOld();
+RGraph.Reset=function(canvas){canvas.width=canvas.width;RGraph.ObjectRegistry.Clear(canvas);canvas.__rgraph_aa_translated__=false;}
 function pd(variable){RGraph.pr(variable);}
-function p(variable){RGraph.pr(variable);}
+function p(variable){RGraph.pr(arguments[0],arguments[1],arguments[3]);}
 function a(variable){alert(variable);}
 function cl(variable){return console.log(variable);}

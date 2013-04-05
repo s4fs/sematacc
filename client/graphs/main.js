@@ -9,7 +9,7 @@
  * Chart utilities.
  */
 
-var resizeGraphDivs = function() {
+resizeGraphDivs = function() {
   graphsW = $('.graphs').width();
   graphsH = $('.graphs').width();
   $('canvas#graphRoseAlphas').attr('width', graphsW - 20);
@@ -22,7 +22,7 @@ var resizeGraphDivs = function() {
 /**
  * Draw the graphs for the current project
  */
-var drawGraphs = function() {
+drawGraphs = function() {
   selectedProjectId = Session.get('selectedProjectId');
   if (!selectedProjectId) return;
 
