@@ -8,9 +8,9 @@
  * This file defines the models of SematAcc. It is shared between
  * the client and the server.
  */
-var Events = new Meteor.Collection('Events');
-var Projects = new Meteor.Collection('Projects');
-var Concerns = new Meteor.Collection('Concerns');
-var Alphas = new Meteor.Collection('Alphas');
-var States = new Meteor.Collection('States');
+Events = new Meteor.Collection('Events');
+Projects = new Meteor.Collection('Projects');
+Concerns = new Meteor.Collection('Concerns');
+Alphas = new Meteor.Collection('Alphas');
+States = new Meteor.Collection('States');
 

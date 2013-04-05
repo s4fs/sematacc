@@ -43,7 +43,7 @@ var buildRoseGraph = function(elemId, data, labels, meteorIds) {
  * @param  {string} selectedProjectId the Meteor/Mongo Project id to build the graph for.
  * @return {RGraph.Rose}                   the generated RGraph Rose graph for the Alphas.
  */
-var buildAlphasGraph = function(elemId, selectedProjectId) {
+buildAlphasGraph = function(elemId, selectedProjectId) {
   if (!(elemId || selectedProjectId)) return;
 
   var alphas = Alphas.find({

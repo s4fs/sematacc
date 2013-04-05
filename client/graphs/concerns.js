@@ -36,7 +36,7 @@ var buildHbarGraph = function(elemId, data, labels) {
  * @param  {string} selectedProjectId the Meteor/Mongo Project id to build the graph for.
  * @return {RGraph.HBar}                   the generated RGraph HBar graph for the Concerns
  */
-var buildConcernsGraph = function(elemId, selectedProjectId) {
+buildConcernsGraph = function(elemId, selectedProjectId) {
   if (!(elemId || selectedProjectId)) return;
 
   var concerns = Concerns.find({

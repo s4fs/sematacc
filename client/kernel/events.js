@@ -53,7 +53,7 @@ Template.kernel.events({
     state = States.findOne(this._id);
     Meteor.call('updateAlphasCompletions', function(error, result) {
       Meteor.call('updateConcernCompletions', function(error, result) {
-        Meteor.call('insertEvent', Session.get('selectedProjectId'), alpha.name+'.state', state.name);
+        Meteor.call('log', Session.get('selectedProjectId'), alpha.name+'.state', state.name);
       });
     });
   },
@@ -71,7 +71,7 @@ Template.kernel.events({
       }
     });
     Meteor.call('updateConcernCompletions', function(error, result) {
-      Meteor.call('insertEvent', Session.get('selectedProjectId'), alpha.name+'.state', 'NULL');
+      Meteor.call('log', Session.get('selectedProjectId'), alpha.name+'.state', 'NULL');
     });
   },
   'mouseenter li.item.selected': function(event) {
