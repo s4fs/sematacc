@@ -43,7 +43,7 @@ Template.projects.events({
           if (error) {
             alert('Error when creating project: ' + error);
           } else {
-            Meteor.call('insertEvent', result, 'Project', 'Created');
+            Meteor.call('log', result, 'Project', 'Created');
           }
         });
       }

@@ -92,10 +92,10 @@ Meteor.methods({
   updateConcernCompletions: function() {
     return updateConcernCompletions();
   },
-  insertEvent: function(projectId, who, what) {
-    return insertEvent(projectId, who, what);
+  log: function(projectId, who, what) {
+    return log(projectId, who, what);
   },
-  getEvents: function(projectId) {
-    return getEvents(projectId);
+  getLog: function(projectId) {
+    return getLog(projectId);
   }
 });
