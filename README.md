@@ -34,9 +34,10 @@ The variable is defined in `client/ganalytics.js`.
 
 DEPENDENCIES
 ============
-SematAcc is a regular [Meteor](http://meteor.com) application and it requires it as a dependency.
+SematAcc is a regular [Meteor](http://meteor.com) application and it requires `Meteor v0.6.0` as a dependency.
 Please refer to [Meteor documentation](http://docs.meteor.com) in order to install it.
-Although Microsoft Windows is unoficially supported, we advice to try SematAcc either in a GNU/Linux environment or on Mac OS X.
+
+Although Microsoft Windows is [unoficially supported](http://win.meteor.com), we advice to try SematAcc either in a GNU/Linux environment or on Mac OS X.
 
 USAGE
 =====
