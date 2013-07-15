@@ -7,6 +7,7 @@ The development of this software was made possible using the following component
 - Meteor : Copyright (C) 2011-2012 Meteor Development Group. [License](https://github.com/meteor/meteor/blob/master/LICENSE.txt)
 - Fontello : Copyright (C) 2011 by Vitaly Puzrin. [License](https://github.com/fontello/fontello/blob/master/LICENSE)
 - Colorbox : Copyright (C) by Jack Moore. [License](http://opensource.org/licenses/mit-license.php)
+- Meteor-router : Copyright (C) 2012 by Percolate Studio Pty Ltd. [License](https://github.com/tmeasday/meteor-router/blob/master/LICENSE.txt)
 
 Might you recognize your software being employed by SematAcc without respecting its license,
 please contact graziotin AT inf DOT unibz DOT it. 
