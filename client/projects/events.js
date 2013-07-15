@@ -79,19 +79,6 @@ Template.projects.events({
       }, 100);
     }
   },
-
-  'click a.viewProject': function(event) {
-    event.preventDefault();
-    var projectId = $(event.currentTarget).parent().parent().attr('for');
-    Session.set('selectedProjectId', projectId);
-    var project_name = Projects.findOne({
-      _id: projectId,
-      userId: Meteor.userId()
-    });
-    Session.set('selectedProjectName', project_name.name);
-    drawGraphs();
-  },
-
   'click a.editProject': function(event) {
     event.preventDefault();
     var projectId = $(event.currentTarget).parent().parent().attr('for');
@@ -105,6 +92,13 @@ Template.projects.events({
     $('button#makeNewProject').html('Edit');
     $('div.newProject').show(400);
   },
+    'click a.viewProject': function(event) {
+        event.preventDefault();
+        var projectId = $(event.currentTarget).parent().parent().attr('for');
+        document.location.href='/p/'+projectId;
+        return;
+    },
+
   /**
    * Delete a Project. If there are no other Projects,
    * create the default empty project.

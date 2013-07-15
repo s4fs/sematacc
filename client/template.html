@@ -18,16 +18,20 @@
                 <h1 class="icon-comment">Hint Box</h1>
                 <div class="hint">
                     {{#if currentUser}}
-                        {{#unless selectedProjectId}}
-                        <p>
-                            To create a new project, click the <span class="icon-doc"></span> icon. <br/>
-                            Move the mouse hover a project to see the available commands. <br/>
-                            Click <span class="icon-play"></span> to accelerate a project.<br/>
-                            Click <span class="icon-pencil"></span> to edit a project. <br/>
-                            Click <span class="icon-trash"></span> to delete a project. <br/>
-                            Click anywhere else to see the project description.
-                        </p>
-                        {{/unless}}
+                        {{#if selectedProjectId}}
+                            <p>
+                                To create a new project, click the <span class="icon-doc"></span> icon. <br/>
+                                Move the mouse hover a project to see the available commands. <br/>
+                                Click <span class="icon-play"></span> to accelerate a project.<br/>
+                                Click <span class="icon-pencil"></span> to edit a project. <br/>
+                                Click <span class="icon-trash"></span> to delete a project. <br/>
+                                Click anywhere else to see the project description.
+                            </p>
+                        {{else}}
+                            <p>
+                                {{> pleaseSelect}}
+                            </p>
+                        {{/if}}
                     {{else}}
                         <p>
                             {{> pleaseLogin}}
@@ -37,38 +41,11 @@
             </div>
         </div>
         <div class="center">
-            <div class="kernel"> 
-                {{#if currentUser}}
-                    {{#if selectedProjectId}}
-                        {{> kernel}}
-                    {{else}}
-                        {{> projects}}
-                    {{/if}}
-                {{else}}
-                    <h1 id="kernel" class="heading">Welcome</h1>
-                    <h1 id="message" class="heading"></h1>
-                    <div class="dashboard">
-                        <div class="home">
-                            <p>
-                                Welcome to SematAcc, the Essence Accelerator system!
-                            </p>
-                            <p>
-                                This tool is designed to speed up the learning of <a href="http://semat.org/wp-content/uploads/2012/02/12-08-15.pdf">Essence Theory</a> in Software Engineering (see <a href="http://semat.org">Semat website</a>) and to easily test it with any software project in your company. 
-                            </p>
-                            <p>
-                                The tool is implemented by <a href="http://www.inf.unibz.it/s4fs">S4FS</a> at the Free University of Bozen-Bolzano in Italy and it is free for everyone to use.
-                            </p>
-                            <p>
-                                We are seeking for Essence enthusiasts to join in to the development of the SematAcc. <br />
-                                If you became interested, please contact professor Pekka Abrahamsson at firstname.lastname(at)unibz.it.
-                            </p>
-                            <p>
-                                See the About page of this website for more information.
-                            </p>
-                        </div>
-                    </div>
-                {{/if}}
+
+            <div class="kernel">
+                {{#isolate}} {{renderPage}} {{/isolate}}
             </div>
+
         </div>
         <div class="right">
                 {{#if currentUser}}
@@ -77,14 +54,60 @@
         </div>
     </div>
     <div class="bottom">
-        {{> log}}
+
+        <a href="/" class="inline">Home</a>
+        {{#if currentUser}}
+            <a href="/p" class="inline">Projects</a>
+        {{/if}}
+        {{#if currentUser}}
+            {{#if selectedProjectId}}
+                {{> log}}
+        <!--
+                {{> share}}
+        -->
+            {{/if}}
+        {{/if}}
+        <a href="/about" class="inline">About</a>
         {{> about}}
     </div>
     {{> analytics}}
 </body>
 
+<template name="home">
+
+    <h1 id="kernel" class="heading"></h1>
+    <h1 id="message" class="heading"></h1>
+    <div class="dashboard">
+        <div class="home">
+            <p>
+                Welcome to SematAcc, the Essence Accelerator system!
+            </p>
+            <p>
+                This tool is designed to speed up the learning of <a href="http://semat.org/wp-content/uploads/2012/02/12-08-15.pdf">Essence Theory</a> in Software Engineering (see <a href="http://semat.org">Semat website</a>) and to easily test it with any software project in your company.
+            </p>
+            <p>
+                The tool is implemented by <a href="http://www.inf.unibz.it/s4fs">S4FS</a> at the Free University of Bozen-Bolzano in Italy and it is free for everyone to use.
+            </p>
+            <p>
+                We are seeking for Essence enthusiasts to join in to the development of the SematAcc. <br />
+                If you became interested, please contact professor Pekka Abrahamsson at firstname.lastname(at)unibz.it.
+            </p>
+            <p>
+                See the About page of this website for more information.
+            </p>
+        </div>
+    </div>
+</template>
+
 <template name="analytics"></template>
 
 <template name="pleaseLogin">
-    Please <a href="#" id="pleaselogin">Login or Register</a> (upper-right corner).
+    <p>
+        Please <a href="#" id="pleaselogin">Login or Register</a> (upper-right corner).
+    </p>
 </template>
+
+<template name="pleaseSelect">
+    <p>Welcome back, {{currentUser.emails.[0].address}}.</p>
+</template>
+

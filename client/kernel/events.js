@@ -17,6 +17,7 @@ Template.kernel.events({
     event.preventDefault();
     Session.set('selectedProjectId', null);
     Session.set('selectedProjectName', null);
+    Meteor.Router.to('/p');
   },
   /**
    * Display the Concern name and description when hovering the mouse
