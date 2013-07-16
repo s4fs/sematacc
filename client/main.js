@@ -4,51 +4,55 @@
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
 
-/**
- * On startup (client connects)
- */
-Meteor.startup(function () {
-    resizeGraphDivs();
+Meteor.autorun(function () {
+    Meteor.subscribe('Projects');
+    Meteor.subscribe('Concerns', Session.get('selectedProjectId'));
+    Meteor.subscribe('Alphas', Session.get('selectedProjectId'));
+    Meteor.subscribe('States', Session.get('selectedProjectId'));
 });
 
-$(window).resize(function () {
-    drawGraphs();
+
+Meteor.autorun(function () {
+    if (Session.get('selectedProjectId')) {
+        var project = Projects.findOne({_id: Session.get('selectedProjectId')});
+        if (project) {
+            Session.set('selectedProjectName', project.name);
+            drawGraphs();
+        }
+    }
 });
 
-/**
- * Create a default empty project on user first login.
- */
-var onProjectSubscription = function () {
-    var projects = Projects.find({
-        userId: Meteor.userId()
-    }).count();
-    if (projects === 0) {
+Meteor.autorun(function () {
+    if (Session.get('message')) {
+        $('.message').css('background-color', '#680148');
+        setTimeout(function () {
+            $('.message').css('background-color', '#ffffff').text('');
+        }, 10000);
+    }
+});
+
+Meteor.autorun(function () {
+    if (Session.get('demoMode')) {
+        var project = Projects.findOne({demo: true, userId: null});
+        if (project) {
+            Session.set('selectedProjectId', project._id);
+        }
+    }
+})
+
+Meteor.autorun(function () {
+    if (Meteor.userId() && Meteor.flush() && Projects.find({userId: Meteor.user()._id, demo:false}).count() === 0) {
         Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.',
-
             function (error, result) {
                 if (error) {
-                    alert('Error when creating the default project: ' + error);
+                    Session.set('message', 'Error when creating the default project: ' + error);
                 }
             });
     }
-};
-
-Meteor.autosubscribe(function () {
-    Meteor.subscribe('Projects', onProjectSubscription);
-    Meteor.subscribe('Concerns');
-    Meteor.subscribe('Alphas');
-    Meteor.subscribe('States');
 });
 
-/**
- * Called every time a dependency changes.
- */
-Deps.autorun(function () {
-    // If no user logged id, then no Project is selected.
-    if (!Meteor.userId()) {
-        Session.set('selectedProjectId', null);
-        Session.set('selectedProjectName', null);
-    } else {
-        Meteor.subscribe('Projects', onProjectSubscription);
-    }
+$(window).resize(function () {
+    if (Meteor.userId() && Session.get('selectedProjectId'))
+        drawGraphs();
 });
+

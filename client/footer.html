@@ -1,0 +1,22 @@
+<template name="footer">
+    <div class="message">
+        {{message}}
+    </div>
+    <div class="menu">
+        <a href="/" class="inline">Home</a>
+        {{#if currentUser}}
+            <a href="/p" class="inline">Projects</a>
+        {{/if}}
+        {{#if currentUser}}
+            {{#if selectedProjectId}}
+                {{> log}}
+            {{/if}}
+        {{else}}
+            <a href="/demo" class="inline">Demo</a>
+        {{/if}}
+        {{> about}}
+    </div>
+</template>
+
+<template name="analytics"></template>
+

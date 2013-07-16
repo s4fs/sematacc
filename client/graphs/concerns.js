@@ -41,7 +41,6 @@ buildConcernsGraph = function(elemId, selectedProjectId) {
 
   var concerns = Concerns.find({
     projectId: selectedProjectId,
-    userId: Meteor.userId()
   }).fetch();
 
   // prepare the two arrays of data needed to generate the graph

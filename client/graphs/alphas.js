@@ -47,8 +47,7 @@ buildAlphasGraph = function(elemId, selectedProjectId) {
   if (!(elemId || selectedProjectId)) return;
 
   var alphas = Alphas.find({
-    projectId: selectedProjectId,
-    userId: Meteor.userId()
+    projectId: selectedProjectId
   }).fetch();
 
   // prepare the 3 arrays of data needed for building the graph

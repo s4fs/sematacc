@@ -4,6 +4,24 @@
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
 
+Meteor.startup(function () {
+    if (Projects.find({demo : true, userId : null}).count() === 0) {
+        Meteor.call('newProject', 'Demo Project', 'This is a demo project.', function(error, result){
+            if (result){
+                Meteor._debug('result:' +result);
+                Projects.update({
+                    _id: result
+                }, {
+                    $set: {
+                        demo: true,
+                        userId: null
+                    }
+                });
+            }
+        });
+
+    }
+});
 
 /**
  * Define the ACLs for each model.
@@ -42,42 +60,44 @@ States.allow({
 /**
  * Publish the collections of the models, to the connected client.
  */
-Meteor.publish('Events', function() {
-  return Events.find({
-    userId: this.userId
-  }, {});
-});
 Meteor.publish('Projects', function() {
-  return Projects.find({
-    userId: this.userId
-  }, {});
+    return Projects.find({$or: [ { userId: this.userId}, { demo: true } ] });
 });
-Meteor.publish('Concerns', function() {
+
+Meteor.publish('Concerns', function(projectId) {
   return Concerns.find({
-    userId: this.userId
+    projectId: projectId
   }, {
     sort: {
       order: 1
     }
   });
 });
-Meteor.publish('Alphas', function() {
+
+Meteor.publish('Alphas', function(projectId) {
   return Alphas.find({
-    userId: this.userId
+    projectId: projectId
   }, {
     sort: {
       order: 1
     }
   });
 });
-Meteor.publish('States', function() {
+
+Meteor.publish('States', function(projectId) {
   return States.find({
-    userId: this.userId
+    projectId: projectId
   }, {
     sort: {
       order: 1
     }
   });
+});
+
+Meteor.publish('Events', function() {
+    return Events.find({
+        userId: this.userId
+    }, {});
 });
 
 /**

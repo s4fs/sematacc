@@ -26,6 +26,7 @@ newProject = function(name, description) {
   projectId = Projects.insert({
     name: name,
     description: description,
+    demo: false,
     userId: userId
   });
 

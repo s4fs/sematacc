@@ -61,7 +61,7 @@ a {
 
 div.top {
     width: 100%;
-    height: 2%;
+    height: 3%;
 }
 
 .top .login {
@@ -72,7 +72,7 @@ div.top {
 
 .wrapper {
     width: 98%;
-    height: 94%;
+    height: 90%;
     padding-left: 1%;
     padding-right: 1%;
 }
@@ -111,7 +111,7 @@ div.top {
 
 .bottom {
     width: 96%;
-    height: 3%;
+    height: 5%;
     margin: 0;
     padding: 0 2%;
     text-align: right;
@@ -122,36 +122,33 @@ div.top {
     color: #7DB4B5;
 }
 
-a.inline, a.export {
+a.inline, a.export, a.share {
     font-size:2em;
     margin-right:20px;
 }
 
-.about {
+div.clickable {
     background-image: url(/img/background.png);
     padding:30px;
 }
 
-.about div.section {
-    margin-bottom:20px;
-}
-
-.about h1 {
+.clickable h1 {
     height: auto;
     text-align: left;
+    margin:30px 0px;
 }
 
-.about p {
+.clickable p, .clickable pre{
     margin: 20px;
     padding: normal;
     font-size:normal;
 }
 
-.about pre {
+.clickable pre {
     overflow: scroll;
 }
 
-.about ul, .about ul li {
+.clickable ul, .clickable ul li {
     margin:10px;
     list-style-type: disc;
 }
@@ -479,4 +476,22 @@ li.selected {
 
 .graph {
     margin-bottom: 20px;
+}
+
+
+/*******
+ * MENU
+ *******/
+div.message {
+    height:70%;
+    width:100%;
+    text-align: center;
+    font-size:1.3em;
+    line-height:2em;
+    color:#ffffff;
+
+}
+div.menu {
+    height:30%;
+    width:100%;
 }
