@@ -22,9 +22,10 @@
             <div class="hint">
                 {{#if inProjects}}
                     {{> projectsHint }}
-                {{else}}
-                    {{> pleaseLogin}}
                 {{/if}}
+                {{#unless currentUser}}
+                    {{> pleaseLogin}}
+                {{/unless}}
             </div>
         </div>
     </div>

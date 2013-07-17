@@ -22,7 +22,7 @@ Handlebars.registerHelper('currentURL', function(input) {
     return window.location.href;
 });
 Handlebars.registerHelper('inProjects', function(input) {
-    return Meteor.Router.page() == 'projects';
+    return Meteor.Router.page() == 'projects' || Meteor.Router.page() == 'kernel';
 });
 Handlebars.registerHelper('demoProject', function(input) {
     return Projects.findOne({

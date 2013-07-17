@@ -24,14 +24,13 @@ Template.kernel.events({
      * on a Concern area (including Alphas and States)
      */
     'mouseenter .accordionlabel': function(event) {
-        var concern = Concerns.findOne(this.concernId);
-        $('#message').html(concern.name);
-        $('.hints .hint').html(this.description);
+        $('#message').html(this.name);
+        $('.hints .hint').html('<h2>' + this.name + '</h2>' + this.description);
     },
     'mouseleave .accordionlabel': function(event) {},
     'mouseleave .ac-container': function(event) {
-        $('#message').text('');
-        $('.hints .hint').text('');
+        //$('#message').text('');
+        //$('.hints .hint').text('');
     },
     /**
      * Close the other Accordion Items when one is clicked
@@ -100,12 +99,12 @@ Template.kernel.events({
         $(event.target).find('div').removeClass('icon-ok');
     },
     'mouseenter li.item': function(event) {
-        var description = this.description;
+        var description = '<h2>' + this.name + '</h2>' + this.description;
         $('.hints .hint').html(description);
         $('.hints .hint p br').after('<span class="icon-check"></span>');
         $('.hints .hint p').prepend('<span class="icon-check"></span>');
     },
     'mouseleave li.item': function(event) {
-        $('.hints .hint').text();
+        //$('.hints .hint').text();
     }
 });
