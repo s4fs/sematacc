@@ -52,8 +52,16 @@ Template.kernel.events({
         });
         alpha = Alphas.findOne(this.alphaId);
         state = States.findOne(this._id);
-        Meteor.call('updateAlphasCompletions', function(error, result) {
-            Meteor.call('updateConcernCompletions', function(error, result) {
+        Meteor.call('updateAlphasCompletions', Session.get('selectedProjectId'), function(error, result) {
+            if (error){
+                Session.set('message', error.message);
+                return;
+            }
+            Meteor.call('updateConcernCompletions', Session.get('selectedProjectId'), function(error, result) {
+                if (error){
+                    Session.set('message', error.message);
+                    return;
+                }
                 Meteor.call('log', Session.get('selectedProjectId'), alpha.name + '.state', state.name);
             });
         });
@@ -71,8 +79,8 @@ Template.kernel.events({
                 currentStateId: null
             }
         });
-        Meteor.call('updateAlphasCompletions', function(error, result) {
-            Meteor.call('updateConcernCompletions', function(error, result) {
+        Meteor.call('updateAlphasCompletions', Session.get('selectedProjectId'), function(error, result) {
+            Meteor.call('updateConcernCompletions', Session.get('selectedProjectId'), function(error, result) {
                 Meteor.call('log', Session.get('selectedProjectId'), alpha.name + '.state', 'NULL');
             });
         });

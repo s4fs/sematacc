@@ -15,8 +15,14 @@ Meteor.Router.add({
     },
     '/p/:id': function(id) {
         if (Meteor.userId() || Session.get('demoMode')) {
-            Session.set('selectedProjectId', id);
-            return 'kernel';
+            if (Projects.findOne(id)){
+                Session.set('selectedProjectId', id);
+                return 'kernel';
+            }else{
+                Session.set('message', 'Not found. Either the project does not exist or you do not have the permission ' +
+                    'to view it.');
+                return 'home';
+            }
         } else {
             Session.set('message', 'Not found. Either the project does not exist or you do not have the permission ' +
                 'to view it.');

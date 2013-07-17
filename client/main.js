@@ -4,8 +4,22 @@
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
 
+function onProjectSubscription(){
+    if (Meteor.userId() !== null){
+        if( Projects.find({userId: Meteor.userId()}).count() === 0) {
+            Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.',
+                function(error, result) {
+                    if (error) {
+                        Session.set('message', 'Error when creating the default project: ' + error);
+                    }
+                });
+        }
+    }
+}
+
+Meteor.subscribe('Projects', onProjectSubscription);
+
 Meteor.autorun(function() {
-    Meteor.subscribe('Projects');
     Meteor.subscribe('Concerns', Session.get('selectedProjectId'));
     Meteor.subscribe('Alphas', Session.get('selectedProjectId'));
     Meteor.subscribe('States', Session.get('selectedProjectId'));
@@ -26,9 +40,9 @@ Meteor.autorun(function() {
 
 Meteor.autorun(function() {
     if (Session.get('message')) {
-        $('.message').css('background-color', '#680148');
+        $('div.message').text(Session.get('message'));
         setTimeout(function() {
-            $('.message').css('background-color', '#ffffff').text('');
+            $('div.message').text('');
         }, 10000);
     }
 });
@@ -45,19 +59,6 @@ Meteor.autorun(function() {
     }
 })
 
-Meteor.autorun(function() {
-    if (Meteor.userId() && Meteor.flush() && Projects.find({
-        userId: Meteor.user()._id,
-        demo: false
-    }).count() === 0) {
-        Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.',
-            function(error, result) {
-                if (error) {
-                    Session.set('message', 'Error when creating the default project: ' + error);
-                }
-            });
-    }
-});
 
 $(window).resize(function() {
     if (Meteor.userId() && Session.get('selectedProjectId'))

@@ -88,9 +88,13 @@ newProject = function(name, description, demo) {
  * Calculate the percentage of completion of each Concern.
  * Should be called after an Alpha switches to a new State and its completion has been done.
  */
-updateConcernCompletions = function() {
+updateConcernCompletions = function(projectId) {
+    if (typeof(projectId) !== 'string' || !projectId){
+        throw new Meteor.Error(500,'Error. Wrong projectId (' + projectId + ') supplied. Please contact the developer.');
+    }
     var concerns = Concerns.find({
-        userId: Meteor.userId()
+        userId: Meteor.userId(),
+        projectId: projectId
     });
     concerns.forEach(function(concern) {
         var alphas = Alphas.find({
@@ -115,9 +119,13 @@ updateConcernCompletions = function() {
 /**
  * Calculate the percentage of completion of each Alpha.
  */
-updateAlphasCompletions = function() {
+updateAlphasCompletions = function(projectId) {
+    if (typeof(projectId) !== 'string' || !projectId){
+        return 'Error. Wrong projectId supplied. Please contact the developer.';
+    }
     var alphas = Alphas.find({
-        userId: Meteor.userId()
+        userId: Meteor.userId(),
+        projectId: projectId
     });
     alphas.forEach(function(alpha) {
         var alphaStatesCount = States.find({

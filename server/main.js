@@ -102,11 +102,11 @@ Meteor.methods({
     newProject: function(name, description, demo) {
         return newProject(name, description, demo);
     },
-    updateAlphasCompletions: function() {
-        return updateAlphasCompletions();
+    updateAlphasCompletions: function(projectId) {
+        return updateAlphasCompletions(projectId);
     },
-    updateConcernCompletions: function() {
-        return updateConcernCompletions();
+    updateConcernCompletions: function(projectId) {
+        return updateConcernCompletions(projectId);
     },
     log: function(projectId, who, what) {
         return log(projectId, who, what);

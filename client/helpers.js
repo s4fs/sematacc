@@ -21,9 +21,7 @@ Handlebars.registerHelper('userAndSelectedProject', function(input) {
 Handlebars.registerHelper('currentURL', function(input) {
     return window.location.href;
 });
-Handlebars.registerHelper('message', function(input) {
-    return Session.get("message");
-});
+
 Handlebars.registerHelper('demoProject', function(input) {
     return Projects.findOne({
         demo: true,
