@@ -6,23 +6,9 @@
 
 Meteor.startup(function() {
     if (Projects.find({
-        demo: true,
-        userId: null
+        demo: true
     }).count() === 0) {
-        Meteor.call('newProject', 'Demo Project', 'This is a demo project.', function(error, result) {
-            if (result) {
-                Meteor._debug('result:' + result);
-                Projects.update({
-                    _id: result
-                }, {
-                    $set: {
-                        demo: true,
-                        userId: null
-                    }
-                });
-            }
-        });
-
+        Meteor.call('newProject', 'Demo Project', 'This is a demo project.', true);
     }
 });
 
@@ -113,8 +99,8 @@ Meteor.publish('Events', function() {
  * Register the 'public' methods available to the client
  */
 Meteor.methods({
-    newProject: function(name, description) {
-        return newProject(name, description);
+    newProject: function(name, description, demo) {
+        return newProject(name, description, demo);
     },
     updateAlphasCompletions: function() {
         return updateAlphasCompletions();
