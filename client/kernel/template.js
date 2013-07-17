@@ -8,7 +8,7 @@
  * Render Concerns, Alphas, and States for a Project.
  */
 
-Template.kernel.concerns = function () {
+Template.kernel.concerns = function() {
     var projectId = Session.get('selectedProjectId');
     return Concerns.find({
         projectId: projectId
@@ -16,14 +16,14 @@ Template.kernel.concerns = function () {
 
 };
 
-Template.kernel.alphas = function (concernId) {
+Template.kernel.alphas = function(concernId) {
     var projectId = Session.get('selectedProjectId');
     return Alphas.find({
         concernId: concernId
     });
 };
 
-Template.kernel.currentState = function (stateId) {
+Template.kernel.currentState = function(stateId) {
     var state = States.findOne({
         _id: stateId
     });
@@ -33,7 +33,7 @@ Template.kernel.currentState = function (stateId) {
         return '';
 };
 
-Template.kernel.states = function (alphaId) {
+Template.kernel.states = function(alphaId) {
     if (alphaId) return States.find({
         alphaId: alphaId
     });
@@ -42,6 +42,6 @@ Template.kernel.states = function (alphaId) {
     });
 };
 
-Template.kernel.sameId = function (firstId, secondId) {
+Template.kernel.sameId = function(firstId, secondId) {
     return firstId == secondId;
 };

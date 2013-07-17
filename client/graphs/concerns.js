@@ -12,21 +12,21 @@
  * @return {RGraph.HBar}           The generated RGraph HBar graph
  */
 var buildHbarGraph = function(elemId, data, labels) {
-  if (!(elemId || data || labels)) return;
-  var hbar = new RGraph.HBar(elemId, data);
+    if (!(elemId || data || labels)) return;
+    var hbar = new RGraph.HBar(elemId, data);
 
-  var grad = hbar.context.createLinearGradient(0, 0, hbar.canvas.width, 0);
-  grad.addColorStop(0, '#CE5F54');
-  grad.addColorStop(0.60, '#FFFFE5');
-  grad.addColorStop(1, '#63994C');
-  hbar.Set('chart.labels', labels);
-  hbar.Set('chart.gutter.left', 90);
-  hbar.Set('chart.background.barcolor1', 'white');
-  hbar.Set('chart.background.barcolor2', 'white');
-  hbar.Set('chart.background.grid', false);
-  hbar.Set('chart.colors', [grad]);
-  hbar.Set('chart.xmax', 100);
-  return hbar;
+    var grad = hbar.context.createLinearGradient(0, 0, hbar.canvas.width, 0);
+    grad.addColorStop(0, '#CE5F54');
+    grad.addColorStop(0.60, '#FFFFE5');
+    grad.addColorStop(1, '#63994C');
+    hbar.Set('chart.labels', labels);
+    hbar.Set('chart.gutter.left', 90);
+    hbar.Set('chart.background.barcolor1', 'white');
+    hbar.Set('chart.background.barcolor2', 'white');
+    hbar.Set('chart.background.grid', false);
+    hbar.Set('chart.colors', [grad]);
+    hbar.Set('chart.xmax', 100);
+    return hbar;
 
 };
 
@@ -37,20 +37,20 @@ var buildHbarGraph = function(elemId, data, labels) {
  * @return {RGraph.HBar}                   the generated RGraph HBar graph for the Concerns
  */
 buildConcernsGraph = function(elemId, selectedProjectId) {
-  if (!(elemId || selectedProjectId)) return;
+    if (!(elemId || selectedProjectId)) return;
 
-  var concerns = Concerns.find({
-    projectId: selectedProjectId,
-  }).fetch();
+    var concerns = Concerns.find({
+        projectId: selectedProjectId,
+    }).fetch();
 
-  // prepare the two arrays of data needed to generate the graph
-  var completions = [];
-  var names = [];
-  concerns.forEach(function(concern) {
-    names.push(concern.name);
-    completions.push(concern.completion);
-  });
+    // prepare the two arrays of data needed to generate the graph
+    var completions = [];
+    var names = [];
+    concerns.forEach(function(concern) {
+        names.push(concern.name);
+        completions.push(concern.completion);
+    });
 
-  var hbarConcernsGraph = buildHbarGraph(elemId, completions, names);
-  return hbarConcernsGraph;
+    var hbarConcernsGraph = buildHbarGraph(elemId, completions, names);
+    return hbarConcernsGraph;
 };

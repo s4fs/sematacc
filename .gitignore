@@ -4,3 +4,5 @@
 .idea
 .dbshell
 *.iml
+tests/client
+tests/server

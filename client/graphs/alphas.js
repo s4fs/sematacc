@@ -13,28 +13,28 @@
  * @return {RGraph.Rose}           The generated RGraph Rose graph
  */
 var buildRoseGraph = function(elemId, data, labels, meteorIds) {
-  if (!(elemId || data || labels)) return;
-  var roseGraph = new RGraph.Rose(elemId, data);
+    if (!(elemId || data || labels)) return;
+    var roseGraph = new RGraph.Rose(elemId, data);
 
-  var halfWidth = $('canvas#' + elemId).attr('width') / 2;
-  var halfHeight = $('canvas#' + elemId).attr('height') / 2;
+    var halfWidth = $('canvas#' + elemId).attr('width') / 2;
+    var halfHeight = $('canvas#' + elemId).attr('height') / 2;
 
-  var gradientCenterX = halfWidth;
-  var gradientCenterY = halfHeight;
-  var grad = roseGraph.context.createRadialGradient(gradientCenterX, gradientCenterY, 0, halfWidth, halfHeight, halfWidth);
-  grad.addColorStop(0, '#CE5F54');
-  grad.addColorStop(0.25, '#FFFFE5');
-  grad.addColorStop(0.35, '#FFFFE5');
-  grad.addColorStop(0.55, '#63994C');
-  roseGraph.Set('chart.labels', labels);
-  roseGraph.Set('chart.labels.axes', '');
-  roseGraph.Set('chart.background.grid.spokes', data.length * 2);
-  roseGraph.Set('chart.background.axes', false);
-  roseGraph.Set('chart.colors', [grad]);
-  roseGraph.Set('chart.margin', 5);
-  roseGraph.Set('chart.ymax', 100);
-  roseGraph.meteorIds = meteorIds;
-  return roseGraph;
+    var gradientCenterX = halfWidth;
+    var gradientCenterY = halfHeight;
+    var grad = roseGraph.context.createRadialGradient(gradientCenterX, gradientCenterY, 0, halfWidth, halfHeight, halfWidth);
+    grad.addColorStop(0, '#CE5F54');
+    grad.addColorStop(0.25, '#FFFFE5');
+    grad.addColorStop(0.35, '#FFFFE5');
+    grad.addColorStop(0.55, '#63994C');
+    roseGraph.Set('chart.labels', labels);
+    roseGraph.Set('chart.labels.axes', '');
+    roseGraph.Set('chart.background.grid.spokes', data.length * 2);
+    roseGraph.Set('chart.background.axes', false);
+    roseGraph.Set('chart.colors', [grad]);
+    roseGraph.Set('chart.margin', 5);
+    roseGraph.Set('chart.ymax', 100);
+    roseGraph.meteorIds = meteorIds;
+    return roseGraph;
 };
 
 /**
@@ -44,33 +44,33 @@ var buildRoseGraph = function(elemId, data, labels, meteorIds) {
  * @return {RGraph.Rose}                   the generated RGraph Rose graph for the Alphas.
  */
 buildAlphasGraph = function(elemId, selectedProjectId) {
-  if (!(elemId || selectedProjectId)) return;
+    if (!(elemId || selectedProjectId)) return;
 
-  var alphas = Alphas.find({
-    projectId: selectedProjectId
-  }).fetch();
+    var alphas = Alphas.find({
+        projectId: selectedProjectId
+    }).fetch();
 
-  // prepare the 3 arrays of data needed for building the graph
-  var data = [];
-  var labels = [];
-  var meteorIds = [];
-  alphas.forEach(function(alpha) {
-    data.push(alpha.completion);
-    labels.push(alpha.name);
-    meteorIds.push(alpha._id);
-  });
+    // prepare the 3 arrays of data needed for building the graph
+    var data = [];
+    var labels = [];
+    var meteorIds = [];
+    alphas.forEach(function(alpha) {
+        data.push(alpha.completion);
+        labels.push(alpha.name);
+        meteorIds.push(alpha._id);
+    });
 
-  var roseAlphaGraph = buildRoseGraph(elemId, data, labels, meteorIds);
+    var roseAlphaGraph = buildRoseGraph(elemId, data, labels, meteorIds);
 
-  // attach to the RGraph onclick events a function to open the corresponding Alpha.
-  roseAlphaGraph.onclick = function(e, shape) {
-    id = roseAlphaGraph.meteorIds[shape[6]];
-    $('input.accordionitem').attr('checked', false);
-    $('#' + id).attr('checked', true);
-  };
-  roseAlphaGraph.onmousemove = function(e, shape) {
-    e.target.style.cursor = 'pointer';
-  };
+    // attach to the RGraph onclick events a function to open the corresponding Alpha.
+    roseAlphaGraph.onclick = function(e, shape) {
+        id = roseAlphaGraph.meteorIds[shape[6]];
+        $('input.accordionitem').attr('checked', false);
+        $('#' + id).attr('checked', true);
+    };
+    roseAlphaGraph.onmousemove = function(e, shape) {
+        e.target.style.cursor = 'pointer';
+    };
 
-  return roseAlphaGraph;
+    return roseAlphaGraph;
 };

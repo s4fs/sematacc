@@ -13,4 +13,3 @@ Projects = new Meteor.Collection('Projects');
 Concerns = new Meteor.Collection('Concerns');
 Alphas = new Meteor.Collection('Alphas');
 States = new Meteor.Collection('States');
-

@@ -8,32 +8,32 @@
  * Routing
  */
 Meteor.Router.add({
-    '/': function () {
+    '/': function() {
         Session.set('selectedProjectId', null);
         Session.set('selectedProjectName', null);
         return 'home';
     },
-    '/p/:id': function (id) {
-        if (Meteor.userId() || Session.get('demoMode')){
+    '/p/:id': function(id) {
+        if (Meteor.userId() || Session.get('demoMode')) {
             Session.set('selectedProjectId', id);
             return 'kernel';
-        }else{
+        } else {
             Session.set('message', 'Not found. Either the project does not exist or you do not have the permission ' +
                 'to view it.');
             return 'home';
         }
     },
-    '/p' : function (){
+    '/p': function() {
         Session.set('selectedProjectId', null);
         Session.set('selectedProjectName', null);
 
         if (!Meteor.userId()) {
             Meteor.Router.to('/');
-        }else{
+        } else {
             return "projects";
         }
     },
-    '/demo': function () {
+    '/demo': function() {
         Session.set('demoMode', true);
         return "kernel";
     }

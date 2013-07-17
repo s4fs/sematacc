@@ -8,12 +8,12 @@
  * Register handlebar helpers to display values in the templates.
  */
 Handlebars.registerHelper('selectedProjectId', function(input) {
-  var selectedProjectId = Session.get('selectedProjectId');
-  return selectedProjectId;
+    var selectedProjectId = Session.get('selectedProjectId');
+    return selectedProjectId;
 });
 Handlebars.registerHelper('selectedProjectName', function(input) {
-  var selectedProjectName = Session.get('selectedProjectName');
-  return selectedProjectName;
+    var selectedProjectName = Session.get('selectedProjectName');
+    return selectedProjectName;
 });
 Handlebars.registerHelper('userAndSelectedProject', function(input) {
     return (Session.get('demoMode') || (Session.get('selectedProjectId') && Meteor.userId()));
@@ -21,11 +21,14 @@ Handlebars.registerHelper('userAndSelectedProject', function(input) {
 Handlebars.registerHelper('currentURL', function(input) {
     return window.location.href;
 });
-Handlebars.registerHelper('message',function(input){
+Handlebars.registerHelper('message', function(input) {
     return Session.get("message");
 });
 Handlebars.registerHelper('demoProject', function(input) {
-    return Projects.findOne({demo: true, userId: null});
+    return Projects.findOne({
+        demo: true,
+        userId: null
+    });
 });
 Handlebars.registerHelper('demoMode', function(input) {
     return Session.get('demoMode');

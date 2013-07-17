@@ -7,6 +7,6 @@
 /**
  * Global variables shared in graphs
  */
- 
- buildAlphasGraph = null;
- buildConcernsGraph = null;
+
+buildAlphasGraph = null;
+buildConcernsGraph = null;

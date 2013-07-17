@@ -73,12 +73,4 @@ SematAcc is released under the The BSD 3-Clause License. See the LICENSE file fo
 
 CREDITS
 ================
-The development of this software was made possible using the following components:
-
- - [RGraph](http://rgraph.net) - Creative Commons Attribution-NonCommercial 3.0
- - [Modernizr](http://modernizr.com) - MIT License
- - [JQuery-Watermark](http://jquery-watermark.googlecode.com) - MIT / GPL Version 2 licenses.
- - [JQuery](http://jquery.org) - MIT License
- - [Meteor](http://meteor.com) - MIT License
- - [Fontello](http://fontello.com) - MIT License
- - [Colorbox](http://www.jacklmoore.com/colorbox/) - MIT License
+See CONTRIB.md

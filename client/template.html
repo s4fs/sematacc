@@ -21,9 +21,9 @@
 
             <div class="hint">
                 {{#if userAndSelectedProject}}
-                    {{> projectsHint }}
+                {{> projectsHint }}
                 {{else}}
-                    {{> pleaseLogin}}
+                {{> pleaseLogin}}
                 {{/if}}
             </div>
         </div>
@@ -35,14 +35,14 @@
     </div>
     <div class="right">
         {{#if userAndSelectedProject}}
-            {{> graphs}}
+        {{> graphs}}
         {{/if}}
     </div>
 </div>
 <div class="bottom">
     {{> footer}}
 </div>
-    {{> analytics}}
+{{> analytics}}
 </body>
 
 <template name="pleaseLogin">

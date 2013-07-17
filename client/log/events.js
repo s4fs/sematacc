@@ -5,14 +5,18 @@
  */
 
 Template.log.events({
-  /**
-   * Display a Lightbox with the Project events formatted as a CSV File
-   */
-  'click a#export': function(event) {
-    event.preventDefault();
-    projectId = Session.get('selectedProjectId');
-    Meteor.call('getLog', projectId, function(error, result) {
-      $.colorbox({width: '98%', height: '95%', html: '<textarea style="width:95%;height:95%">' + result + '</textarea>'});
-    });
-  }
+    /**
+     * Display a Lightbox with the Project events formatted as a CSV File
+     */
+    'click a#export': function(event) {
+        event.preventDefault();
+        projectId = Session.get('selectedProjectId');
+        Meteor.call('getLog', projectId, function(error, result) {
+            $.colorbox({
+                width: '98%',
+                height: '95%',
+                html: '<textarea style="width:95%;height:95%">' + result + '</textarea>'
+            });
+        });
+    }
 });
