@@ -20,10 +20,10 @@
             <h1 class="icon-comment">Hint Box</h1>
 
             <div class="hint">
-                {{#if userAndSelectedProject}}
-                {{> projectsHint }}
+                {{#if inProjects}}
+                    {{> projectsHint }}
                 {{else}}
-                {{> pleaseLogin}}
+                    {{> pleaseLogin}}
                 {{/if}}
             </div>
         </div>

@@ -4,27 +4,13 @@
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
 
-function onProjectSubscription(){
-    if (Meteor.userId() !== null){
-        if( Projects.find({userId: Meteor.userId()}).count() === 0) {
-            Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.',
-                function(error, result) {
-                    if (error) {
-                        Session.set('message', 'Error when creating the default project: ' + error);
-                    }
-                });
-        }
-    }
-}
-
-Meteor.subscribe('Projects', onProjectSubscription);
+Meteor.subscribe('Projects');
 
 Meteor.autorun(function() {
     Meteor.subscribe('Concerns', Session.get('selectedProjectId'));
     Meteor.subscribe('Alphas', Session.get('selectedProjectId'));
     Meteor.subscribe('States', Session.get('selectedProjectId'));
 });
-
 
 Meteor.autorun(function() {
     if (Session.get('selectedProjectId')) {

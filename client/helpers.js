@@ -21,7 +21,9 @@ Handlebars.registerHelper('userAndSelectedProject', function(input) {
 Handlebars.registerHelper('currentURL', function(input) {
     return window.location.href;
 });
-
+Handlebars.registerHelper('inProjects', function(input) {
+    return Meteor.Router.page() == 'projects';
+});
 Handlebars.registerHelper('demoProject', function(input) {
     return Projects.findOne({
         demo: true,

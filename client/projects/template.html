@@ -1,6 +1,6 @@
 <template name="projects">
-    <h1 id="kernel" class="heading">Projects <a href="#" id="showNewProject" class="icon-doc big"
-                                                title="Add New Project"></a></h1>
+    <h1 id="kernel" class="heading">Projects (<a href="#" class="showNewProject"
+                                                title="Add Project">Add</a>)</h1>
 
     <h1 id="message" class="heading"></h1>
 
@@ -9,7 +9,7 @@
             <li><input type="text" name="projectName" id="nameNewProject"/></li>
             <li><textarea name="projectDescription" id="descriptionNewProject"></textarea></li>
             <li>
-                <button id="makeNewProject" class="css3button icon-plus">Add</button>
+                <button id="makeNewProject">Save</button>
             </li>
         </ul>
     </div>
@@ -36,7 +36,7 @@
         {{/each}}
         {{else}}
         <p>
-            Please wait, loading the projects.
+            No projects here. <a href="#" class="showNewProject">Add a new project</a>.
         </p>
         {{/if}}
     </section>
@@ -44,7 +44,7 @@
 
 <template name="projectsHint">
     <p>
-        To create a new project, click the <span class="icon-doc"></span> icon. <br/>
+        To create a new project, click the Add link. <br/>
         Move the mouse hover a project to see the available commands. <br/>
         Click <span class="icon-play"></span> to accelerate a project.<br/>
         Click <span class="icon-pencil"></span> to edit a project. <br/>
