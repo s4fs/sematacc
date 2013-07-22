@@ -24,7 +24,8 @@ Template.kernel.events({
      * on a Concern area (including Alphas and States)
      */
     'mouseenter .accordionlabel': function(event) {
-        $('#message').html(this.name);
+        var concernName = Concerns.findOne(this.concernId).name;
+        $('#message').html(concernName);
         $('.hints .hint').html('<h2>' + this.name + '</h2>' + this.description);
     },
     'mouseleave .accordionlabel': function(event) {},
