@@ -21,9 +21,13 @@ Meteor.Router.filters({
       return 'loading';
     } else if (Meteor.user()) {
         Session.set('demoMode', null);
-      return page;
+        return page;
     } else {
-      return 'home';
+        if(Session.get('demoMode'))
+            return 'kernel';
+        else{
+            return 'home';    
+        }
     }
   }
 });
