@@ -1,33 +1,43 @@
 <template name="kernel">
-    <h1 id="kernel" class="heading">Kernel for {{selectedProjectName}}</h1>
+    {{#if selectedProjectName}}
+        <h1 id="kernel" class="heading">Kernel for {{selectedProjectName}}</h1>
 
-    <h1 id="message" class="heading"></h1>
-    <section class="ac-container">
-        {{#each concerns}} {{#each alphas this._id}}
-        <div class="concern-container">
-            <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"/>
-            <label for="{{this._id}}" class="accordionlabel">
-                {{this.name}}
-                <em>
-                    {{currentState this.currentStateId}}
-                </em>
-            </label>
-            <article class="ac-small">
-                <ul>
-                    {{#each states this._id}} {{#if sameId ../this.currentStateId this._id}}
-                    <li id="{{this._id}}" class="item selected">
-                        <div class="icon-ok">
-                        </div>
-                        {{else}}
-                    <li id="{{this._id}}" class="item selectable">
-                        <div>
-                        </div>
-                        {{/if}} {{this.name}}
-                    </li>
-                    {{/each}}
-                </ul>
-            </article>
-        </div>
-        {{/each}} {{/each}}
-    </section>
+        <h1 id="message" class="heading"></h1>
+        <section class="ac-container">
+            {{#each concerns}} {{#each alphas this._id}}
+            <div class="concern-container">
+                <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"/>
+                <label for="{{this._id}}" class="accordionlabel">
+                    {{this.name}}
+                    <em>
+                        {{currentState this.currentStateId}}
+                    </em>
+                </label>
+                <article class="ac-small">
+                    <ul>
+                        {{#each states this._id}} {{#if sameId ../this.currentStateId this._id}}
+                        <li id="{{this._id}}" class="item selected">
+                            <div class="icon-ok">
+                            </div>
+                            {{else}}
+                        <li id="{{this._id}}" class="item selectable">
+                            <div>
+                            </div>
+                            {{/if}} {{this.name}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                </article>
+            </div>
+            {{/each}} {{/each}}
+        </section>
+    {{else}}
+        <h1 id="kernel" class="heading">Project Not Found</h1>
+        <h1 id="message" class="heading"></h1>
+        <section class="ac-container">
+            <div class="concern-container">
+            Either the project does not exist, or the current user lacks privilege to view the project.
+            </div>
+        </section>
+    {{/if}}
 </template>

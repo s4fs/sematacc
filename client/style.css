@@ -179,6 +179,13 @@ div.clickable {
     height: auto;
 }
 
+.hints h2 {
+    font-size: 1em;
+    height: auto;
+    text-align:left;
+    margin: 5px 0px;
+}
+
 .hints .hint {
     margin: 0;
     padding: 5px;
@@ -486,8 +493,7 @@ div.message {
     text-align: center;
     font-size: 1.3em;
     line-height: 2em;
-    color: #ffffff;
-
+    color: #680148;
 }
 
 div.menu {

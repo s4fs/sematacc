@@ -10,7 +10,7 @@
  * projects are handled in this file
  */
 Template.projects.events({
-    'click a#showNewProject': function(event) {
+    'click a.showNewProject': function(event) {
         event.preventDefault();
         Session.set('editProjectId', null);
         $('input#nameNewProject').val("");
@@ -115,18 +115,5 @@ Template.projects.events({
             Session.set('selectedProjectName', null);
         }
         Projects.remove(projectId);
-
-        projectsCount = Projects.find({
-            userId: Meteor.userId()
-        }).count();
-        if (projectsCount === 0) {
-            Meteor.call('newProject', 'Default Project', 'This is the default description of the project. Feel free to edit it.',
-
-                function(error, result) {
-                    if (error) {
-                        alert('Error when creating the default project: ' + error);
-                    }
-                });
-        }
     }
 });

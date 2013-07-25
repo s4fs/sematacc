@@ -20,11 +20,12 @@
             <h1 class="icon-comment">Hint Box</h1>
 
             <div class="hint">
-                {{#if userAndSelectedProject}}
-                {{> projectsHint }}
-                {{else}}
-                {{> pleaseLogin}}
+                {{#if inProjects}}
+                    {{> projectsHint }}
                 {{/if}}
+                {{#unless currentUser}}
+                    {{> pleaseLogin}}
+                {{/unless}}
             </div>
         </div>
     </div>
@@ -49,4 +50,14 @@
     <p>
         Please <a href="#" id="pleaselogin">Login or Register</a> (upper-right corner).
     </p>
+</template>
+
+<template name="loading">
+     <h1 id="kernel" class="heading">Loading..</h1>
+        <h1 id="message" class="heading"></h1>
+        <section class="ac-container">
+            <div class="concern-container">
+                Please wait..
+            </div>
+        </section>
 </template>

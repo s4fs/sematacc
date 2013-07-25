@@ -12,21 +12,35 @@
  * Create and save a new Project
  * @param  {string} name        Name of the Project
  * @param  {string} description Description of the Project
+ * @param  {bool} is the proejct a demo project?
  * @return {int}             The Meteor/MongoDB id of the Project
  */
-newProject = function(name, description) {
+newProject = function(name, description, demo) {
+    if (!typeof(name) === 'string' || !name){
+        return 'Error. Wrong projectId supplied. Please contact the developer.';
+    }
+    if (!typeof(description) === 'string' || !description){
+        return 'Error. Wrong description supplied. Please contact the developer.';
+    }
+    if (typeof(demo) === 'undefined'){
+        demo = false;
+    }
     var concernId = 0;
     var alphaId = 0;
     var stateId = 0;
 
     var alphaCounter = 0;
 
-    var userId = Meteor.userId();
+    var userId;
+    if (demo === true)
+        userId = null;
+    else
+        userId = Meteor.userId();
 
     projectId = Projects.insert({
         name: name,
         description: description,
-        demo: false,
+        demo: demo,
         userId: userId
     });
 
@@ -74,9 +88,13 @@ newProject = function(name, description) {
  * Calculate the percentage of completion of each Concern.
  * Should be called after an Alpha switches to a new State and its completion has been done.
  */
-updateConcernCompletions = function() {
+updateConcernCompletions = function(projectId) {
+    if (typeof(projectId) !== 'string' || !projectId){
+        throw new Meteor.Error(500,'Error. Wrong projectId (' + projectId + ') supplied. Please contact the developer.');
+    }
     var concerns = Concerns.find({
-        userId: Meteor.userId()
+        userId: Meteor.userId(),
+        projectId: projectId
     });
     concerns.forEach(function(concern) {
         var alphas = Alphas.find({
@@ -101,9 +119,13 @@ updateConcernCompletions = function() {
 /**
  * Calculate the percentage of completion of each Alpha.
  */
-updateAlphasCompletions = function() {
+updateAlphasCompletions = function(projectId) {
+    if (typeof(projectId) !== 'string' || !projectId){
+        return 'Error. Wrong projectId supplied. Please contact the developer.';
+    }
     var alphas = Alphas.find({
-        userId: Meteor.userId()
+        userId: Meteor.userId(),
+        projectId: projectId
     });
     alphas.forEach(function(alpha) {
         var alphaStatesCount = States.find({
@@ -138,6 +160,16 @@ updateAlphasCompletions = function() {
  * @param  {string} what      the event happening
  */
 log = function(projectId, who, what) {
+    if (typeof(projectId) === 'undefined' || !projectId){
+        return 'Error. Wrong projectId supplied. Please contact the developer.';
+    }
+    if (typeof(who) === 'undefined' || !who){
+        return 'Error. Wrong who supplied. Please contact the developer.';
+    }
+    if (typeof(what) === 'undefined' || !what){
+        return 'Error. Wrong what supplied. Please contact the developer.';
+    }
+
     var userId = Meteor.userId();
     var timestamp = new Date();
     eventobj = {
@@ -155,6 +187,9 @@ log = function(projectId, who, what) {
  * Return events as a CSV text string
  */
 getLog = function(projectId) {
+    if (typeof(projectId) === 'undefined' || !projectId){
+        return 'Error. Wrong projectId supplied. Please contact the developer.';
+    }
     var userId = Meteor.userId();
     var events = Events.find({
         projectId: projectId,
