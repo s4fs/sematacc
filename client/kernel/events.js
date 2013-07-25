@@ -24,14 +24,14 @@ Template.kernel.events({
      * on a Concern area (including Alphas and States)
      */
     'mouseenter .accordionlabel': function(event) {
-        var concern = Concerns.findOne(this.concernId);
-        $('#message').html(concern.name);
-        $('.hints .hint').html(this.description);
+        var concernName = Concerns.findOne(this.concernId).name;
+        $('#message').html(concernName);
+        $('.hints .hint').html('<h2>' + this.name + '</h2>' + this.description);
     },
     'mouseleave .accordionlabel': function(event) {},
     'mouseleave .ac-container': function(event) {
-        $('#message').text('');
-        $('.hints .hint').text('');
+        //$('#message').text('');
+        //$('.hints .hint').text('');
     },
     /**
      * Close the other Accordion Items when one is clicked
@@ -52,8 +52,16 @@ Template.kernel.events({
         });
         alpha = Alphas.findOne(this.alphaId);
         state = States.findOne(this._id);
-        Meteor.call('updateAlphasCompletions', function(error, result) {
-            Meteor.call('updateConcernCompletions', function(error, result) {
+        Meteor.call('updateAlphasCompletions', Session.get('selectedProjectId'), function(error, result) {
+            if (error){
+                Session.set('message', error.message);
+                return;
+            }
+            Meteor.call('updateConcernCompletions', Session.get('selectedProjectId'), function(error, result) {
+                if (error){
+                    Session.set('message', error.message);
+                    return;
+                }
                 Meteor.call('log', Session.get('selectedProjectId'), alpha.name + '.state', state.name);
             });
         });
@@ -71,8 +79,8 @@ Template.kernel.events({
                 currentStateId: null
             }
         });
-        Meteor.call('updateAlphasCompletions', function(error, result) {
-            Meteor.call('updateConcernCompletions', function(error, result) {
+        Meteor.call('updateAlphasCompletions', Session.get('selectedProjectId'), function(error, result) {
+            Meteor.call('updateConcernCompletions', Session.get('selectedProjectId'), function(error, result) {
                 Meteor.call('log', Session.get('selectedProjectId'), alpha.name + '.state', 'NULL');
             });
         });
@@ -92,12 +100,12 @@ Template.kernel.events({
         $(event.target).find('div').removeClass('icon-ok');
     },
     'mouseenter li.item': function(event) {
-        var description = this.description;
+        var description = '<h2>' + this.name + '</h2>' + this.description;
         $('.hints .hint').html(description);
         $('.hints .hint p br').after('<span class="icon-check"></span>');
         $('.hints .hint p').prepend('<span class="icon-check"></span>');
     },
     'mouseleave li.item': function(event) {
-        $('.hints .hint').text();
+        //$('.hints .hint').text();
     }
 });

@@ -54,7 +54,7 @@ Although we try to keep the data stored on there, please do not heavily rely on 
 In order to [deploy](http://docs.meteor.com/#deploying) SematAcc as a private instance on Meteor's free servers, issue the following command:
  
     meteor deploy your-chosen-name.meteor.com
-
+    
 EVENT LOGGING
 =============
 SematAcc logs events. Currently only changes in an alpha's state is recorded.
@@ -66,6 +66,10 @@ In particular, the line
     Meteor.call('log', Session.get('selectedProjectId'), alpha.name+'.state', state.name);
     
 Is responsible to log an event.
+
+TESTING
+=======
+Please look at the file TESTING.md
 
 LICENSE
 =======

@@ -21,8 +21,8 @@ Handlebars.registerHelper('userAndSelectedProject', function(input) {
 Handlebars.registerHelper('currentURL', function(input) {
     return window.location.href;
 });
-Handlebars.registerHelper('message', function(input) {
-    return Session.get("message");
+Handlebars.registerHelper('inProjects', function(input) {
+    return Meteor.Router.page() == 'projects' || Meteor.Router.page() == 'kernel';
 });
 Handlebars.registerHelper('demoProject', function(input) {
     return Projects.findOne({
