@@ -59,7 +59,7 @@ In order to [deploy](http://docs.meteor.com/#deploying) SematAcc as a private in
 CITATION
 ========
 
-If you use SematAcc on a publication, please cite as follows:
+If you use SematAcc in research activities, please cite as follows:
 
     Graziotin, D. and Abrahamsson, P. 2013. A Web-based modeling tool for the SEMAT Essence theory of Software Engineering. Journal of Open Research Software. In Press.
 
