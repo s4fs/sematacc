@@ -1,0 +1,17 @@
+If you use SematAcc on a publication, please cite as follows:
+
+Graziotin, D. and Abrahamsson, P. A Web-based modeling tool for the SEMAT Essence theory of software engineering. Journal of Open Research Software 1, 1 (2011), e4. DOI=http://dx.doi.org/10.5334/jors.ad
+
+In Bibtex format:
+
+@article{graziotin2013web,
+  title={A Web-based modeling tool for the SEMAT Essence theory of software engineering},
+  author={Graziotin, Daniel and Abrahamsson, Pekka},
+  journal={Journal of Open Research Software},
+  volume={1},
+  number={1},
+  pages={e4},
+  year={2013},
+  publisher={Ubiquity Press},
+  doi={http://dx.doi.org/10.5334/jors.ad},
+}
