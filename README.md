@@ -61,7 +61,7 @@ CITATION
 
 If you use SematAcc in research activities, please cite as follows:
 
-    Graziotin, D. and Abrahamsson, P. 2013. A Web-based modeling tool for the SEMAT Essence theory of Software Engineering. Journal of Open Research Software. In Press.
+Graziotin, D. and Abrahamsson, P. A Web-based modeling tool for the SEMAT Essence theory of software engineering. Journal of Open Research Software 1, 1 (2013), e4. DOI=http://dx.doi.org/10.5334/jors.ad
 
 
 EVENT LOGGING
