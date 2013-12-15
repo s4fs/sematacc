@@ -484,6 +484,10 @@ li.selected {
     margin-bottom: 20px;
 }
 
+.onTop{
+    z-index: 100 !important;
+}
+
 /*******
  * MENU
  *******/
