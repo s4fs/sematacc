@@ -54,7 +54,16 @@ Although we try to keep the data stored on there, please do not heavily rely on 
 In order to [deploy](http://docs.meteor.com/#deploying) SematAcc as a private instance on Meteor's free servers, issue the following command:
  
     meteor deploy your-chosen-name.meteor.com
-    
+
+
+CITATION
+========
+
+If you use SematAcc in research activities, please cite as follows:
+
+Graziotin, D. and Abrahamsson, P. A Web-based modeling tool for the SEMAT Essence theory of software engineering. Journal of Open Research Software 1, 1 (2013), e4. DOI=http://dx.doi.org/10.5334/jors.ad
+
+
 EVENT LOGGING
 =============
 SematAcc logs events. Currently only changes in an alpha's state is recorded.
