@@ -10,3 +10,6 @@ accounts-github
 accounts-google
 accounts-password
 accounts-ui
+standard-app-packages
+router
+HTML5-History-API
