@@ -13,9 +13,10 @@ Template.log.events({
         projectId = Session.get('selectedProjectId');
         Meteor.call('getLog', projectId, function(error, result) {
             $.colorbox({
-                width: '98%',
+                width: '95%',
                 height: '95%',
-                html: '<textarea style="width:95%;height:95%">' + result + '</textarea>'
+                html: '<textarea style="width:95%;height:95%">' + result + '</textarea>',
+                overlayClose: false,
             });
         });
     }

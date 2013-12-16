@@ -33,7 +33,18 @@ var buildRoseGraph = function(elemId, data, labels, meteorIds) {
     roseGraph.Set('chart.colors', [grad]);
     roseGraph.Set('chart.margin', 5);
     roseGraph.Set('chart.ymax', 100);
+    roseGraph.Set('contextmenu',
+        [
+            ['Get PNG', function() {
+                RGraph.showPNG();
+                $('div#__rgraph_image_div__').addClass('onTop');
+            }],
+            null,
+            ['Cancel', function () {}]
+        ]
+    );
     roseGraph.meteorIds = meteorIds;
+
     return roseGraph;
 };
 

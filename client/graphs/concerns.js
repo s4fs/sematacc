@@ -26,6 +26,16 @@ var buildHbarGraph = function(elemId, data, labels) {
     hbar.Set('chart.background.grid', false);
     hbar.Set('chart.colors', [grad]);
     hbar.Set('chart.xmax', 100);
+    hbar.Set('contextmenu',
+        [
+            ['Get PNG', function() {
+                RGraph.showPNG();
+                $('div#__rgraph_image_div__').addClass('onTop');
+            }],
+            null,
+            ['Cancel', function () {}]
+        ]
+    );
     return hbar;
 
 };
