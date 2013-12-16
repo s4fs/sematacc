@@ -12,6 +12,7 @@ Template.about.rendered = function() {
         inline: true,
         width: '80%',
         height: '80%',
-        scrolling: true
+        scrolling: true,
+        overlayClose: false,
     });
 };

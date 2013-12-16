@@ -1,63 +1,63 @@
 <head>
-    <link href="http://fonts.googleapis.com/css?family=ABeeZee|Krona+One" rel="stylesheet" type="text/css"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/fontello.css">
     <!--[if IE 7]>
     <link rel="stylesheet" href="/css/fontello-ie7.css"><![endif]-->
     <link rel="stylesheet" href="/css/colorbox.css">
+    <link rel="stylesheet" href="/css/grid.css">
     <title>
         Semat Accelerator
     </title>
 </head>
 <body>
-<div class="top">
-    <div class="login">{{loginButtons}}</div>
-</div>
-<div class="wrapper">
-    <div class="left">
-        <h1 class="heading">SEMAT Accelerator</h1>
 
-        <div class="hints">
-            <h1 class="icon-comment">Hint Box</h1>
+{{> header}}
 
-            <div class="hint">
-                {{#if inProjects}}
-                    {{> projectsHint }}
-                {{/if}}
-                {{#unless currentUser}}
-                    {{> pleaseLogin}}
-                {{/unless}}
+<div class="container-full">
+     <div class="row">
+        <div class="col-lg-4 col-md-6 col-sx-12">
+            <h1 class="heading">Hint Box</h1>
+            <div class="hints">
+                <div class="hint">
+                    {{#if inProjects}}
+                        {{> projectsHint }}
+                    {{/if}}
+                    {{#unless currentUser}}
+                        {{> pleaseLogin}}
+                    {{/unless}}
+                </div>
             </div>
         </div>
-    </div>
-    <div class="center">
-        <div class="kernel">
-            {{#isolate}} {{renderPage}} {{/isolate}}
+        <div class="col-lg-4 col-md-6 col-sx-12">
+            <div class="kernel">
+                    {{#isolate}}
+                        {{renderPage}}
+                    {{/isolate}}
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12 col-sx-12">
+            {{#if userAndSelectedProject}}
+                {{> graphs}}
+            {{/if}}
         </div>
     </div>
-    <div class="right">
-        {{#if userAndSelectedProject}}
-        {{> graphs}}
-        {{/if}}
-    </div>
 </div>
-<div class="bottom">
-    {{> footer}}
-</div>
+
 {{> analytics}}
 </body>
 
 <template name="pleaseLogin">
     <p>
-        Please <a href="#" id="pleaselogin">Login or Register</a> (upper-right corner).
+        Please Login or Register (upper-right corner).
     </p>
 </template>
 
 <template name="loading">
      <h1 id="kernel" class="heading">Loading..</h1>
-        <h1 id="message" class="heading"></h1>
         <section class="ac-container">
             <div class="concern-container">
                 Please wait..
             </div>
         </section>
+    <h1 id="message" class="heading"></h1>
 </template>

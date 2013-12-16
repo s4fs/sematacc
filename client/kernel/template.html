@@ -1,17 +1,15 @@
 <template name="kernel">
     {{#if selectedProjectName}}
         <h1 id="kernel" class="heading">Kernel for {{selectedProjectName}}</h1>
-
-        <h1 id="message" class="heading"></h1>
         <section class="ac-container">
             {{#each concerns}} {{#each alphas this._id}}
             <div class="concern-container">
                 <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"/>
                 <label for="{{this._id}}" class="accordionlabel">
                     {{this.name}}
-                    <em>
+                    <span>
                         {{currentState this.currentStateId}}
-                    </em>
+                    </span>
                 </label>
                 <article class="ac-small">
                     <ul>
@@ -31,6 +29,7 @@
             </div>
             {{/each}} {{/each}}
         </section>
+        <h1 id="message" class="heading"></h1>
     {{else}}
         <h1 id="kernel" class="heading">Project Not Found</h1>
         <h1 id="message" class="heading"></h1>
