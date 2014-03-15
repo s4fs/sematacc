@@ -33,16 +33,17 @@ var buildRoseGraph = function(elemId, data, labels, meteorIds) {
     roseGraph.Set('chart.colors', [grad]);
     roseGraph.Set('chart.margin', 5);
     roseGraph.Set('chart.ymax', 100);
-    roseGraph.Set('contextmenu',
-        [
-            ['Get PNG', function() {
+    roseGraph.Set('contextmenu', [
+        ['Get PNG',
+            function() {
                 RGraph.showPNG();
                 $('div#__rgraph_image_div__').addClass('onTop');
-            }],
-            null,
-            ['Cancel', function () {}]
+            }
+        ],
+        null, ['Cancel',
+            function() {}
         ]
-    );
+    ]);
     roseGraph.meteorIds = meteorIds;
 
     return roseGraph;
@@ -57,9 +58,14 @@ var buildRoseGraph = function(elemId, data, labels, meteorIds) {
 buildAlphasGraph = function(elemId, selectedProjectId) {
     if (!(elemId || selectedProjectId)) return;
 
-    var alphas = Alphas.find({
-        projectId: selectedProjectId
-    }).fetch();
+    var project = Projects.findOne({
+        _id: selectedProjectId
+    });
+    var alphas = [];
+    for (var c in project.kernel.concerns) {
+        for (var a in project.kernel.concerns[c].alphas)
+            alphas.push(project.kernel.concerns[c].alphas[a]);
+    }
 
     // prepare the 3 arrays of data needed for building the graph
     var data = [];
@@ -68,7 +74,7 @@ buildAlphasGraph = function(elemId, selectedProjectId) {
     alphas.forEach(function(alpha) {
         data.push(alpha.completion);
         labels.push(alpha.name);
-        meteorIds.push(alpha._id);
+        meteorIds.push(alpha.domId);
     });
 
     var roseAlphaGraph = buildRoseGraph(elemId, data, labels, meteorIds);
@@ -77,7 +83,7 @@ buildAlphasGraph = function(elemId, selectedProjectId) {
     roseAlphaGraph.onclick = function(e, shape) {
         id = roseAlphaGraph.meteorIds[shape[6]];
         $('input.accordionitem').attr('checked', false);
-        $('#' + id).attr('checked', true);
+        $('#' + id).click();
     };
     roseAlphaGraph.onmousemove = function(e, shape) {
         e.target.style.cursor = 'pointer';

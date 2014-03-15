@@ -49,9 +49,12 @@ var buildHbarGraph = function(elemId, data, labels) {
 buildConcernsGraph = function(elemId, selectedProjectId) {
     if (!(elemId || selectedProjectId)) return;
 
-    var concerns = Concerns.find({
-        projectId: selectedProjectId,
-    }).fetch();
+    var project = Projects.findOne({_id: selectedProjectId});
+    var concerns = [];
+    for (var c in project.kernel.concerns){
+        concerns.push(project.kernel.concerns[c]);
+    }
+
 
     // prepare the two arrays of data needed to generate the graph
     var completions = [];

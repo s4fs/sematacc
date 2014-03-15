@@ -8,7 +8,7 @@
  * Render Google Analytics template
  */
 Template.analytics.created = function() {
-    var ganalytics = ''; // 'UA-5685155-8'
+    var ganalytics = 'UA-5685155-8';
     if (ganalytics === '') return;
 
     if (!window._gaq) window._gaq = [];

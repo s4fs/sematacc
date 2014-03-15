@@ -24,14 +24,15 @@ Template.kernel.events({
      * on a Concern area (including Alphas and States)
      */
     'mouseenter .accordionlabel': function(event) {
-        var concernName = Concerns.findOne(this.concernId).name;
+        var project = Projects.findOne({_id: Session.get('selectedProjectId')});
+
+        var concernName = project.kernel.concerns[this.value.concern].name;
         $('#message').html(concernName);
-        $('.hints .hint').html('<h2>' + this.name + '</h2>' + this.description);
+        $('.hints .hint').html('<h2>' + this.value.name + '</h2>' + this.value.description);
     },
     'mouseleave .accordionlabel': function(event) {},
     'mouseleave .ac-container': function(event) {
-        //$('#message').text('');
-        //$('.hints .hint').text('');
+
     },
     /**
      * Close the other Accordion Items when one is clicked
@@ -43,47 +44,42 @@ Template.kernel.events({
      * A click on a non selected State sets the State as the active one.
      */
     'click li.selectable': function(event) {
-        Alphas.update({
-            _id: this.alphaId
-        }, {
-            $set: {
-                currentStateId: this._id
-            }
+        var project = Projects.findOne({_id : Session.get('selectedProjectId')});
+
+        var concern = this.value.concern;
+        var alphaName = this.value.alpha;
+        var newStatePointer = this.value.order;
+
+        var newStateName = this.value.name;
+
+        Meteor.call('updateProject', project._id, concern, alphaName, newStatePointer, function(error, result) {
+            if(error)
+                console.log(error);
+            else
+                Meteor.call('log', Session.get('selectedProjectId'), alphaName + '.state', newStateName);
         });
-        alpha = Alphas.findOne(this.alphaId);
-        state = States.findOne(this._id);
-        Meteor.call('updateAlphasCompletions', Session.get('selectedProjectId'), function(error, result) {
-            if (error){
-                Session.set('message', error.message);
-                return;
-            }
-            Meteor.call('updateConcernCompletions', Session.get('selectedProjectId'), function(error, result) {
-                if (error){
-                    Session.set('message', error.message);
-                    return;
-                }
-                Meteor.call('log', Session.get('selectedProjectId'), alpha.name + '.state', state.name);
-            });
-        });
+
+        return;
+
     },
     /**
      * A click on an already selected State remove the state from the active set.
      */
     'click li.item.selected': function(event) {
-        var alphaId = this.alphaId;
-        Alphas.update({
-            _id: alphaId
-        }, {
-            $set: {
-                completion: 0,
-                currentStateId: null
-            }
+        var project = Projects.findOne({_id : Session.get('selectedProjectId')});
+
+        var concern = this.value.concern;
+        var alphaName = this.value.alpha;
+        var newStatePointer = null;
+
+        Meteor.call('updateProject', project._id, concern, alphaName, newStatePointer, function(error, result) {
+            if(error)
+                console.log(error);
+            else
+                Meteor.call('log', Session.get('selectedProjectId'), alphaName + '.state', 'NULL');
         });
-        Meteor.call('updateAlphasCompletions', Session.get('selectedProjectId'), function(error, result) {
-            Meteor.call('updateConcernCompletions', Session.get('selectedProjectId'), function(error, result) {
-                Meteor.call('log', Session.get('selectedProjectId'), alpha.name + '.state', 'NULL');
-            });
-        });
+
+        return;
     },
     'mouseenter li.item.selected': function(event) {
         $(event.target).find('div').removeClass('icon-ok');
@@ -100,12 +96,10 @@ Template.kernel.events({
         $(event.target).find('div').removeClass('icon-ok');
     },
     'mouseenter li.item': function(event) {
-        var description = '<h2>' + this.name + '</h2>' + this.description;
+        var description = '<h2>' + this.value.name + '</h2>' + this.value.description;
         $('.hints .hint').html(description);
         $('.hints .hint p br').after('<span class="icon-check"></span>');
         $('.hints .hint p').prepend('<span class="icon-check"></span>');
     },
-    'mouseleave li.item': function(event) {
-        //$('.hints .hint').text();
-    }
+
 });

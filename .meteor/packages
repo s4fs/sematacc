@@ -13,5 +13,6 @@ standard-app-packages
 router
 HTML5-History-API
 page-js-ie-support
-meteor-bootstrap-3
 meteor-accounts-ui-bootstrap-3
+meteor-bootstrap-3
+random

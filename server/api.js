@@ -5,8 +5,9 @@
  */
 
 /**
- * This file implement the server-side methods, which will be public for the client.
+ * This file implements the server-side methods, which will be public for the client.
  */
+
 
 /**
  * Create and save a new Project
@@ -25,6 +26,7 @@ newProject = function(name, description, demo) {
     if (typeof(demo) === 'undefined'){
         demo = false;
     }
+
     var concernId = 0;
     var alphaId = 0;
     var stateId = 0;
@@ -37,120 +39,116 @@ newProject = function(name, description, demo) {
     else
         userId = Meteor.userId();
 
-    projectId = Projects.insert({
-        name: name,
-        description: description,
-        demo: demo,
-        userId: userId
-    });
+    var project = {};
+    var kernel = {};
+    var concerns = [];
 
-    for (var c = 0; c < kernelSkeleton.concerns.length; c++) {
-        var concern = kernelSkeleton.concerns[c];
-        concernId = Concerns.insert({
-            name: concern.name,
-            description: concern.description,
-            // index from 1 instead of 0
-            order: c + 1,
-            completion: 0,
-            userId: userId,
-            projectId: projectId
-        });
-        for (var a = 0; a < concern.alphas.length; a++) {
-            var alpha = concern.alphas[a];
-            alphaId = Alphas.insert({
-                name: alpha.name,
-                description: alphaDescriptions[alpha.name.toLowerCase()],
-                order: alphaCounter + 1,
-                currentStateId: null,
-                completion: 0,
-                concernId: concernId,
-                projectId: projectId,
-                userId: userId
-            });
-            alphaCounter++;
-            for (var s = 0; s < alpha.states.length; s++) {
-                var state = alpha.states[s];
-                stateId = States.insert({
-                    name: state,
-                    description: stateDescriptions[alpha.name.toLowerCase()][state.toLowerCase()],
-                    order: s + 1,
-                    alphaId: alphaId,
-                    projectId: projectId,
-                    userId: userId
-                });
+    var concern = null;
+    var alpha = null;
+    var state = null;
+
+    var concernCounter = 0;
+    for (var concern in kernelSkeleton.concerns) {
+
+        kernelSkeleton.concerns[concern].completion = 0;
+        kernelSkeleton.concerns[concern].order = concernCounter + 1;
+        kernelSkeleton.concerns[concern].domId = Random.id();
+
+        var alphaCounter = 0;
+        for (alpha in kernelSkeleton.concerns[concern].alphas) {
+
+            kernelSkeleton.concerns[concern].alphas[alpha].description = alphaDescriptions[kernelSkeleton.concerns[concern].alphas[alpha].name.toLowerCase()];
+            kernelSkeleton.concerns[concern].alphas[alpha].order = alphaCounter + 1;
+            kernelSkeleton.concerns[concern].alphas[alpha].currentStatePointer = null;
+            kernelSkeleton.concerns[concern].alphas[alpha].completion = 0;
+            kernelSkeleton.concerns[concern].alphas[alpha].concern = kernelSkeleton.concerns[concern].name.toLowerCase();
+            kernelSkeleton.concerns[concern].alphas[alpha].domId = Random.id();
+
+            var stateCounter = 0;
+            var states = new Object();
+
+
+            for (var stateCounter = 0; stateCounter < kernelSkeleton.concerns[concern].alphas[alpha].states.length; stateCounter++) {
+
+                var stateName = kernelSkeleton.concerns[concern].alphas[alpha].states[stateCounter];
+
+                state = new Object();
+                state.name = stateName;
+                state.description = stateDescriptions[kernelSkeleton.concerns[concern].alphas[alpha].name.toLowerCase()][state.name.toLowerCase()];
+                state.order = stateCounter + 1;
+                state.alpha = kernelSkeleton.concerns[concern].alphas[alpha].name.toLowerCase();
+                state.concern = kernelSkeleton.concerns[concern].name.toLowerCase();
+                states[state.name] = state;
+                state.domId = Random.id();
             }
+            kernelSkeleton.concerns[concern].alphas[alpha].states = states;
+            alphaCounter++;
         }
+        concernCounter++;
     }
+
+    project.name = name;
+    project.description = description;
+    project.demo = demo;
+    project.userId = userId;
+
+    project.kernel = new Object();
+    project.kernel.concerns = kernelSkeleton.concerns;
+
+    projectId = Projects.insert(
+        project
+    );
+
     return projectId;
 };
+
 
 /**
  * Calculate the percentage of completion of each Concern.
  * Should be called after an Alpha switches to a new State and its completion has been done.
  */
-updateConcernCompletions = function(projectId) {
+updateProject = function(projectId, concern, alpha, newStatePointer) {
     if (typeof(projectId) !== 'string' || !projectId){
         throw new Meteor.Error(500,'Error. Wrong projectId (' + projectId + ') supplied. Please contact the developer.');
     }
-    var concerns = Concerns.find({
-        userId: Meteor.userId(),
-        projectId: projectId
-    });
-    concerns.forEach(function(concern) {
-        var alphas = Alphas.find({
-            concernId: concern._id,
-            userId: Meteor.userId()
-        }).fetch();
-        var completions = 0;
-        alphas.forEach(function(alpha) {
-            completions += alpha.completion;
-        });
-        Concerns.update({
-            _id: concern._id,
-            userId: Meteor.userId()
-        }, {
-            $set: {
-                completion: completions / alphas.length
-            }
-        });
-    });
-};
 
-/**
- * Calculate the percentage of completion of each Alpha.
- */
-updateAlphasCompletions = function(projectId) {
-    if (typeof(projectId) !== 'string' || !projectId){
-        return 'Error. Wrong projectId supplied. Please contact the developer.';
-    }
-    var alphas = Alphas.find({
-        userId: Meteor.userId(),
-        projectId: projectId
-    });
-    alphas.forEach(function(alpha) {
-        var alphaStatesCount = States.find({
-            alphaId: alpha._id,
-            userId: Meteor.userId()
-        }).count();
+    var project = Projects.findOne({_id: projectId});
 
-        var currentStatePosition = 0;
-        if (alpha.currentStateId) {
-            currentStatePosition = States.findOne({
-                _id: alpha.currentStateId,
-                userId: Meteor.userId()
-            }).order;
+    if (!project)
+        return;
+
+    project.kernel.concerns[concern].alphas[alpha].currentStatePointer = newStatePointer;
+
+    for (concern in project.kernel.concerns){
+        for (alpha in project.kernel.concerns[concern].alphas){
+            var alphaStatesCount = 0;
+            for (s in project.kernel.concerns[concern].alphas[alpha].states)
+                if (project.kernel.concerns[concern].alphas[alpha].states.hasOwnProperty(s))
+                    alphaStatesCount++;
+
+            var currentStatePointer = project.kernel.concerns[concern].alphas[alpha].currentStatePointer;
+
+            var ratio = currentStatePointer / alphaStatesCount * 100;
+            project.kernel.concerns[concern].alphas[alpha].completion = ratio;
         }
 
-        var ratio = currentStatePosition / alphaStatesCount * 100;
-        Alphas.update({
-            _id: alpha._id,
-            userId: Meteor.userId()
-        }, {
-            $set: {
-                completion: ratio
-            }
-        });
-    });
+        var alphasCount = 0;
+        var alphasCompletion = 0;
+        for (alpha in project.kernel.concerns[concern].alphas){
+            alphasCount++;
+            alphasCompletion += project.kernel.concerns[concern].alphas[alpha].completion;
+        }
+
+        var ratio = alphasCompletion / alphasCount;
+        project.kernel.concerns[concern].completion = ratio;
+    }
+
+    Projects.update({
+            _id: project._id
+        },
+        project
+
+    );
 };
 
 /**

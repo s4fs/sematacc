@@ -36,6 +36,7 @@ Template.projects.events({
                         description: description
                     }
                 });
+                Meteor.call('log', projectId, 'Project', 'Modified');
                 Session.set('editProjectId', null);
             } else {
                 Meteor.call('newProject', name, description, Meteor.userId(),

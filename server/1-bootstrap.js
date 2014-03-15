@@ -11,47 +11,61 @@
  */
 
 kernelSkeleton = {
-    concerns: [{
-        name: 'Customer',
-        description: 'Description of Customer',
-        alphas: [{
-            name: 'Opportunity',
-            currentState: null,
-            states: ['Identified', 'Solution Needed', 'Value Established', 'Viable', 'Addressed', 'Benefit Accrued']
-        }, {
-            name: 'Stakeholders',
-            currentState: null,
-            states: ['Recognized', 'Represented', 'Involved', 'In Agreement', 'Satisfied for Deployment', 'Satisfied in Use']
-        }]
-    }, {
-        name: 'Solution',
-        description: 'Description of Solution',
-        alphas: [{
-            name: 'Requirements',
-            currentState: null,
-            states: ['Conceived', 'Bounded', 'Coherent', 'Acceptable', 'Addressed', 'Fulfilled']
-        }, {
-            name: 'Software System',
-            currentState: null,
-            states: ['Architecture Selected', 'Demonstrable', 'Usable', 'Ready', 'Operational', 'Retired']
-        }]
-    }, {
-        name: 'Endeavor',
-        description: 'Description of Endeavor',
-        alphas: [{
-            name: 'Work',
-            currentState: null,
-            states: ['Initiated', 'Prepared', 'Started', 'Under Control', 'Concluded', 'Closed']
-        }, {
-            name: 'Team',
-            currentState: null,
-            states: ['Seeded', 'Formed', 'Collaborating', 'Performing', 'Adjourned']
-        }, {
-            name: 'Way-of-Working',
-            currentState: null,
-            states: ['Principles Established', 'Foundation Established', 'In Use', 'In Place', 'Working Well', 'Retired']
-        }]
-    }]
+    concerns: {
+        'customer' : {
+            name: 'Customer',
+            description: 'Description of Customer',
+            alphas: {
+                'opportunity' : {
+                    name: 'Opportunity',
+                    currentStatePointer: null,
+                    states: ['Identified', 'Solution Needed', 'Value Established', 'Viable', 'Addressed', 'Benefit Accrued']
+                },
+                'stakeholders' : {
+                    name: 'Stakeholders',
+                    currentStatePointer: null,
+                    states: ['Recognized', 'Represented', 'Involved', 'In Agreement', 'Satisfied for Deployment', 'Satisfied in Use']
+                }
+            }
+        },
+        'solution' : {
+            name: 'Solution',
+            description: 'Description of Solution',
+            alphas: {
+                'requirements' : {
+                    name: 'Requirements',
+                    currentStatePointer: null,
+                    states: ['Conceived', 'Bounded', 'Coherent', 'Acceptable', 'Addressed', 'Fulfilled']
+                },
+                'software system' : {
+                    name: 'Software System',
+                    currentStatePointer: null,
+                    states: ['Architecture Selected', 'Demonstrable', 'Usable', 'Ready', 'Operational', 'Retired']
+                }
+            }
+        },
+        'endeavor' : {
+            name: 'Endeavor',
+            description: 'Description of Endeavor',
+            alphas: {
+                'work' : {
+                    name: 'Work',
+                    currentStatePointer: null,
+                    states: ['Initiated', 'Prepared', 'Started', 'Under Control', 'Concluded', 'Closed']
+                },
+                'team': {
+                    name: 'Team',
+                    currentStatePointer: null,
+                    states: ['Seeded', 'Formed', 'Collaborating', 'Performing', 'Adjourned']
+                },
+                'way-of-working' : {
+                    name: 'Way-of-Working',
+                    currentStatePointer: null,
+                    states: ['Principles Established', 'Foundation Established', 'In Use', 'In Place', 'Working Well', 'Retired']
+                }
+            }
+        }
+    }
 };
 
 alphaDescriptions = {
