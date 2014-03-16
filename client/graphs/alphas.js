@@ -61,6 +61,10 @@ buildAlphasGraph = function(elemId, selectedProjectId) {
     var project = Projects.findOne({
         _id: selectedProjectId
     });
+
+    if (!project)
+        return;
+
     var alphas = [];
     for (var c in project.kernel.concerns) {
         for (var a in project.kernel.concerns[c].alphas)

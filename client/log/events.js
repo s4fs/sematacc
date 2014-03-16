@@ -8,7 +8,8 @@ Template.log.events({
     /**
      * Display a Lightbox with the Project events formatted as a CSV File
      */
-    'click a#export': function(event) {
+    'click a.export': function(event) {
+        alert('ciao');
         event.preventDefault();
         projectId = Session.get('selectedProjectId');
         Meteor.call('getLog', projectId, function(error, result) {

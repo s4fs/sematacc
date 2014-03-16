@@ -50,6 +50,10 @@ buildConcernsGraph = function(elemId, selectedProjectId) {
     if (!(elemId || selectedProjectId)) return;
 
     var project = Projects.findOne({_id: selectedProjectId});
+
+    if (!project)
+        return;
+    
     var concerns = [];
     for (var c in project.kernel.concerns){
         concerns.push(project.kernel.concerns[c]);

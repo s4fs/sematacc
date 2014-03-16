@@ -34,6 +34,9 @@ drawGraphs = function() {
     var roseGraph = buildAlphasGraph(graphIds[0], selectedProjectId);
     var hbarGraph = buildConcernsGraph(graphIds[1], selectedProjectId);
 
+    if (!roseGraph || !hbarGraph)
+        return;
+
     RGraph.Clear(roseGraph.canvas);
     RGraph.Clear(hbarGraph.canvas);
 

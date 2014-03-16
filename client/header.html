@@ -16,13 +16,11 @@
                     {{/if}}
                     {{#if currentUser}}
                         {{#if selectedProjectId}}
-                            <li><a href="#gen_export" id='export' class='export'>Events</a><li>
                             {{> log}}
                         {{/if}}
                     {{else}}
                         <li><a href="/demo">Demo</a></li>
                     {{/if}}
-                    <li><a href="#inline_content" class="clickable">About</a></li>
                     {{> about}}
                     <li><a href="http://dx.doi.org/10.5334/jors.ad">Cite</a></li>
                 </ul>

@@ -68,7 +68,8 @@ newProject = function(name, description, demo) {
         project.demo = demo; 
         project.userId = userId;
 
-        project.kernel = new Object(); project.kernel.concerns = currentKernelSkeleton.concerns;
+        project.kernel = new Object(); 
+        project.kernel.concerns = currentKernelSkeleton.concerns;
 
         projectId = Projects.insert(
             project

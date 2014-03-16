@@ -14,7 +14,6 @@ Handlebars.registerHelper('selectedProjectId', function(input) {
 
 Handlebars.registerHelper('selectedProjectName', function(input) {
     var selectedProjectName = Session.get('selectedProjectName');
-    console.log(selectedProjectName);
     return selectedProjectName;
 });
 
