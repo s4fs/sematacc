@@ -14,6 +14,7 @@ Handlebars.registerHelper('selectedProjectId', function(input) {
 
 Handlebars.registerHelper('selectedProjectName', function(input) {
     var selectedProjectName = Session.get('selectedProjectName');
+    console.log(selectedProjectName);
     return selectedProjectName;
 });
 
@@ -40,17 +41,26 @@ Handlebars.registerHelper('demoMode', function(input) {
     return Session.get('demoMode');
 });
 
-Handlebars.registerHelper('asArray',function(obj){
+Handlebars.registerHelper('asArray', function(obj) {
     var result = [];
-    for (var key in obj){
+    for (var key in obj) {
         if (obj[key].hasOwnProperty('order'))
-            result.push({name:key, value:obj[key], order:obj[key].order});
+            result.push({
+                name: key,
+                value: obj[key],
+                order: obj[key].order
+            });
         else
-            result.push({name:key, value:obj[key]});
+            result.push({
+                name: key,
+                value: obj[key]
+            });
     }
 
-    if (result != null && result[0].hasOwnProperty('order'))
-            return result.sort(function(a,b) { return parseFloat(a.order) - parseFloat(b.order) } );
-        else
-            return result;
+    if (result && result[0] && result[0].hasOwnProperty('order'))
+        return result.sort(function(a, b) {
+            return parseFloat(a.order) - parseFloat(b.order)
+        });
+    else
+        return result;
 });

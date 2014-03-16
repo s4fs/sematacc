@@ -1,0 +1,450 @@
+/**
+ * Semat Essence Accelerator
+ * Copyright (C) 2013 Daniel Graziotin. All Rights Reserved.
+ * Licensed under the BSD 3-Clause. See the LICENSE File for details.
+ */
+
+/* color scheme: http://www.colourlovers.com/palette/132637/OddButTrendy/ */
+
+
+body {
+    background-color: #ffffff;
+    background-image: url(/img/background.png);
+    font-family: 'Open Sans', sans-serif !important;
+    font-style:  normal;
+    font-weight: 400;
+}
+
+
+.container-full{
+    width:100%;
+    padding: 0 15px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.navbar {
+    margin-top:15px;
+    font-size:1.3em;
+}
+
+
+h1, h2, h3, h4, h5 {
+    color: #680148;
+    text-align: center;
+}
+
+h1#message {
+    color: #b7dadf;
+}
+
+h1.sectiontitle {
+    color: #7DB4B5;
+}
+
+.big {
+    font-size: 1.2em;
+    margin-left: 5px;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+
+div.login {
+    width: 87%;
+    margin-right: 13%;
+    text-align: right;
+}
+
+
+.home {
+    padding: 30px;
+}
+
+.home p {
+    margin-bottom: 20px;
+}
+
+
+.bottom a, p a {
+    color: #7DB4B5;
+}
+
+a.inline, a.share {
+    margin-right: 20px;
+}
+
+div.clickable {
+    background-image: url(/img/background.png);
+    padding: 30px;
+}
+
+.clickable h1 {
+    height: auto;
+    text-align: left;
+    margin: 30px 0px;
+}
+
+.clickable p, .clickable pre {
+    margin: 20px;
+    padding: normal;
+}
+
+.clickable pre {
+    overflow: scroll;
+}
+
+.clickable ul, .clickable ul li {
+    margin: 10px;
+    list-style-type: disc;
+}
+
+
+
+/***********
+ * HINT BOX
+ ***********/
+
+.hints {
+    width: 100%;
+    min-height: 500px;
+
+    -webkit-box-shadow: 0 4px 6px #b7b7b7;
+    box-shadow: 0 4px 6px #b7b7b7;
+    background: #ffffff;
+
+    -ms-overflow-y: hidden;
+    overflow-y: hidden;
+
+    background: #ffffff;
+    background: rgba(255, 255, 229, 0.3);
+    color: #000;
+    font-size:1.2em;
+}
+
+.hints h1 {
+    color: #b7dadf;
+    height: auto;
+}
+
+.hints h2 {
+    height: auto;
+    text-align:left;
+    margin: 5px 0px;
+}
+
+.hints .hint {
+    margin: 0;
+    padding: 5px;
+    text-align: justify;
+    line-height: 1.25em;
+}
+
+.hints .hint p {
+    line-height: 1.25em;
+}
+
+.hints .hint p br {
+    display: block;
+    margin-top: 0.5em;
+    line-height: 0.9em;
+    content: "";
+}
+
+/************
+ * DASHBOARD
+ ************/
+
+.dashboard {
+    width: 90%;
+    text-align: left;
+    margin: auto;
+    padding: 0;
+    background-color:white;
+    -webkit-box-shadow: 0px 4px 6px #b7b7b7;
+    box-shadow: 0px 4px 6px #b7b7b7;
+}
+
+div.newProject {
+    display: none;
+    width: 90%;
+    text-align: left;
+    margin: auto;
+    padding: 0;
+
+    -webkit-box-shadow: 0px 4px 6px #b7b7b7;
+    box-shadow: 0px 4px 6px #b7b7b7;
+}
+
+.newProject ul {
+    width: 100%;
+    list-style-type: none;
+    text-align: center;
+
+    -webkit-box-shadow: 0px 4px 6px #b7b7b7;
+    box-shadow: 0px 4px 6px #b7b7b7;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.newProject li {
+    list-style-type: none;
+}
+
+input#nameNewProject, textarea#descriptionNewProject {
+    width: 80%;
+    margin-bottom: 10px;
+    border: 0;
+
+    -webkit-box-shadow: 0px 4px 6px #b7b7b7;
+    box-shadow: 0px 4px 6px #b7b7b7;
+}
+
+input#nameNewProject {
+    height: 1.9em;
+}
+
+textarea#descriptionNewProject {
+    height: 200px;
+}
+
+button#makeNewProject {
+    width: 40%;
+    height: 1.9em;
+    margin: auto;
+}
+
+button.css3button {
+    color: #333333;
+    background-color: #b7b7b7;
+    border-radius: 6px;
+    -webkit-box-shadow: 0px 1px 3px rgba(000, 000, 000, 0.5), inset 0px 0px 1px rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 3px rgba(000, 000, 000, 0.5), inset 0px 0px 1px rgba(255, 255, 255, 1);
+}
+
+ul.projects {
+    list-style-type: none;
+}
+
+ul.projects li {
+    padding: 10px 20px;
+
+    -webkit-box-shadow: 0px 4px 6px #b7b7b7;
+    box-shadow: 0px 4px 6px #b7b7b7;
+}
+
+.commands {
+    display: none;
+}
+
+div.projectName {
+    float: left;
+    width: 75%;
+    margin: 0;
+    padding: 0;
+}
+
+div.projectCommands {
+    float: left;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+
+/************
+ * ACCORDION
+ ************/
+
+/* credits: http://tympanus.net/codrops/2012/02/21/accordion-with-css3/ */
+
+.ac-container {
+    width: 100%;
+    text-align: left;
+    margin: auto;
+    padding: 0;
+    -webkit-box-shadow: 0px 4px 6px #b7b7b7;
+    box-shadow: 0px 4px 6px #b7b7b7;
+    font-size:1.2em;
+}
+
+label {
+    font-weight: normal !important;
+    margin:0;
+    border:0;
+    padding:10px 20px;
+    height:50px;
+}
+
+.ac-container label {
+    position: relative;
+    z-index: 20;
+    display: block;
+    cursor: pointer;
+    color: #777;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+    background: #ffffff;
+}
+
+div.concern label {
+    background: #00356D;
+    color: #979797;
+    -webkit-box-shadow: 0px 0px 0px 1px rgba(155, 155, 155, 0.3), 0px 2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 0px 1px rgba(155, 155, 155, 0.3), 0px 2px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: none;
+}
+
+.ac-container label:hover {
+    background: #b7dadf;
+    color: #7DB4B5;
+}
+
+.ac-container input:checked + label, .ac-container input:checked + label:hover {
+    background: #b7dadf;
+    color: #680148;
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.6);
+
+    -webkit-box-shadow: 0px 0px 0px 1px rgba(155, 155, 155, 0.3), 0px 2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 0px 1px rgba(155, 155, 155, 0.3), 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.ac-container label:hover:after, .ac-container input:checked + label:hover:after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 13px;
+    top: 7px;
+    background: transparent url(/img/arrow_down.png) no-repeat center center;
+}
+
+.ac-container input:checked + label:hover:after {
+    background-image: url(/img/arrow_up.png);
+}
+
+.ac-container input {
+    display: none;
+}
+
+.ac-container article {
+    background: rgba(255, 255, 255, 0.5);
+    margin-top: -1px;
+    overflow: hidden;
+    height: 0px;
+    position: relative;
+    z-index: 10;
+
+    -webkit-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -moz-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -o-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -ms-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+}
+
+.ac-container article ul {
+    color: #777;
+    line-height: 23px;
+    padding: 0;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+    list-style-type: none;
+    font-size:0.9em;
+}
+
+.ac-container article ul li {
+    padding: 5px 5px 5px 30px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.ac-container article ul li div {
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+
+.ac-container article ul li div img {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+li.selectable:hover {
+    background-color: #7DB4B5;
+    text-shadow: none;
+}
+
+li.selected {
+    color: #7DB4B5;
+    text-shadow: none;
+}
+
+.ac-container input:checked ~ article {
+    -webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -moz-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -o-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -ms-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+
+    -webkit-box-shadow: 0px 0px 0px 1px rgba(155, 155, 155, 0.3);
+    box-shadow: 0px 0px 0px 1px rgba(155, 155, 155, 0.3);
+}
+
+.ac-container input:checked ~ article.ac-small {
+    height: 210px;
+}
+
+.ac-container input:checked ~ article.ac-medium {
+    height: 180px;
+}
+
+.ac-container input:checked ~ article.ac-large {
+    height: 230px;
+    padding: 20px;
+}
+
+.section {
+    display: block;
+}
+
+/*********
+ * GRAPHS
+ *********/
+
+.graphs {
+    -webkit-box-shadow: 0 4px 6px #b7b7b7;
+    box-shadow: 0 4px 6px #b7b7b7;
+    background: #ffffff;
+    -ms-overflow-y: hidden;
+    overflow-y: hidden;
+}
+
+.graph {
+}
+
+
+.onTop{
+    z-index: 100 !important;
+}
+
+/*******
+ * MENU
+ *******/
+div.message {
+    height: 70%;
+    width: 100%;
+    text-align: center;
+    line-height: 2em;
+    color: #680148;
+}
+
+div.menu {
+    height: 30%;
+    width: 100%;
+}
