@@ -38,6 +38,8 @@ Meteor.autorun(function() {
             _id: Session.get('selectedProjectId')
         });
 
+        drawGraphs();
+
         projectCursor.observeChanges({
             changed: function(id, fields) {
                 drawGraphs();
