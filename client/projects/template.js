@@ -8,9 +8,11 @@
  * Handle the projects template.
  */
 
+
+
 Template.projects.helpers({
     userProjects: function() {
-        return Projects.find();
+   		return Projects.find({demo: false}).fetch();
     },
     checkable: function(id) {
     	(id === Session.get('selectedProjectId')) ? 'checked' : 'false';

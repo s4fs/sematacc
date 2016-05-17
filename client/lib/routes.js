@@ -42,8 +42,18 @@ Router.route('/demo', function () {
 });
 
 
-Router.route('/p', function () {
-  this.render('projects');
+Router.route('/p', {
+  // this template will be rendered until the subscriptions are ready
+  loadingTemplate: 'loading',
+
+  waitOn: function () {
+    // return one handle, a function, or an array
+    return Meteor.subscribe('Projects');
+  },
+
+  action: function () {
+    this.render('projects');
+  }
 });
 
 Router.route('/p/:_id', function () {
