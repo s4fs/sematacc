@@ -4,24 +4,17 @@
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
 
-/***
- * Routing
- */
-
-/*
-Meteor.Router.beforeRouting = function() {
-    Session.set('selectedProjectId', null);
-    Session.set('selectedProjectName', null);
-    Session.set('message', null);
-    Session.set('demoMode', null);
-}
-*/
-
 Router.configure({
   layoutTemplate: 'ApplicationLayout'
 });
 
+resetSession = function() {
+  Session.set('demoMode', false);
+  Session.set('selectedProjectId', null);
+}
+
 Router.route('/', function () {
+  resetSession();
   this.layout('ApplicationLayout');
   this.render('home');
 });
@@ -30,15 +23,17 @@ Router.route('/demo', function () {
     var id = this.params._id;
     if (Meteor.loggingIn() || Meteor.user()) {
         Session.set('demoMode', null);
-        this.render('home');
-    }
-    this.wait(Meteor.subscribe('Projects', id));
-    if (this.ready()) {
-        Session.set('demoMode', true);
-        this.render('kernel');
+        Router.go('/p');
     } else {
-        this.render('loading');
+      this.wait(Meteor.subscribe('Projects', id));
+      if (this.ready()) {
+          Session.set('demoMode', true);
+          this.render('kernel');
+      } else {
+          this.render('loading');
+      }
     }
+    
 });
 
 
@@ -52,6 +47,7 @@ Router.route('/p', {
   },
 
   action: function () {
+    resetSession();
     this.render('projects');
   }
 });

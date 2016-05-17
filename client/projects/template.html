@@ -12,26 +12,27 @@
     </div>
     <section class="ac-container">
         {{#each p in userProjects}}
-                <div class="concern-container">
-                    <input class="accordionitem" id="{{p._id}}" name="{{p._id}}" type="radio" checked="{{checkable p._id}}" />
-                    <label for="{{p._id}}" class="accordionlabel">
-                        <div class="projectName">
-                            {{p.name}}
-                        </div>
-                        <div class="projectCommands" id="projectCommands{{p._id}}">
-                            <a href="/p/{{p._id}}" class="viewProject icon-play" title="Run Project on SematAcc"></a>
-                            <a href="#" class="editProject icon-pencil" title="Edit Project"></a>
-                            <a href="#" class="deleteProject icon-trash" title="Delete Project"></a>
-                        </div>
-                    </label>
-                    <article class="ac-large">
-                        {{p.description}}
-                    </article>
-                </div>
-        {{/each}}
+            <div class="concern-container">
+                <input class="accordionitem" id="{{p._id}}" name="{{p._id}}" type="radio" checked="{{checkable p._id}}" />
+                <label for="{{p._id}}" class="accordionlabel">
+                    <div class="projectName">
+                        {{p.name}}
+                    </div>
+                    <div class="projectCommands" id="projectCommands{{p._id}}">
+                        <a href="/p/{{p._id}}" class="viewProject icon-play" title="Run Project on SematAcc"></a>
+                        <a href="#" class="editProject icon-pencil" title="Edit Project"></a>
+                        <a href="#" class="deleteProject icon-trash" title="Delete Project"></a>
+                    </div>
+                </label>
+                <article class="ac-large">
+                    {{p.description}}
+                </article>
+            </div>
+        {{else}}
             <p>
                 <a href="#" class="showNewProject">Add a new project</a>
             </p>
+        {{/each}}
     </section>
     <h1 id="message" class="heading"></h1>
 </template>
