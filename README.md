@@ -28,22 +28,16 @@ Useful references to complete materials are available there, as well.
 
 BEFORE YOU START
 ================
-We use Google Analytics to analyze sematacc.meteor.com traffic.
+We use Google Analytics to analyze sematacc.herokuapp.com traffic.
 If you want to use it, too, please set the `ganalaytics` variable to your tracking code (in the form of 'XX-XXXXXXX-X').
 The variable is defined in `client/ganalytics.js`.
 
 DEPENDENCIES
 ============
-SematAcc is a regular [Meteor](http://meteor.com) application and it requires `Meteor v0.6.0` as a dependency.
+SematAcc is a regular [Meteor](http://meteor.com) application and it requires `Meteor v1.3+` as a dependency.
 Please refer to [Meteor documentation](http://docs.meteor.com) in order to install it.
 
 Although Microsoft Windows is [unoficially supported](http://win.meteor.com), we advice to try SematAcc either in a GNU/Linux environment or on Mac OS X.
-
-The first time you try SematAcc, please issue the following command:
-
-    meteor rebuild-all
-
-In order to build the provided dependencies.
 
 USAGE
 =====
@@ -54,12 +48,14 @@ In order to run SematAcc on a development machine, issue the following command i
 
 SematAcc should be ready and accessible at http://127.0.0.1:3000.
 
-A live version of SematAcc runs on Meteor servers at http://sematacc.meteor.com for demo and testing purposes.
+A live version of SematAcc runs on Meteor servers at http://sematacc.herokuapp.com for demo and testing purposes.
 Although we try to keep the data stored on there, please do not heavily rely on it.
 
-In order to [deploy](http://docs.meteor.com/#deploying) SematAcc as a private instance on Meteor's free servers, issue the following command:
+In order to [deploy](http://docs.meteor.com/#deploying) SematAcc as a private instance on Meteor's servers, issue the following command:
 
     meteor deploy your-chosen-name.meteor.com
+
+Please note that Meteor hosting is not free. Free hosting is provided by [Heroku](http://heroku.com), and it is described [here](https://medium.com/@leonardykris/how-to-run-a-meteor-js-application-on-heroku-in-10-steps-7aceb12de234#.tcei2hasi).
 
 
 CITATION
