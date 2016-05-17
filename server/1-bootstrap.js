@@ -11,47 +11,300 @@
  */
 
 kernelSkeleton = {
-    concerns: [{
-        name: 'Customer',
-        description: 'Description of Customer',
-        alphas: [{
-            name: 'Opportunity',
-            currentState: null,
-            states: ['Identified', 'Solution Needed', 'Value Established', 'Viable', 'Addressed', 'Benefit Accrued']
-        }, {
-            name: 'Stakeholders',
-            currentState: null,
-            states: ['Recognized', 'Represented', 'Involved', 'In Agreement', 'Satisfied for Deployment', 'Satisfied in Use']
-        }]
-    }, {
-        name: 'Solution',
-        description: 'Description of Solution',
-        alphas: [{
-            name: 'Requirements',
-            currentState: null,
-            states: ['Conceived', 'Bounded', 'Coherent', 'Acceptable', 'Addressed', 'Fulfilled']
-        }, {
-            name: 'Software System',
-            currentState: null,
-            states: ['Architecture Selected', 'Demonstrable', 'Usable', 'Ready', 'Operational', 'Retired']
-        }]
-    }, {
-        name: 'Endeavor',
-        description: 'Description of Endeavor',
-        alphas: [{
-            name: 'Work',
-            currentState: null,
-            states: ['Initiated', 'Prepared', 'Started', 'Under Control', 'Concluded', 'Closed']
-        }, {
-            name: 'Team',
-            currentState: null,
-            states: ['Seeded', 'Formed', 'Collaborating', 'Performing', 'Adjourned']
-        }, {
-            name: 'Way-of-Working',
-            currentState: null,
-            states: ['Principles Established', 'Foundation Established', 'In Use', 'In Place', 'Working Well', 'Retired']
-        }]
-    }]
+    concerns: {
+        'customer': {
+            name: 'Customer',
+            description: 'Description of Customer',
+            completion: 0,
+            order: 1,
+            alphas: {
+                'opportunity': {
+                    name: 'Opportunity',
+                    description: '',
+                    currentStatePointer: null,
+                    completion: 0,
+                    order: 1,
+                    concern: 'customer',
+                    states: {'Identified': {
+                        name: 'identified',
+                        order: 1,
+                        alpha: 'opportunity',
+                        concern: 'customer'
+                    }, 'Solution Needed': {
+                        name: 'solution needed',
+                        order: 2,
+                        alpha: 'opportunity',
+                        concern: 'customer'
+                    }, 'Value Established': {
+                        name: 'value established',
+                        order: 3,
+                        alpha: 'opportunity',
+                        concern: 'customer'
+                    }, 'Viable': {
+                        name: 'viable',
+                        order: 4,
+                        alpha: 'opportunity',
+                        concern: 'customer'
+                    }, 'Addressed': {
+                        name: 'addressed',
+                        order: 5,
+                        alpha: 'opportunity',
+                        concern: 'customer'
+                    }, 'Benefit Accrued': {
+                        name: 'benefit accrued',
+                        order: 6,
+                        alpha: 'opportunity',
+                        concern: 'customer'
+                    }}
+                },
+                'stakeholders': {
+                    name: 'Stakeholders',
+                    description: '',
+                    currentStatePointer: null,
+                    completion: 0,
+                    order: 2,
+                    concern: 'customer',
+                    states: {'Recognized': {
+                        name: 'recognized',
+                        order: 1,
+                        alpha: 'stakeholders',
+                        concern: 'customer'
+                    }, 'Represented': {
+                        name: 'represented',
+                        order: 2,
+                        alpha: 'stakeholders',
+                        concern: 'customer'
+                    }, 'Involved': {
+                        name: 'involved',
+                        order: 3,
+                        alpha: 'stakeholders',
+                        concern: 'customer'
+                    }, 'In Agreement': {
+                        name: 'in agreement',
+                        order: 4,
+                        alpha: 'stakeholders',
+                        concern: 'customer'
+                    }, 'Satisfied for Deployment': {
+                        name: 'satisfied for deployment',
+                        order: 5,
+                        alpha: 'stakeholders',
+                        concern: 'customer'
+                    }, 'Satisfied in Use': {
+                        name: 'satisfied in use',
+                        order: 6,
+                        alpha: 'stakeholders',
+                        concern: 'customer'
+                    }}
+                }
+            }
+        },
+        'solution': {
+            name: 'Solution',
+            description: 'Description of Solution',
+            completion: 0,
+            order: 2,
+            alphas: {
+                'requirements': {
+                    name: 'Requirements',
+                    description: '',
+                    currentStatePointer: null,
+                    completion: 0,
+                    order: 1,
+                    concern: 'solution',
+                    states: {'Conceived': {
+                        name: 'conceived',
+                        order: 1,
+                        alpha: 'requirements',
+                        concern: 'solution'
+                    }, 'Bounded': {
+                        name: 'bounded',
+                        order: 2,
+                        alpha: 'requirements',
+                        concern: 'solution'
+                    }, 'Coherent': {
+                        name: 'coherent',
+                        order: 3,
+                        alpha: 'requirements',
+                        concern: 'solution'
+                    }, 'Acceptable': {
+                        name: 'acceptable',
+                        order: 4,
+                        alpha: 'requirements',
+                        concern: 'solution'
+                    }, 'Addressed': {
+                        name: 'addressed',
+                        order: 5,
+                        alpha: 'requirements',
+                        concern: 'solution'
+                    }, 'Fulfilled': {
+                        name: 'fulfilled',
+                        order: 6,
+                        alpha: 'requirements',
+                        concern: 'solution'
+                    }}
+                },
+                'software system': {
+                    name: 'Software System',
+                    description: '',
+                    currentStatePointer: null,
+                    completion: 0,
+                    order: 2,
+                    concern: 'solution',
+                    states: {'Architecture Selected': {
+                        name: 'architecture selected',
+                        order: 1,
+                        alpha: 'software system',
+                        concern: 'solution'
+                    }, 'Demonstrable': {
+                        name: 'demonstrable',
+                        order: 2,
+                        alpha: 'software system',
+                        concern: 'solution'
+                    }, 'Usable': {
+                        name: 'usable',
+                        order: 3,
+                        alpha: 'software system',
+                        concern: 'solution'
+                    }, 'Ready': {
+                        name: 'ready',
+                        order: 4,
+                        alpha: 'software system',
+                        concern: 'solution'
+                    }, 'Operational': {
+                        name: 'operational',
+                        order: 5,
+                        alpha: 'software system',
+                        concern: 'solution'
+                    }, 'Retired': {
+                        name: 'retired',
+                        order: 6,
+                        alpha: 'software system',
+                        concern: 'solution'
+                    }}
+                }
+            }
+        },
+        'endeavor': {
+            name: 'Endeavor',
+            description: 'Description of Endeavor',
+            completion: 0,
+            order: 3,
+            alphas: {
+                'work': {
+                    name: 'Work',
+                    description: '',
+                    currentStatePointer: null,
+                    completion: 0,
+                    order: 1,
+                    concern: 'endeavor',
+                    states: {'Initiated': {
+                        name: 'initiated',
+                        order: 1,
+                        alpha: 'work',
+                        concern: 'endeavor'
+                    }, 'Prepared': {
+                        name: 'prepared',
+                        order: 2,
+                        alpha: 'work',
+                        concern: 'endeavor'
+                    }, 'Started': {
+                        name: 'started',
+                        order: 3,
+                        alpha: 'work',
+                        concern: 'endeavor'
+                    }, 'Under Control': {
+                        name: 'under control',
+                        order: 4,
+                        alpha: 'work',
+                        concern: 'endeavor'
+                    }, 'Concluded': {
+                        name: 'concluded',
+                        order: 5,
+                        alpha: 'work',
+                        concern: 'endeavor'
+                    }, 'Closed': {
+                        name: 'closed',
+                        order: 6,
+                        alpha: 'work',
+                        concern: 'endeavor'
+                    }}
+                },
+                'team': {
+                    name: 'Team',
+                    description: '',
+                    currentStatePointer: null,
+                    completion: 0,
+                    order: 2,
+                    concern: 'endeavor',
+                    states: {'Seeded': {
+                        name: 'seeded',
+                        order: 1,
+                        alpha: 'team',
+                        concern: 'endeavor'
+                    }, 'Formed': {
+                        name: 'formed',
+                        order: 2,
+                        alpha: 'team',
+                        concern: 'endeavor'
+                    }, 'Collaborating': {
+                        name: 'collaborating',
+                        order: 3,
+                        alpha: 'team',
+                        concern: 'endeavor'
+                    }, 'Performing': {
+                        name: 'performing',
+                        order: 4,
+                        alpha: 'team',
+                        concern: 'endeavor'
+                    }, 'Adjourned': {
+                        name: 'adjourned',
+                        order: 5,
+                        alpha: 'team',
+                        concern: 'endeavor'
+                    }}
+                },
+                'way-of-working': {
+                    name: 'Way-of-Working',
+                    description: '',
+                    currentStatePointer: null,
+                    completion: 0,
+                    order: 3,
+                    concern: 'endeavor',
+                    states: {'Principles Established': {
+                        name: 'principles established',
+                        order: 1,
+                        alpha: 'way-of-working',
+                        concern: 'endeavor'
+                    }, 'Foundation Established': {
+                        name: 'foundation established',
+                        order: 2,
+                        alpha: 'way-of-working',
+                        concern: 'endeavor'
+                    }, 'In Use': {
+                        name: 'in use',
+                        order: 3,
+                        alpha: 'way-of-working',
+                        concern: 'endeavor'
+                    }, 'In Place': {
+                        name: 'in place',
+                        order: 4,
+                        alpha: 'way-of-working',
+                        concern: 'endeavor'
+                    }, 'Working Well': {
+                        name: 'working well',
+                        order: 5,
+                        alpha: 'way-of-working',
+                        concern: 'endeavor'
+                    }, 'Retired': {
+                        name: 'retired',
+                        order: 6,
+                        alpha: 'way-of-working',
+                        concern: 'endeavor'
+                    }}
+                }
+            }
+        }
+    }
 };
 
 alphaDescriptions = {

@@ -24,7 +24,8 @@ resizeGraphDivs = function() {
  */
 drawGraphs = function() {
     selectedProjectId = Session.get('selectedProjectId');
-    if (!selectedProjectId) return;
+    if (!selectedProjectId)
+        return;
 
     resizeGraphDivs();
     graphIds = ['graphRoseAlphas', 'graphHbarOverall'];
@@ -33,9 +34,13 @@ drawGraphs = function() {
     var roseGraph = buildAlphasGraph(graphIds[0], selectedProjectId);
     var hbarGraph = buildConcernsGraph(graphIds[1], selectedProjectId);
 
+    if (!roseGraph || !hbarGraph)
+        return;
+
     RGraph.Clear(roseGraph.canvas);
     RGraph.Clear(hbarGraph.canvas);
 
     RGraph.Effects.Rose.Grow(roseGraph, null, null);
     RGraph.Effects.HBar.Grow(hbarGraph, null, null);
 };
+

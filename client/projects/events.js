@@ -33,12 +33,13 @@ Template.projects.events({
                 }, {
                     $set: {
                         name: name,
-                        description: description
+                        description: description,
                     }
                 });
+                Meteor.call('log', projectId, 'Project', 'Modified');
                 Session.set('editProjectId', null);
             } else {
-                Meteor.call('newProject', name, description, Meteor.userId(),
+                Meteor.call('newProject', name, description, false,
                     function(error, result) {
                         if (error) {
                             alert('Error when creating project: ' + error);
@@ -56,7 +57,7 @@ Template.projects.events({
      */
     'mouseenter .accordionlabel': function(event) {
         var projectId = $(event.currentTarget).attr('for');
-        $('#projectCommands' + this._id).show();
+        $('#projectCommands' + projectId).show();
     },
     /**
      * Toggle 'view', 'edit', 'delete' project buttons

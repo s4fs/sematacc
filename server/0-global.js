@@ -8,7 +8,7 @@
  * Global variables shared in server
  */
 
-// punblic methods
+// public methods
 newProject = null;
 updateConcernCompletion = null;
 updateAlphasCompletions = null;

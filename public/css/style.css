@@ -15,12 +15,19 @@ body {
     font-weight: 400;
 }
 
+
 .container-full{
     width:100%;
     padding: 0 15px;
     margin-left: 0px;
     margin-right: 0px;
 }
+
+.navbar {
+    margin-top:15px;
+    font-size:1.3em;
+}
+
 
 h1, h2, h3, h4, h5 {
     color: #680148;

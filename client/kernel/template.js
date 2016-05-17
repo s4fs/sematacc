@@ -4,44 +4,35 @@
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
 
-/**
- * Render Concerns, Alphas, and States for a Project.
- */
 
-Template.kernel.concerns = function() {
+ function asArray(obj){
+    var result = [];
+    for (var key in obj){
+        if (obj[key].hasOwnProperty('order'))
+            result.push({name:key,value:obj[key],order:obj[key].order});
+        else
+            result.push({name:key,value:obj[key]});
+    }
+
+    if (result != null && result[0].hasOwnProperty('order'))
+            return result.sort(function(a,b) { return parseFloat(a.order) - parseFloat(b.order) } );
+        else
+            return result;
+ }
+
+ Template.kernel.concerns = function(){
     var projectId = Session.get('selectedProjectId');
-    return Concerns.find({
-        projectId: projectId
-    });
+    var project =  Projects.findOne({_id: projectId});
+    return project.kernel.concerns;
+ }
 
-};
-
-Template.kernel.alphas = function(concernId) {
-    var projectId = Session.get('selectedProjectId');
-    return Alphas.find({
-        concernId: concernId
-    });
-};
-
-Template.kernel.currentState = function(stateId) {
-    var state = States.findOne({
-        _id: stateId
-    });
-    if (state)
-        return ': ' + state.name;
-    else
+Template.kernel.getCurrentStateName = function(alpha) {
+    if (alpha == null || alpha.currentStatePointer == null)
         return '';
+    return ': ' + asArray(alpha.states)[alpha.currentStatePointer - 1].name;
+
 };
 
-Template.kernel.states = function(alphaId) {
-    if (alphaId) return States.find({
-        alphaId: alphaId
-    });
-    else return States.find({
-        userId: null
-    });
-};
-
-Template.kernel.sameId = function(firstId, secondId) {
-    return firstId == secondId;
+Template.kernel.isCurrentState = function(currentStateOrder, alpha) {
+    return currentStateOrder == alpha.value.currentStatePointer;
 };

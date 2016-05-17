@@ -4,5 +4,6 @@
  * Licensed under the BSD 3-Clause. See the LICENSE File for details.
  */
 Template.graphs.rendered = function() {
-    //drawGraphs();
+    if (Session.get('selectedProjectId'))
+        drawGraphs();
 };

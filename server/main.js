@@ -5,11 +5,8 @@
  */
 
 Meteor.startup(function() {
-    if (Projects.find({
-        demo: true
-    }).count() === 0) {
-        Meteor.call('newProject', 'Demo Project', 'This is a demo project.', true);
-    }
+    Projects.remove({demo:true, userId:null});
+    Meteor.call('newProject', 'Demo Project', 'This is a demo project.', true);
 });
 
 /**
@@ -24,27 +21,7 @@ Projects.allow({
     },
     fetch: ['userId']
 });
-Concerns.allow({
-    update: function(userId, doc, fields, modifier) {
-        // can only change your own documents
-        return doc.userId === userId;
-    },
-    fetch: ['userId']
-});
-Alphas.allow({
-    update: function(userId, doc, fields, modifier) {
-        // can only change your own documents
-        return doc.userId === userId;
-    },
-    fetch: ['userId']
-});
-States.allow({
-    update: function(userId, doc, fields, modifier) {
-        // can only change your own documents
-        return doc.userId === userId;
-    },
-    fetch: ['userId']
-});
+
 
 /**
  * Publish the collections of the models, to the connected client.
@@ -56,38 +33,9 @@ Meteor.publish('Projects', function() {
         }, {
             demo: true
         }]
-    });
+    })
 });
 
-Meteor.publish('Concerns', function(projectId) {
-    return Concerns.find({
-        projectId: projectId
-    }, {
-        sort: {
-            order: 1
-        }
-    });
-});
-
-Meteor.publish('Alphas', function(projectId) {
-    return Alphas.find({
-        projectId: projectId
-    }, {
-        sort: {
-            order: 1
-        }
-    });
-});
-
-Meteor.publish('States', function(projectId) {
-    return States.find({
-        projectId: projectId
-    }, {
-        sort: {
-            order: 1
-        }
-    });
-});
 
 Meteor.publish('Events', function() {
     return Events.find({
@@ -102,11 +50,8 @@ Meteor.methods({
     newProject: function(name, description, demo) {
         return newProject(name, description, demo);
     },
-    updateAlphasCompletions: function(projectId) {
-        return updateAlphasCompletions(projectId);
-    },
-    updateConcernCompletions: function(projectId) {
-        return updateConcernCompletions(projectId);
+    updateProject: function(projectId, concern, alpha, newStatePointer) {
+        return updateProject(projectId, concern, alpha, newStatePointer);
     },
     log: function(projectId, who, what) {
         return log(projectId, who, what);

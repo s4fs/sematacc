@@ -11,6 +11,3 @@
 // collections
 Events = null;
 Projects = null;
-Concerns = null;
-Alphas = null;
-States = null;
