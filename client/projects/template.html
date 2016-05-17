@@ -12,29 +12,28 @@
     </div>
     <section class="ac-container">
         {{#if userProjects}}
-        {{#each userProjects}}
-        <div class="concern-container">
-            <input class="accordionitem" id="{{this._id}}" name="{{this._id}}" type="radio"
-            {{#if checkable this._id}}checked="checked" {{/if}}/>
-            <label for="{{this._id}}" class="accordionlabel">
-                <div class="projectName">
-                    {{this.name}}
-                </div>
-                <div class="projectCommands" id="projectCommands{{this._id}}">
-                    <a href="/p/{{this._id}}" class="viewProject icon-play" title="Run Project on SematAcc"></a>
-                    <a href="#" class="editProject icon-pencil" title="Edit Project"></a>
-                    <a href="#" class="deleteProject icon-trash" title="Delete Project"></a>
-                </div>
-            </label>
-            <article class="ac-large">
-                {{this.description}}
-            </article>
-        </div>
+        {{#each p in userProjects}}
+            <div class="concern-container">
+                <input class="accordionitem" id="{{p._id}}" name="{{p._id}}" type="radio" checked="{{checkable p._id}}" />
+                <label for="{{p._id}}" class="accordionlabel">
+                    <div class="projectName">
+                        {{p.name}}
+                    </div>
+                    <div class="projectCommands" id="projectCommands{{p._id}}">
+                        <a href="/p/{{p._id}}" class="viewProject icon-play" title="Run Project on SematAcc"></a>
+                        <a href="#" class="editProject icon-pencil" title="Edit Project"></a>
+                        <a href="#" class="deleteProject icon-trash" title="Delete Project"></a>
+                    </div>
+                </label>
+                <article class="ac-large">
+                    {{p.description}}
+                </article>
+            </div>
         {{/each}}
         {{else}}
-        <p>
-            No projects here. <a href="#" class="showNewProject">Add a new project</a>.
-        </p>
+            <p>
+                No projects here. <a href="#" class="showNewProject">Add a new project</a>.
+            </p>
         {{/if}}
     </section>
     <h1 id="message" class="heading"></h1>

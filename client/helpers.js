@@ -26,7 +26,8 @@ Handlebars.registerHelper('currentURL', function(input) {
 });
 
 Handlebars.registerHelper('inProjects', function(input) {
-    return Meteor.Router.page() == 'projects' || Meteor.Router.page() == 'kernel';
+    var routeName = Router.current().route.getName();
+    return routeName == 'projects' || routeName == 'demo';
 });
 
 Handlebars.registerHelper('demoProject', function(input) {

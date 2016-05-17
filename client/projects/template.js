@@ -8,16 +8,14 @@
  * Handle the projects template.
  */
 
-Template.projects.userProjects = function() {
-    var projects = Projects.find({
-        userId: Meteor.userId()
-    });
-    if (projects.count() === 0) {
-        return null;
-    } else {
-        return projects;
+Template.projects.helpers({
+    userProjects: function() {
+        return Projects.find();
+    },
+    checkable: function(id) {
+    	(id === Session.get('selectedProjectId')) ? 'checked' : 'false';
     }
-};
+});
 
 Template.projects.rendered = function() {
     $('input#nameNewProject').watermark('Project Name');

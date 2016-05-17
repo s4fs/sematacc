@@ -57,7 +57,7 @@ Template.projects.events({
      */
     'mouseenter .accordionlabel': function(event) {
         var projectId = $(event.currentTarget).attr('for');
-        $('#projectCommands' + this._id).show();
+        $('#projectCommands' + projectId).show();
     },
     /**
      * Toggle 'view', 'edit', 'delete' project buttons

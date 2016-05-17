@@ -15,19 +15,19 @@
                     <article class="ac-small">
                         <ul>
                         {{#each asArray this.value.states}}
-                            {{#if isCurrentState this.value.order ../this}}
+                            {{#if isCurrentState this.value.order ..}}
                                 <li class="item selected">
                                     <div class="icon-ok">
                                     </div>
+                                    {{this.name}}
+                                </li>
                             {{else}}
                                 <li class="item selectable">
                                     <div>
                                     </div>
-                            {{/if}}
-
                                 {{this.name}}
-
-                            </li>
+                                </li>
+                            {{/if}}
                         {{/each}}
                     </ul>
                     </article>
